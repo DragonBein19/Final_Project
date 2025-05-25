@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Autorization </title>
+    </head>
+    <body>
+        <h1> Autorization </h1>
+        <form id="AuthorizationFrom" action = "Authorization.html" method = "POST">
+            <input type = "text" name = "username" placeholder="Username" minlength="5" maxlength="15" required><br>
+            <input type="password" name = "password" placeholder="Password" required><br>
+
+            <input type="reset">
+            <input type ="submit">
+        </form>
+
+        <script>
+            document.getElementById('AuthorizationFrom').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const username = document.querySelector('[name="username"]').value;
+                const password = document.querySelector('[name="password"]').value;
+
+                console.log("username:", username);
+                console.log("Password:", password);
+            });
+        </script>
+    </body>
+</html>
+<!--                const data = {-->
+<!--                    const username = document.querySelector('[name="username"]').value;-->
+<!--                    const password = document.querySelector('[name="password"]').value;-->
+
+<!--                    console.log("Username: ", username);-->
+<!--                    console.log("Password: ", password);-->
+<!--                };-->
+
+<!--                fetch("http://localhost:8080/Authorization", {-->
+<!--                    method: 'POST',-->
+<!--                    header: {-->
+<!--                        'Content-type': 'application/x-www-form-urlencoded'-->
+<!--                    },-->
+<!--                    body: JSON.stringify(data)-->
+<!--                })-->
+<!--                .then(response => response.text)-->
+<!--                .then(text => {-->
+<!--                    console.log('Server answer: ', text);-->
+<!--                    alert(text);-->
+<!--                })-->
+<!--                .catch(error => console.error('Error: ', error));-->

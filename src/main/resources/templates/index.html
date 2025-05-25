@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="CoByTu">
+    <head>
+        <title>Test page</title>
+    </head>
+    <body>
+        <h1>Experimental test page</h1>
+        <a  href = "Authorization"
+            target="_blank"
+            title="Goes to LinkeIn">
+            Link to autorization page</a>
+
+        <br>
+
+        <button onclick="doSomething()" style="front-size:25px; background-color:gray; border-radius:25px"> Click me </button>
+        <p id="greeting">Hello</p>
+        <script>
+            function doSomething(){
+                document.getElementById("greeting").innerHTML = "Goodbye";
+            }
+        </script>
+    </body>
+</html>
