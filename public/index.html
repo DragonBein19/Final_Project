@@ -1,121 +1,163 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>My app</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #000412;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+    <head>
+        <link href='https://fonts.googleapis.com/css?family=Afacad' rel='stylesheet'>
+        <style>
+            body {
+                margin: 0;
+                font-family: Arial, sans-serif;
+                background-color: #000412;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
 
-        #header-bar {
-            background-color: #070024;
-            height: 90px;
-            width: 100%;
-            display: flex;
-            justify-content: space-between; 
-            align-items: center;
-            padding: 0 20px;
-            font-size: 70px;
-            font-family: Impact, sans-serif;
-            font-weight: bold;
-            color: white;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            box-sizing: border-box;
-        }
+            #header-bar {
+                background-color: #000107;
+                height: 90px;
+                width: 100%;
+                display: flex;
+                justify-content: space-between; 
+                align-items: center;
+                padding: 0 20px;
+                font-size: 70px;
+                font-family: Impact, sans-serif;
+                font-weight: bold;
+                color: white;
+                letter-spacing: 5px;
+                text-transform: uppercase;
+                box-sizing: border-box;
+            }
 
-        #content-area {
-            display: flex;
-            flex: 1;
-        }
+            #content-area {
+                display: flex;
+                flex: 1;
+            }
 
-        #sidebar {
-            width: 225px;
-            background-color: #111015;
-            padding: 20px;
-            display: none;
-        }
+            #right-section a.toggle-btn {
+                    letter-spacing: normal !important;
+                    text-transform: none !important;
+                    font-weight: normal !important;
+            }
 
-        #main-content {
-            flex-grow: 1;
-            padding: 20px;
-        }
 
-        .toggle-btn {
-            font-size: 20px;
-            background-color: #070024;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            position: relative;
-            top: -17px;
-        }
+            #sidebar {
+                width: 225px;
+                background-color: #050002;
+                padding: 20px;
+                display: none;
+                opacity: 0.7;
+            }
 
-        .toggle-btn:hover {
-            background-color: #151344;
-        }
+            #main-content {
+                flex-grow: 1;
+                padding: 20px;
+            }             
 
-        button {
-            padding: 10px 20px;
-            font-size: 25px;
-            background-color: #111015;
-            font-family: Monaco, monospace;
-            font-weight: bold;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+            .toggle-btn {
+                font-family: 'Afacad';
+                font-size: 20px;
+                background-color: #000107;
+                color: #6c6c6c;
+                padding: 10px 15px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                position: relative;
+                top: -19px;
+                text-decoration: none; 
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                user-select: none;
+                font-weight: normal;      
+                text-transform: none; 
+                transition: background-color 0.3s ease;
+            }
 
-        button:hover {
-            background-color: #272727;
-        }
+            .toggle-btn:hover {
+                background-color: #272727;
+            }
 
-        #background-image {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
-            opacity: 0.4;
-        }
-    </style>
-</head>
+            button {
+                padding: 10px 20px;
+                font-size: 25px;
+                background-color: #050002;
+                font-family: 'Afacad';
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            button:hover {
+                background-color: #111015;
+            }
+
+            #background-image {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                z-index: -1;
+                opacity: 0.9;
+            }
+
+            #footer-bar {
+                background-color: #000107;
+                height: 60px;
+                width: 100%;
+                display: flex;
+                align-items: center; 
+                justify-content: flex-start;  /* teksas bus prie kairės */
+                padding-left: 520px;   
+                align-items: center;
+                font-size: 15px;
+                font-family: 'Afacad';
+                font-weight: bold;
+                color: #999999;
+                text-transform: uppercase;
+                box-sizing: border-box;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                z-index: 10;
+            }
+        </style>
+    </head>
 <body>
-<img src="/konc2.jpeg" alt="Fonas" id="background-image" />
+    <img src="/konc2.jpeg" alt="Fonas" id="background-image" />
 
-<div id="header-bar">
-    <div id="left-section">
-        <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+    <div id="header-bar">
+        <div id="left-section">
+            <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+        </div>
+        <div id="center-title">TICKET LIVE</div>
+        <div id="right-section">
+            <a class="toggle-btn" href="signin.html">Sign in</a>
+            <button class="toggle-btn">Log in</button>
+        </div>
     </div>
-    <div id="center-title">CONCERT DATES</div>
-    <div id="right-section"></div>
-</div>
 
-<div id="content-area">
-    <div id="sidebar">
-        <button>Paspausk mane</button>
+    <div id="content-area">
+        <div id="sidebar">
+            <button>Paspausk mane</button>
+        </div>
+        <div id="main-content">
+            <nav id="navigation"></nav>
+        </div>
     </div>
-    <div id="main-content">
-        <nav id="navigation"></nav>
-    </div>
-</div>
 
-<script>
-    function toggleSidebar() {
-        const sidebar = document.getElementById("sidebar");
-        sidebar.style.display = (sidebar.style.display === "none" || sidebar.style.display === "") ? "block" : "none";
-    }
-</script>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.style.display = (sidebar.style.display === "none" || sidebar.style.display === "") ? "block" : "none";
+        }
+    </script>
 
-</body>
+    <div id="footer-bar">©2025 Gabrielė Germantė Nikita Ineda</div>
+    </body>
 </html>
