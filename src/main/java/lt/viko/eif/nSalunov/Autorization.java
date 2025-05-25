@@ -1,6 +1,6 @@
 package lt.viko.eif.nSalunov;
 
-import lt.viko.eif.nSalunov.DB.MyJBDC;
+import lt.viko.eif.nSalunov.DB.MyJDBC;
 import lt.viko.eif.nSalunov.Interface.Interface;
 
 import java.sql.Connection;
@@ -13,7 +13,7 @@ public class Autorization {
     private String Login;
     private String Password;
     private Scanner Input = new Scanner(System.in);
-    private MyJBDC myJBDC = new MyJBDC();
+    private MyJDBC myJBDC = new MyJDBC();
     private Interface anInterface = new Interface();
     private UserRegistration userRegistration = new UserRegistration();
 

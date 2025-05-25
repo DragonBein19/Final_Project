@@ -1,6 +1,6 @@
 package lt.viko.eif.nSalunov;
 
-import lt.viko.eif.nSalunov.DB.MyJBDC;
+import lt.viko.eif.nSalunov.DB.MyJDBC;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +12,7 @@ public class UserRegistration {
     private String Password;
     private Scanner Input = new Scanner(System.in);
 
-    public void Registration(MyJBDC myJBDC) {
+    public void Registration(MyJDBC myJBDC) {
 
         System.out.print("New login: ");
         Login = Input.nextLine();
