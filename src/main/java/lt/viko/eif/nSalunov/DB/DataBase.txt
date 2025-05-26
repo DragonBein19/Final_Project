@@ -1,0 +1,15 @@
+CREATE SCHEMA `koncertuschema` ;
+
+CREATE TABLE `koncertuschema`.`users` (
+  `ID` INT NOT NULL AUTO_INCREMENT,
+  `UserName` VARCHAR(45) NULL,
+  `Name` VARCHAR(45) NULL,
+  `Surname` VARCHAR(45) NULL,
+  `Email` VARCHAR(45) NULL,
+  `Phone` VARCHAR(45) NULL,
+  `Password` VARCHAR(45) NULL,
+  `Registration_Date` DATE NULL,
+  `IsAdmin` TINYINT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE INDEX `ID_UNIQUE` (`ID` ASC));
+
