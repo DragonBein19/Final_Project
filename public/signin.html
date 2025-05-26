@@ -12,6 +12,22 @@
                 flex-direction: column;
             }
 
+            #header-bar {
+                background-color: #000107;
+                height: 90px;
+                width: 100%;
+                display: flex;
+                justify-content: center;  
+                align-items: center;      
+                font-size: 70px;
+                font-family: Impact, sans-serif;
+                font-weight: bold;
+                color: white;
+                letter-spacing: 5px;
+                box-sizing: border-box;
+            }
+
+
             #background-image {
                 position: fixed;
                 top: 0;
@@ -28,7 +44,7 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
                 width: 400px;
-                height: 550px;
+                height: 500px;
                 background-color: #000107;
                 opacity: 0.8;
                 border-radius: 15px;
@@ -80,7 +96,7 @@
             button {
                 padding: 15px;
                 font-size: 22px;
-                background-color: #5d6083;
+                background-color: #3f8ecb;
                 border: none;
                 border-radius: 10px;
                 color: white;
@@ -90,37 +106,51 @@
             }
 
             button:hover {
-                background-color: #3a3e5e;
+                background-color: #0a4471;
+            }
+
+            #footer-bar {
+                background-color: #000107;
+                height: 50px;
+                width: 100%;
+                display: flex;
+                align-items: center; 
+                justify-content: flex-start;
+                padding-left: 570px;   
+                align-items: center;
+                font-size: 15px;
+                font-family: 'Afacad';
+                font-weight: bold;
+                color: white;
+                box-sizing: border-box;
+                position: fixed;
+                bottom: 0;
+                left: 0;
             }
         </style>
     </head>
+    
     <body>
         <img src="/konc2.jpeg" alt="Fonas" id="background-image" />
+        <div id="header-bar" id="center-title">TICKET LIVE</div>
         <div id="dark-box">
             <h2>Sign in</h2>
-            <form>
+            <form id="signForm">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" placeholder="Enter your username" required>
 
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" placeholder="Enter your password" required>
 
-                <button type="submit">Log In</button>
+                <button type="submit">Done</button>
             </form>
-            <script>
-                const form = document.getElementById('loginForm');
-                form.addEventListener('submit', function(event) {
-                    event.preventDefault();
-                    const login = form.login.value.trim();
-                    const password = form.password.value.trim();
-
-                    if(login && password) {
-                        window.location.href = 'signedin.html';
-                    } else {
-                        alert('Please enter username and password.');
-                    }
-                });
-            </script>
+                <script>
+                    document.getElementById("signForm").addEventListener("submit", function(event) {
+                        event.preventDefault();
+                        window.location.href = "login.html";
+                    });
+                </script>
         </div>
     </body>
+    <div id="footer-bar">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
 </html>
