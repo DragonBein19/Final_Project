@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ticket History</title>
-    <link href='https://fonts.googleapis.com/css?family=Afacad' rel='stylesheet'>
+    <title>Sign In</title>
+    <link href="https://fonts.googleapis.com/css?family=Afacad" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -19,13 +19,14 @@
             height: 90px;
             width: 100%;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-content: center;  
+            align-items: center;      
             font-size: 70px;
             font-family: Impact, sans-serif;
             font-weight: bold;
             color: white;
             letter-spacing: 5px;
+            box-sizing: border-box;
         }
 
         #background-image {
@@ -44,19 +45,35 @@
             left: 50%;
             transform: translate(-50%, -50%);
             width: 400px;
+            height: auto;
             background-color: #000107;
-            opacity: 0.85;
+            opacity: 0.9;
             border-radius: 15px;
             color: white;
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            padding: 30px 20px;
             box-sizing: border-box;
+            text-align: center;
+        }
+
+        #dark-box h2 {
+            margin: 0 0 10px 0;
+            font-weight: normal;
+            font-family: 'Afacad';
+            font-size: 50px;
+        }
+
+        .success-message {
+            font-family: 'Afacad';
+            font-size: 24px;
+            color: #3f8ecb;
+            margin: 20px 0 40px 0;
         }
 
         button {
             padding: 15px;
-            font-size: 20px;
+            font-size: 22px;
             background-color: #3f8ecb;
             border: none;
             border-radius: 10px;
@@ -64,25 +81,10 @@
             cursor: pointer;
             font-family: 'Afacad';
             transition: background-color 0.3s ease;
-            margin-top: 20px;
         }
 
         button:hover {
             background-color: #0a4471;
-        }
-
-        #ticketBox {
-            display: none;
-            margin-top: 30px;
-            width: 300px;
-            height: 150px;
-            background-color: #1a1a2e;
-            border: 2px solid #3f8ecb;
-            border-radius: 15px;
-            color: white;
-            padding: 20px;
-            font-family: 'Afacad';
-            font-size: 18px;
         }
 
         #footer-bar {
@@ -90,12 +92,13 @@
             height: 50px;
             width: 100%;
             display: flex;
+            align-items: center; 
             justify-content: center;
-            align-items: center;
             font-size: 15px;
             font-family: 'Afacad';
             font-weight: bold;
             color: white;
+            box-sizing: border-box;
             position: fixed;
             bottom: 0;
             left: 0;
@@ -105,42 +108,16 @@
 <body>
 
     <img src="/konc2.jpeg" alt="Fonas" id="background-image" />
+
     <div id="header-bar">TICKET LIVE</div>
 
     <div id="dark-box">
         <h2>Sign in</h2>
-
-        <form>
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="Enter your username" required>
-
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password" required>
-
-            <button type="submit">Done</button>
-        </form>
-
-        <!-- Ticket History Button -->
-        <button onclick="showTicketBox()">Ticket History</button>
-
-        <!-- Hidden Ticket Box -->
-        <div id="ticketBox">
-            <strong>Your Ticket History:</strong>
-            <ul>
-                <li>• Coldplay – 2025.04.12</li>
-                <li>• Imagine Dragons – 2025.05.01</li>
-                <li>• Sam Smith – 2025.06.18</li>
-            </ul>
-        </div>
+        <div class="success-message">Successful sign in!</div>
+        <button onclick="window.location.href='login.html'">Log in</button>
     </div>
 
     <div id="footer-bar">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
 
-    <script>
-        function showTicketBox() {
-            const box = document.getElementById("ticketBox");
-            box.style.display = box.style.display === "none" ? "block" : "none";
-        }
-    </script>
 </body>
 </html>
