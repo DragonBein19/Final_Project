@@ -8,12 +8,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.awt.desktop.SystemEventListener;
 import java.lang.reflect.Executable;
 
+
 @SpringBootApplication
 public class Main{
     private static MyJDBC myJDBC;
     private static UsersTable usersTable = new UsersTable();
 
     public static void main(String[] args) {
+        SpringApplication.run(SpringApplication.class, args);
         myJDBC = new MyJDBC();
 
         try {

@@ -1,6 +1,5 @@
 package lt.viko.eif.nSalunov.DB.TablesCopyInteract;
 
-import jakarta.persistence.Table;
 import lt.viko.eif.nSalunov.DB.MyJDBC;
 import lt.viko.eif.nSalunov.DB.model.Users;
 
