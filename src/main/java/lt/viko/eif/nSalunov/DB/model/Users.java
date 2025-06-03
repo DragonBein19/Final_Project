@@ -1,57 +1,124 @@
 package lt.viko.eif.nSalunov.DB.model;
 
-import java.time.DateTimeException;
+import jakarta.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "users")
 public class Users {
-    private int ID;
-    private String UserName;
-    private String Name;
-    private String Surname;
-    private String Email;
-    private String Phone;
-    private String Password;
-    private Date Registration_Date;
-    private Boolean IsAdmin;
 
-    public Users(int ID, String userName, String name, String surname, String email, String phone, String password, Date registration_Date, Boolean isAdmin) {
-        this.ID = ID;
-        UserName = userName;
-        Name = name;
-        Surname = surname;
-        Email = email;
-        Phone = phone;
-        Password = password;
-        Registration_Date = registration_Date;
-        IsAdmin = isAdmin;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "username", nullable = false, unique = true)
+    private String userName;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String surname;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String phone;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(name = "registration_date", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date registrationDate;
+
+    @Column(name = "is_admin", nullable = false)
+    private Boolean isAdmin;
 
     public Users() { }
 
-    public int getID() { return ID; }
-    public void setID(int ID) { this.ID = ID; }
+    public Users(int id, String userName, String name, String surname, String email, String phone, String password, Date registrationDate, Boolean isAdmin) {
+        this.id = id;
+        this.userName = userName;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+        this.registrationDate = registrationDate;
+        this.isAdmin = isAdmin;
+    }
 
-    public String getUserName() { return UserName; }
-    public void setUserName(String userName) { UserName = userName; }
+    public int getId() {
+        return id;
+    }
 
-    public String getName() { return Name; }
-    public void setName(String name) { Name = name; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public String getSurname() { return Surname; }
-    public void setSurname(String surname) { Surname = surname; }
+    public String getUserName() {
+        return userName;
+    }
 
-    public String getEmail() { return Email; }
-    public void setEmail(String email) { Email = email; }
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-    public String getPhone() { return Phone; }
-    public void setPhone(String phone) { Phone = phone; }
+    public String getName() {
+        return name;
+    }
 
-    public String getPassword() { return Password;}
-    public void setPassword(String password) { Password = password; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public Date getRegistration_Date() { return Registration_Date; }
-    public void setRegistration_Date(Date registration_Date) { Registration_Date = registration_Date; }
+    public String getSurname() {
+        return surname;
+    }
 
-    public Boolean getAdmin() { return IsAdmin; }
-    public void setAdmin(Boolean admin) { IsAdmin = admin; }
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Date getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
+    public Boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
 }
