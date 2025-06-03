@@ -1,6 +1,5 @@
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
             background-color: #000412;
             height: 100vh;
             overflow-x: hidden;
@@ -173,4 +172,27 @@
             bottom: 0;
             left: 0;
             z-index: 2;
+        }
+
+       #logout-button {
+            position: fixed;
+            bottom: 5px;
+            right: 20px;
+            background-color: #000107;
+            color: #6c6c6c;
+            font-family: 'Afacad';
+            font-size: 20px;
+            font-weight: bold;
+            padding: 8px 10px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            z-index: 1000;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        #logout-button:hover {
+            background-color: #272727;
         }
