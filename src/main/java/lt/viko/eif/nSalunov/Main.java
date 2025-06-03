@@ -15,7 +15,7 @@ public class Main{
     private static UsersTable usersTable = new UsersTable();
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringApplication.class, args);
+        SpringApplication.run(Main.class, args);
         myJDBC = new MyJDBC();
 
         try {
