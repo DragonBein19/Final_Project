@@ -1,0 +1,146 @@
+body {
+                margin: 0;
+                font-family: Arial, sans-serif;
+                background-color: #000412;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            #header-bar {
+                background-color: #000107;
+                height: 90px;
+                width: 100%;
+                display: flex;
+                justify-content: center;  
+                align-items: center;      
+                font-size: 70px;
+                font-family: Impact, sans-serif;
+                font-weight: bold;
+                color: white;
+                letter-spacing: 5px;
+                box-sizing: border-box;
+            }
+
+
+            #background-image {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                z-index: -1;
+            }
+
+           #dark-box {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 400px;
+                height: 500px;
+                background-color: #000107;
+                opacity: 0.8;
+                border-radius: 15px;
+                color: white;
+                display: flex;
+                flex-direction: column;
+                padding: 20px;
+                box-sizing: border-box;
+            }
+
+            #dark-box h2 {
+                margin: 0 0 20px 0;
+                text-align: center;
+                font-weight: normal;
+                font-family: 'Afacad';
+                font-size: 50px;
+            }
+
+            form {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                flex-grow: 1;
+                justify-content: center;
+            }
+
+            label {
+                font-size: 20px;
+                font-family: 'Afacad';
+                margin-bottom: 5px;
+            }
+
+            input[type="text"],
+            input[type="password"] {
+                padding: 10px;
+                font-size: 18px;
+                border-radius: 8px;
+                border: none;
+                outline: none;
+                font-family: 'Afacad';
+            }
+
+            input[type="text"]:focus,
+            input[type="password"]:focus {
+                background-color: #111015;
+                color: white;
+            }
+
+            button {
+                padding: 15px;
+                font-size: 22px;
+                background-color: #3f8ecb;
+                border: none;
+                border-radius: 10px;
+                color: white;
+                cursor: pointer;
+                font-family: 'Afacad';
+                transition: background-color 0.3s ease;
+            }
+
+            button:hover {
+                background-color: #0a4471;
+            }
+
+            #login-corner-btn {
+                position: fixed;
+                bottom: 10px;
+                right: 30px;
+                padding: 5px 10px;
+                font-size: 18px;
+                font-family: 'Afacad';
+                background-color: #000107;
+                color: #676767;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                z-index: 3;
+                transition: background-color 0.3s ease;
+                text-decoration: none;
+            }
+
+            #login-corner-btn:hover {
+                background-color: #4b4b4b;
+                color: white;
+            }
+
+            #footer-bar {
+                background-color: #000107;
+                height: 50px;
+                width: 100%;
+                display: flex;
+                align-items: center; 
+                justify-content: flex-start;
+                padding-left: 570px;   
+                align-items: center;
+                font-size: 15px;
+                font-family: 'Afacad';
+                font-weight: bold;
+                color: white;
+                box-sizing: border-box;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+            }

@@ -10,7 +10,7 @@ import java.sql.*;
 public class MyJDBC {
     private final String URL = "jdbc:mysql://127.0.0.1:3306/koncertuschema";
     private final String USER = "root";
-    private final String PASSWORD = "root";
+        private final String PASSWORD = ""; //input password if needed
     private Connection connection;
 
     /**
