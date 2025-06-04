@@ -1,10 +1,31 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="styles/admin.css">
+        <link href='https://fonts.googleapis.com/css?family=Afacad' rel='stylesheet'>
+        <link rel="stylesheet" href="styles/login.css">
     </head>
+    
     <body>
-        <div id="header-bar">ADMIN</div>
-    </div>
+        <img src="/konc2.jpeg" alt="Fonas" id="background-image" />
+        <div id="header-bar" id="center-title">TICKET LIVE</div>
+        <div id="dark-box">
+            <h2>Admin log in</h2>
+            <form id="loginForm">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+                <button type="submit">Done</button>
+            </form>
+                <script>
+                    document.getElementById("loginForm").addEventListener("submit", function(event) {
+                        event.preventDefault();
+                        window.location.href = "adminmain.html";
+                    });
+                </script>
+        </div>
     </body>
+    <div id="footer-bar">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
 </html>
