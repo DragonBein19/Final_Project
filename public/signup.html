@@ -12,7 +12,7 @@
 
     <div id="dark-box">
         <h2>Sign up</h2>
-        <form id="signForm" action="succesful.html" method="POST">
+        <form id="signForm">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" placeholder="Enter your username" required>
 
@@ -31,9 +31,46 @@
             <label for="password">Password</label>
             <input type="password" id="password" name="password" placeholder="Enter your password" required>
 
+            <p id="errorMsg" style="color: red;"></p>
+
             <button type="submit">Done</button>
         </form>          
     </div>
 </body>
+    <script>
+        document.getElementById("signForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const user = {
+                userName: document.getElementById("username").value,
+                name: document.getElementById("name").value,
+                surname: document.getElementById("surname").value,
+                email: document.getElementById("email").value,
+                phone: document.getElementById("phone").value,
+                password: document.getElementById("password").value
+            };
+
+            fetch("http://localhost:8080/users/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(user)
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = "succesful.html";
+                } else {
+                    return response.text().then(text => {
+                        document.getElementById("errorMsg").textContent = text;
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById("errorMsg").textContent = "Server error. Try again.";
+            });
+        });
+    </script>
 <div id="footer-bar">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
 </html>
