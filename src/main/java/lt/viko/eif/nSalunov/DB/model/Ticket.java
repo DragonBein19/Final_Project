@@ -25,6 +25,10 @@ public class Ticket {
     @Column(nullable = false, length = 45)
     private String status;
 
+    @ManyToOne
+    @JoinColumn(name = "ticket_category_id", nullable = false)
+    private TicketCategory ticketCategory;
+
     public Ticket() {
     }
 
@@ -35,7 +39,6 @@ public class Ticket {
         this.seatNumber = seatNumber;
         this.status = status;
     }
-
 
     public Long getId() {
         return id;

@@ -2,6 +2,8 @@ package lt.viko.eif.nSalunov.DB.model;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "venues")
 public class Venue {
@@ -31,7 +33,11 @@ public class Venue {
     @Column(name = "map_url", length = 45)
     private String mapUrl;
 
-    public Venue(){}
+    @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL)
+    private Set<Concert> concerts;
+
+    public Venue() {}
+
     public Venue(String phoneNumber, String address, String city, String country,
                  String capacity, boolean indoor, String mapUrl) {
         this.phoneNumber = phoneNumber;
@@ -107,4 +113,3 @@ public class Venue {
         this.mapUrl = mapUrl;
     }
 }
-

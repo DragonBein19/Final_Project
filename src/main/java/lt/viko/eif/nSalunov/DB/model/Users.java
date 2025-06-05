@@ -2,6 +2,7 @@ package lt.viko.eif.nSalunov.DB.model;
 
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -35,6 +36,9 @@ public class Users {
 
     @Column(name = "is_admin", nullable = false)
     private Boolean isAdmin;
+
+    @OneToMany(mappedBy = "user")
+    private Set<OrderEntity> orders;
 
     public Users() { }
 

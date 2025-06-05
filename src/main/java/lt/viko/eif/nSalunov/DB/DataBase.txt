@@ -78,3 +78,24 @@ CREATE TABLE `koncertuschema`.`users` (
   PRIMARY KEY (`ID`),
   UNIQUE INDEX `ID_UNIQUE` (`ID` ASC));
 
+  CREATE TABLE Customer_Order (
+      Id INT NOT NULL AUTO_INCREMENT,
+      Customer_id INT NOT NULL,
+      Order_time DATETIME NOT NULL,
+      Delivery_adress VARCHAR(255) NOT NULL,
+      Delivery_email VARCHAR(255),
+      Total_price DECIMAL(10,2) NOT NULL,
+      Discount DECIMAL(10,2) DEFAULT 0.00,
+      Final_price DECIMAL(10,2) NOT NULL,
+      PRIMARY KEY (Id));
+
+      CREATE TABLE Ticket_category (
+          id INT NOT NULL AUTO_INCREMENT,
+          Description VARCHAR(255) NOT NULL,
+          Price DECIMAL(10,2) NOT NULL,
+          Start_date DATE NOT NULL,
+          End_date DATE NOT NULL,
+          Venue VARCHAR(255),
+          Concert_id INT NOT NULL,
+          PRIMARY KEY (id),
+          FOREIGN KEY (Concert_id) REFERENCES Concerts(ID));

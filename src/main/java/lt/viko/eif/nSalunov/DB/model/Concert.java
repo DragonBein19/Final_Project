@@ -2,24 +2,15 @@ package lt.viko.eif.nSalunov.DB.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-
+import java.util.Set;
 
 @Entity
-@Table(name="concerts")
+@Table(name = "concerts")
 public class Concert {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name ="venue_id", nullable= false)
-    private int venueId;
-
-    @Column(name = "bands_id", nullable = false)
-    private int bandsId;
-
-    @Column(name = "concert_date_id", nullable = false)
-    private int concertDateId;
 
     @Column(name = "concert_name", nullable = false)
     private String concertName;
@@ -39,43 +30,40 @@ public class Concert {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "venue_id", nullable = false)
+    private Venue venue;
+
+    @OneToMany(mappedBy = "concert", cascade = CascadeType.ALL)
+    private Set<ConcertDate> concertDates;
+
+    @ManyToMany
+    @JoinTable(
+            name = "concert_artists",
+            joinColumns = @JoinColumn(name = "concert_id"),
+            inverseJoinColumns = @JoinColumn(name = "artist_id")
+    )
+    private Set<Artist> artists;
+
+    @OneToMany(mappedBy = "concert", cascade = CascadeType.ALL)
+    private Set<TicketCategory> ticketCategories;
+
     public Concert() {
     }
 
-    public Concert(int venueId, int bandsId, int concertDateId, String concertName,
-                   LocalDateTime time, int ticketsLimit, String status, String description) {
-        this.venueId = venueId;
-        this.bandsId = bandsId;
-        this.concertDateId = concertDateId;
+    public Concert(String concertName, LocalDateTime time, int ticketsLimit,
+                   String status, String description, Venue venue, Set<ConcertDate> concertDates) {
         this.concertName = concertName;
         this.time = time;
         this.ticketsLimit = ticketsLimit;
         this.status = status;
         this.description = description;
+        this.venue = venue;
+        this.concertDates = concertDates;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int getVenueId() {
-        return venueId;
-    }
-
-    public void setVenueId(int venueId) {
-        this.venueId = venueId;
-    }
-
-    public int getConcertDateId() {
-        return concertDateId;
-    }
-
-    public void setConcertDateId(int concertDateId) {
-        this.concertDateId = concertDateId;
     }
 
     public String getConcertName() {
@@ -124,5 +112,37 @@ public class Concert {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Venue getVenue() {
+        return venue;
+    }
+
+    public void setVenue(Venue venue) {
+        this.venue = venue;
+    }
+
+    public Set<ConcertDate> getConcertDates() {
+        return concertDates;
+    }
+
+    public void setConcertDates(Set<ConcertDate> concertDates) {
+        this.concertDates = concertDates;
+    }
+
+    public Set<Artist> getArtists() {
+        return artists;
+    }
+
+    public void setArtists(Set<Artist> artists) {
+        this.artists = artists;
+    }
+
+    public Set<TicketCategory> getTicketCategories() {
+        return ticketCategories;
+    }
+
+    public void setTicketCategories(Set<TicketCategory> ticketCategories) {
+        this.ticketCategories = ticketCategories;
     }
 }

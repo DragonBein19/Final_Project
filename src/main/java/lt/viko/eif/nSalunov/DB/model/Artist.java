@@ -2,6 +2,8 @@ package lt.viko.eif.nSalunov.DB.model;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "artist")
 public class Artist {
@@ -18,6 +20,20 @@ public class Artist {
 
     @Column(nullable = false, length = 45)
     private String country;
+
+    @ManyToMany
+    @JoinTable(
+            name = "artist_genres",
+            joinColumns = @JoinColumn(name = "artist_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private Set<Genre> genres;
+
+    @ManyToMany(mappedBy = "artists")
+    private Set<Concert> concerts;
+
+    @OneToMany(mappedBy = "artist")
+    private Set<ConcertDate> concertDates;
 
     public Artist() {
     }

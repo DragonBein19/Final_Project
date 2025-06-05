@@ -2,6 +2,8 @@ package lt.viko.eif.nSalunov.DB.model;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "genre")
 public class Genre {
@@ -10,14 +12,17 @@ public class Genre {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "genre_name", nullable = false, length = 45)
-    private String genreName;
+    @Column(nullable = false, length = 45)
+    private String name;
+
+    @ManyToMany(mappedBy = "genres")
+    private Set<Artist> artists;
 
     public Genre() {
     }
 
-    public Genre(String genreName) {
-        this.genreName = genreName;
+    public Genre(String name) {
+        this.name = name;
     }
 
     public Long getId() {
@@ -28,11 +33,11 @@ public class Genre {
         this.id = id;
     }
 
-    public String getGenreName() {
-        return genreName;
+    public String getName() {
+        return name;
     }
 
-    public void setGenreName(String genreName) {
-        this.genreName = genreName;
+    public void setName(String name) {
+        this.name = name;
     }
 }
