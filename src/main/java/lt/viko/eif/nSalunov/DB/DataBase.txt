@@ -57,26 +57,6 @@ CREATE TABLE `koncertuschema`.`ticket` (
   PRIMARY KEY (`ID`),
   UNIQUE INDEX `ID_UNIQUE` (`ID` ASC));
 
-CREATE TABLE `koncertuschema`.`ticket` (
-  `ID` INT NOT NULL AUTO_INCREMENT,
-  `Ticket_Description_ID` INT NOT NULL,
-  `Concert_ID` INT NOT NULL,
-  `Category` VARCHAR(45) NOT NULL,
-  `Seat_Number` VARCHAR(45) NOT NULL,
-  `Status` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE INDEX `ID_UNIQUE` (`ID` ASC));
-
-CREATE TABLE `koncertuschema`.`ticket` (
-  `ID` INT NOT NULL AUTO_INCREMENT,
-  `Ticket_Description_ID` INT NOT NULL,
-  `Concert_ID` INT NOT NULL,
-  `Category` VARCHAR(45) NOT NULL,
-  `Seat_Number` VARCHAR(45) NOT NULL,
-  `Status` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE INDEX `ID_UNIQUE` (`ID` ASC));
-
 CREATE TABLE `koncertuschema`.`orders` (
   `ID` INT NOT NULL AUTO_INCREMENT,
   `Ticket_ID` INT NOT NULL,
