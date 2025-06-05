@@ -8,7 +8,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.4.5</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/> <!-- lookup parent from lt.viko.eif.nSalunov.DB.repository -->
     </parent>
     <groupId>lt.viko.eif.nSalunov</groupId>
     <artifactId>Final_Project</artifactId>
