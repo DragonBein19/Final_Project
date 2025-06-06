@@ -78,7 +78,7 @@ CREATE TABLE `koncertuschema`.`users` (
   PRIMARY KEY (`ID`),
   UNIQUE INDEX `ID_UNIQUE` (`ID` ASC));
 
-  CREATE TABLE Customer_Order (
+  CREATE TABLE `koncertuschema`.`Customer_Order` (
       Id INT NOT NULL AUTO_INCREMENT,
       Customer_id INT NOT NULL,
       Order_time DATETIME NOT NULL,
@@ -89,7 +89,7 @@ CREATE TABLE `koncertuschema`.`users` (
       Final_price DECIMAL(10,2) NOT NULL,
       PRIMARY KEY (Id));
 
-      CREATE TABLE Ticket_category (
+      CREATE TABLE `koncertuschema`.`Ticket_category` (
           id INT NOT NULL AUTO_INCREMENT,
           Description VARCHAR(255) NOT NULL,
           Price DECIMAL(10,2) NOT NULL,
