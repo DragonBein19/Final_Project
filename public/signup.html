@@ -39,38 +39,94 @@
 </body>
     <script>
         document.getElementById("signForm").addEventListener("submit", function(event) {
-            event.preventDefault();
+        event.preventDefault();
 
-            const user = {
-                userName: document.getElementById("username").value,
-                name: document.getElementById("name").value,
-                surname: document.getElementById("surname").value,
-                email: document.getElementById("email").value,
-                phone: document.getElementById("phone").value,
-                password: document.getElementById("password").value
-            };
+        const password = document.getElementById("password").value;
+        const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
 
-            fetch("http://localhost:8080/users/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(user)
-            })
-            .then(response => {
-                if (response.ok) {
-                    window.location.href = "succesful.html";
-                } else {
-                    return response.text().then(text => {
-                        document.getElementById("errorMsg").textContent = text;
-                    });
-                }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                document.getElementById("errorMsg").textContent = "Server error. Try again.";
-            });
+        if (!passwordRegex.test(password)) {
+            document.getElementById("errorMsg").textContent = 
+            "Slaptažodis turi būti bent 8 simbolių ilgio, su didžiąja raide ir skaičiais.";
+            return;
+        } else {
+            document.getElementById("errorMsg").textContent = "";
+        }
+
+        const user = {
+            userName: document.getElementById("username").value,
+            name: document.getElementById("name").value,
+            surname: document.getElementById("surname").value,
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value,
+            password: password
+        };
+
+        fetch("http://localhost:8080/users/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = "succesful.html";
+            } else {
+                return response.text().then(text => {
+                    document.getElementById("errorMsg").textContent = text;
+                });
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            document.getElementById("errorMsg").textContent = "Server error. Try again.";
         });
+    });
+    document.getElementById("signForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const password = document.getElementById("password").value;
+        const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+        if (!passwordRegex.test(password)) {
+            document.getElementById("errorMsg").textContent = 
+            "Slaptažodis turi būti bent 8 simbolių ilgio, su didžiąja raide ir skaičiais.";
+            return;
+        } else {
+            document.getElementById("errorMsg").textContent = "";
+        }
+
+        const user = {
+            userName: document.getElementById("username").value,
+            name: document.getElementById("name").value,
+            surname: document.getElementById("surname").value,
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value,
+            password: password
+        };
+
+        fetch("http://localhost:8080/users/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = "succesful.html";
+            } else {
+                return response.text().then(text => {
+                    document.getElementById("errorMsg").textContent = text;
+                });
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            document.getElementById("errorMsg").textContent = "Server error. Try again.";
+        });
+    });
+
     </script>
 <div id="footer-bar">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
 </html>
