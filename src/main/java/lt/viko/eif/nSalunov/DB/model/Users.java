@@ -1,5 +1,6 @@
 package lt.viko.eif.nSalunov.DB.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.Set;
@@ -35,6 +36,7 @@ public class Users {
     private Date registrationDate;
 
     @Column(name = "is_admin", nullable = false)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean isAdmin;
 
     @OneToMany(mappedBy = "user")

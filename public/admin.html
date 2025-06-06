@@ -22,48 +22,42 @@
 
         <script>
             document.getElementById("loginForm").addEventListener("submit", function (event) {
-            event.preventDefault();
+                event.preventDefault();
 
-            const userName = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
-            const errorMsg = document.getElementById("errorMsg");
+                const userName = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
+                const errorMsg = document.getElementById("errorMsg");
+                errorMsg.textContent = "";
 
-            errorMsg.textContent = "";
-
-            fetch("http://localhost:8080/users/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ userName, password })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.text().then(text => {
-                        throw new Error(text);
-                    });
-                }
-                return response.text();
-            })
-            .then(responseText => {
-                if (
-                    responseText === "Login successful" &&
-                    userName === "admin01" &&
-                    password === "admin123"
-                ) {
-                    window.location.href = "logedin.html";
-                } else if (responseText === "Login successful") {
-                    errorMsg.textContent = "You are not authorized as admin.";
-                } else {
-                    errorMsg.textContent = responseText || "Server error. Please try again.";
-                }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                errorMsg.textContent = error.message || "Server error. Please try again.";
+                fetch("http://localhost:8080/users/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ userName, password })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            throw new Error(text);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(user => {
+                    if (user.isAdmin) {
+                        window.location.href = "adminmain.html";
+                    } else {
+                        errorMsg.textContent = "You are not authorized as admin.";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    errorMsg.textContent = error.textContent || "Server error. Please try again.";
+                });
             });
-        });
         </script>
+
     </div>
 </body>
 <div id="footer-bar">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>

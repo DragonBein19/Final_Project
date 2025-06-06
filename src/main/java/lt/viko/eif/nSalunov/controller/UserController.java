@@ -24,14 +24,14 @@ public class UserController {
 
     // ---------- LOGIN ----------
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         Optional<Users> userOpt = userRepository.findByUserNameAndPassword(
                 loginRequest.getUserName(),
                 loginRequest.getPassword()
         );
 
         if (userOpt.isPresent()) {
-            return ResponseEntity.ok("Login successful");
+            return ResponseEntity.ok(userOpt.get()); // grąžina visą user'į su isAdmin ir t.t.
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("Invalid username or password");
