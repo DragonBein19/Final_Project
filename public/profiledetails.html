@@ -1,16 +1,47 @@
 <!DOCTYPE html>
 <html>
-    <body>
-        <link href='https://fonts.googleapis.com/css?family=Afacad' rel='stylesheet'>
-        <link rel="stylesheet" href="styles/profiledetails.css">
-    </body>
     <head>
         <img src="/konc2.jpeg" alt="Fonas" id="background-image" />
 
         <div id="header-bar" id="center-title">TICKET LIVE</div>
 
-        <div id="dark-box"></div>
-
         <div id="footer-bar">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
+
+        <div id="dark-box">
+            <h2>Naudotojo informacija</h2>
+            <div id="userInfo">
+                <p><strong>Vardas:</strong> <span id="name"></span></p>
+                <p><strong>Pavardė:</strong> <span id="surname"></span></p>
+                <p><strong>El. paštas:</strong> <span id="email"></span></p>
+                <p><strong>Telefonas:</strong> <span id="phone"></span></p>
+                <p><strong>Registracijos data:</strong> <span id="registrationDate"></span></p>
+            </div>
+        </div>
     </head>
+
+    <body>
+        <link href='https://fonts.googleapis.com/css?family=Afacad' rel='stylesheet'>
+        <link rel="stylesheet" href="styles/profiledetails.css">
+
+        <script>
+            fetch('/users')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Error: " + response.statusText);
+                }
+                return response.json();
+            })
+            .then(user => {
+                document.getElementById("name").textContent = user.name;
+                document.getElementById("surname").textContent = user.surname;
+                document.getElementById("email").textContent = user.email;
+                document.getElementById("phone").textContent = user.phone;
+                document.getElementById("registrationDate").textContent = new Date(user.registrationDate).toLocaleString();
+            })
+            .catch(error => {
+                document.getElementById("userInfo").innerHTML = "<p>Klaida kraunant duomenis.</p>";
+                console.error(error);
+            });
+        </script>
+    </body>
 </html>

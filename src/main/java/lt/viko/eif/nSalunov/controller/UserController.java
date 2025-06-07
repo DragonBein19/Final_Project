@@ -1,5 +1,6 @@
 package lt.viko.eif.nSalunov.controller;
 
+import jakarta.servlet.http.HttpSession;
 import lt.viko.eif.nSalunov.DB.model.Users;
 import lt.viko.eif.nSalunov.DB.repository.UserRepository;
 import lt.viko.eif.nSalunov.controller.LoginRequest;
@@ -24,14 +25,16 @@ public class UserController {
 
     // ---------- LOGIN ----------
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
         Optional<Users> userOpt = userRepository.findByUserNameAndPassword(
                 loginRequest.getUserName(),
                 loginRequest.getPassword()
         );
 
         if (userOpt.isPresent()) {
+            session.setAttribute("userID", userOpt.get().getId()); //Išsaugome šios sesijos naudotojo ID
             return ResponseEntity.ok(userOpt.get()); // grąžina visą user'į su isAdmin ir t.t.
+
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("Invalid username or password");
