@@ -15,8 +15,8 @@ public class Concert {
     @Column(name = "concert_name", nullable = false)
     private String concertName;
 
-    @Column(nullable = false)
-    private LocalDateTime time;
+    @Column(name = "concert_date", nullable = false)
+    private LocalDateTime concert_date;
 
     @Column(name = "tickets_sold")
     private int ticketsSold = 0;
@@ -30,12 +30,9 @@ public class Concert {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @ManyToOne
+   @ManyToOne
     @JoinColumn(name = "venue_id", nullable = false)
     private Venue venue;
-
-    @OneToMany(mappedBy = "concert", cascade = CascadeType.ALL)
-    private Set<ConcertDate> concertDates;
 
     @ManyToMany
     @JoinTable(
@@ -51,98 +48,43 @@ public class Concert {
     public Concert() {
     }
 
-    public Concert(String concertName, LocalDateTime time, int ticketsLimit,
-                   String status, String description, Venue venue, Set<ConcertDate> concertDates) {
+    public Concert(String concertName, LocalDateTime concert_date, int ticketsLimit,
+                   String status, String description, Venue venue) {
         this.concertName = concertName;
-        this.time = time;
+        this.concert_date = concert_date;
         this.ticketsLimit = ticketsLimit;
         this.status = status;
         this.description = description;
         this.venue = venue;
-        this.concertDates = concertDates;
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getConcertName() {
-        return concertName;
-    }
+    public String getConcertName() { return concertName; }
+    public void setConcertName(String concertName) { this.concertName = concertName; }
 
-    public void setConcertName(String concertName) {
-        this.concertName = concertName;
-    }
+    public LocalDateTime getConcert_date() { return concert_date; }
+    public void setConcert_date(LocalDateTime concert_date) { this.concert_date = concert_date; }
 
-    public LocalDateTime getTime() {
-        return time;
-    }
+    public int getTicketsSold() { return ticketsSold; }
+    public void setTicketsSold(int ticketsSold) { this.ticketsSold = ticketsSold; }
 
-    public void setTime(LocalDateTime time) {
-        this.time = time;
-    }
+    public int getTicketsLimit() { return ticketsLimit; }
+    public void setTicketsLimit(int ticketsLimit) { this.ticketsLimit = ticketsLimit; }
 
-    public int getTicketsSold() {
-        return ticketsSold;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status;}
 
-    public void setTicketsSold(int ticketsSold) {
-        this.ticketsSold = ticketsSold;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public int getTicketsLimit() {
-        return ticketsLimit;
-    }
+    public Venue getVenue() { return venue; }
+    public void setVenue(Venue venue) { this.venue = venue; }
 
-    public void setTicketsLimit(int ticketsLimit) {
-        this.ticketsLimit = ticketsLimit;
-    }
+    public Set<Artist> getArtists() { return artists; }
+    public void setArtists(Set<Artist> artists) { this.artists = artists; }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Venue getVenue() {
-        return venue;
-    }
-
-    public void setVenue(Venue venue) {
-        this.venue = venue;
-    }
-
-    public Set<ConcertDate> getConcertDates() {
-        return concertDates;
-    }
-
-    public void setConcertDates(Set<ConcertDate> concertDates) {
-        this.concertDates = concertDates;
-    }
-
-    public Set<Artist> getArtists() {
-        return artists;
-    }
-
-    public void setArtists(Set<Artist> artists) {
-        this.artists = artists;
-    }
-
-    public Set<TicketCategory> getTicketCategories() {
-        return ticketCategories;
-    }
-
-    public void setTicketCategories(Set<TicketCategory> ticketCategories) {
-        this.ticketCategories = ticketCategories;
-    }
+    public Set<TicketCategory> getTicketCategories() { return ticketCategories; }
+    public void setTicketCategories(Set<TicketCategory> ticketCategories) { this.ticketCategories = ticketCategories; }
 }
