@@ -15,6 +15,8 @@ import java.time.LocalTime;
 public class ConcertSeeder {
     private final ConcertRepository concertRepository;
     private final VenuesRepository venuesRepository;
+    private LocalDate date;
+    private LocalTime time;
 
     @Autowired
     public ConcertSeeder(ConcertRepository concertRepository, VenuesRepository venuesRepository) {
@@ -25,21 +27,37 @@ public class ConcertSeeder {
     public void seedConcert() {
         if(concertRepository.count() == 0)
         {
-            LocalDate date = LocalDate.of(2025, 5, 5);
-            LocalTime time = LocalTime.of(0, 0);
-
-            Venue Vilnius = venuesRepository.findById(1L).orElseThrow(() -> new RuntimeException("Venue with ID 1 not found"));
-
             Concert concert1 = new Concert(
                     "ImagenDragon",
-                    LocalDateTime.of(date, time),
+                    LocalDateTime.of(LocalDate.of(2025, 5, 5), LocalTime.of(0, 0)),
                     100,
                     "active",
                     "Description",
-                    Vilnius
+                    venuesRepository.findById(1L).orElseThrow(() -> new RuntimeException("Venue with ID 1 not found"))
+            );
+
+            Concert concert2 = new Concert(
+                    "ImagenDragon",
+                    LocalDateTime.of(LocalDate.of(2025, 10, 10), LocalTime.of(0, 0)),
+                    100,
+                    "active",
+                    "Description",
+                    venuesRepository.findById(2L).orElseThrow(() -> new RuntimeException("Venue with ID 1 not found"))
+            );
+            Concert concert3 = new Concert(
+                    "ImagenDragon",
+                    LocalDateTime.of(LocalDate.of(2025, 11, 11), LocalTime.of(0, 0)),
+                    100,
+                    "active",
+                    "Description",
+                    venuesRepository.findById(3L).orElseThrow(() -> new RuntimeException("Venue with ID 1 not found"))
             );
 
             concertRepository.save(concert1);
+            concertRepository.save(concert2);
+            concertRepository.save(concert3);
+
+            System.out.println("👥 Concerts seeded.");
         }
     }
 }

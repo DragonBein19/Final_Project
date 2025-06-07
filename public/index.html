@@ -59,6 +59,100 @@
 
     <div id="footer-bar">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
 
+    <div id="concert-section">
+        <a id="concert-title">Upcoming Concerts</a>
+        <div id="concert-container">
+            <div id="concert-list">
+                <script>
+                    fetch('http://localhost:8080/concerts')
+                    .then(response => response.json())
+                    .then(concerts => {
+                        const list = document.getElementById('concert-list');
+
+                        concerts.forEach(concert => {
+                            const concertDiv = document.createElement('div');
+                            concertDiv.className = 'concert';
+                            concertDiv.innerHTML = `
+                                <h2>${concert.title}</h2>
+                                <p><strong>Date:</strong> ${concert.dateTime}</p>
+                                <p><strong>Status:</strong> ${concert.status}</p>
+                                <p><strong>Description:</strong> ${concert.description}</p>
+                                <p><strong>Tickets:</strong> ${concert.tickets}</p>
+                                <p><strong>Venue:</strong> ${concert.venue?.name || "Unknown"}</p>
+                            `;
+                            list.appendChild(concertDiv);
+                        });
+                    })
+                    .catch(error => console.error('Error loading concerts:', error));
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        #concert-section {
+            width: 90%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding-top: 20px;
+        }
+
+        #concert-title {
+            display: block;
+            text-align: center;
+            font-size: 22pt;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        #concert-container {
+            max-height: 670px;
+            margin-top: 10px;
+            overflow-y: auto;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 0, 0, 0);
+            box-sizing: border-box;
+        }
+
+        #concert-container::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        #concert-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        #concert-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        #concert-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        #concert-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .concert {
+            background: rgba(42, 42, 42, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 12pt;
+            color: white;
+            box-sizing: border-box;
+        }
+    </style>
+
     <script>
         const menuBtn = document.getElementById("menu-button");
         const fullWindow = document.getElementById("full-page-window");
@@ -151,6 +245,7 @@
                 container.appendChild(div);
             });
         }
+    </script>
     </script>
 </body>
 </html>
