@@ -1,11 +1,123 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="styles/button.css">
-    </head>
-    <body>
-        <div id="header-bar">TICKET LIVE USERS</div>
+<head>
+    <link rel="stylesheet" href="styles/button.css">
+</head>
+<body>
+    <div id="header-bar">TICKET LIVE USERS</div>
 
-        <a class="logout-button" href="index.html">Log out</a>
-    </body>
+    <div id="button-container">
+        <a href="tickets.html" class="admin-button">Tickets</a>
+        <a href="concerts.html" class="admin-button">Concerts</a>
+        <a href="users.html" class="admin-button">Users</a>
+    </div>
+
+    <table id="users-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Admin</th>
+                <th>Name</th>
+                <th>Password</th>
+                <th>Phone number</th>
+                <th>Registration date</th>
+                <th>Surname</th>
+                <th>Username</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+    </table>
+
+    <script>
+        function deleteUser(button) {
+            const row = button.closest("tr");
+            if (confirm("Are you sure you want to delete?")) {
+                row.remove();
+            }
+        }
+
+        function editUser(button) {
+            const row = button.closest("tr");
+            const cells = row.querySelectorAll("td");
+
+            const fields = [
+                "email", "is_admin", "name", "password",
+                "phone", "registration_date", "surname", "username"
+            ];
+
+            for (let i = 1; i <= 8; i++) {
+                const newValue = prompt(`Add new meaning  "${fields[i - 1]}"`, cells[i].innerText);
+                if (newValue !== null) {
+                    cells[i].innerText = newValue;
+                }
+            }
+        }
+
+        function addUser() {
+            const table = document.getElementById("users-table").getElementsByTagName("tbody")[0];
+            const newRow = table.insertRow();
+
+            const newId = table.rows.length + 1;
+            const email = prompt("Enter new email:");
+            const isAdmin = prompt("Is the user admin? (1 - yes, 0 - no):");
+            const name = prompt("Enter new name:");
+            const password = prompt("Enter new password:");
+            const phone = prompt("Enter new phone number:");
+            const regDate = new Date().toISOString().split('T')[0] + " " + new Date().toTimeString().split(' ')[0];
+            const surname = prompt("Enter new surname:");
+            const username = prompt("Enter new username:");
+
+            const values = [
+                newId, email, isAdmin, name, password,
+                phone, regDate, surname, username
+            ];
+
+            values.forEach(value => {
+                const cell = newRow.insertCell();
+                cell.innerText = value;
+            });
+
+            const actionsCell = newRow.insertCell();
+            actionsCell.innerHTML = `
+                <button class="action-button edit-button" onclick="editUser(this)">Redaguoti</button>
+                <button class="action-button delete-button" onclick="deleteUser(this)">Šalinti</button>
+            `;
+        }
+
+        window.onload = function () {
+            fetch("http://localhost:8080/users")
+                .then(response => response.json())
+                .then(users => {
+                    const tableBody = document.querySelector("#users-table tbody");
+                    tableBody.innerHTML = ""; // išvalo placeholder'ius
+
+                    users.forEach(user => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${user.id}</td>
+                            <td>${user.email}</td>
+                            <td>${user.is_admin ? 1 : 0}</td>
+                            <td>${user.name}</td>
+                            <td>${user.password}</td>
+                            <td>${user.phone}</td>
+                            <td>${new Date(user.registration_date).toLocaleString()}</td>
+                            <td>${user.surname}</td>
+                            <td>${user.username}</td>
+                            <td>
+                                <button class="action-button edit-button" onclick="editUser(this)">Redaguoti</button>
+                                <button class="action-button delete-button" onclick="deleteUser(this)">Šalinti</button>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error("Klaida gaunant vartotojus:", error);
+                });
+        };
+</script>
+
+    <a class="logout-button" href="index.html">Log out</a>
+</body>
 </html>

@@ -1,11 +1,109 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="styles/button.css">
-    </head>
-    <body>
-        <div id="header-bar">TICKET LIVE CONCERTS</div>
+<head>
+    <meta charset="UTF-8">
+    <title>Concert Management</title>
+    <link rel="stylesheet" href="styles/button.css">
+</head>
+<body>
+    <div id="header-bar">TICKET LIVE CONCERTS</div>
 
-        <a class="logout-button" href="index.html">Log out</a>
-    </body>
+    <div id="button-container">
+        <a href="tickets.html" class="admin-button">Tickets</a>
+        <a href="concerts.html" class="admin-button">Concerts</a>
+        <a href="users.html" class="admin-button">Users</a>
+    </div>
+
+    <table id="concerts-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Ticket limit</th>
+                <th>Sold</th>
+                <th>Time</th>
+                <th>Venue ID</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Koncertas Alpha</td>
+                <td>Didelis koncertas</td>
+                <td>aktyvus</td>
+                <td>500</td>
+                <td>150</td>
+                <td>2025-08-15 20:00</td>
+                <td>10</td>
+                <td>
+                    <button class="action-button edit-button" onclick="editConcert(this)">Redaguoti</button>
+                    <button class="action-button delete-button" onclick="deleteConcert(this)">Šalinti</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="text-align: center; margin-bottom: 20px;">
+        <button onclick="addConcert()" class="action-button edit-button">Add new</button>
+    </div>
+
+    <script>
+        function editConcert(button) {
+            const row = button.closest("tr");
+            const cells = row.querySelectorAll("td");
+
+            const fields = [
+                "concert_name", "description", "status", "tickets_limit",
+                "tickets_sold", "time", "venue_id"
+            ];
+
+            for (let i = 1; i <= 7; i++) {
+                const newValue = prompt(`Add new meaning "${fields[i - 1]}"`, cells[i].innerText);
+                if (newValue !== null) cells[i].innerText = newValue;
+            }
+        }
+
+        function deleteConcert(button) {
+            const row = button.closest("tr");
+            if (confirm("Are you sure you want to delete?")) {
+                row.remove();
+            }
+        }
+
+        function addConcert() {
+            const table = document.getElementById("concerts-table").getElementsByTagName("tbody")[0];
+            const row = table.insertRow();
+
+            const id = table.rows.length + 1;
+            const concertName = prompt("Enter new title:");
+            const description = prompt("Enter new description:");
+            const status = prompt("Enter new status:");
+            const ticketsLimit = prompt("Enter new ticket limit:");
+            const ticketsSold = prompt("Enter sold state:");
+            const time = prompt("Enter new time:");
+            const venueId = prompt("Enter new venue ID:");
+
+            const values = [
+                id, concertName, description, status,
+                ticketsLimit, ticketsSold, time, venueId
+            ];
+
+            values.forEach(value => {
+                const cell = row.insertCell();
+                cell.innerText = value;
+            });
+
+            const actionsCell = row.insertCell();
+            actionsCell.innerHTML = `
+                <button class="action-button edit-button" onclick="editConcert(this)">Redaguoti</button>
+                <button class="action-button delete-button" onclick="deleteConcert(this)">Šalinti</button>
+            `;
+        }
+    </script>
+
+    <a class="logout-button" href="index.html">Log out</a>
+</body>
 </html>

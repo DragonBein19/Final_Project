@@ -20,6 +20,55 @@ body {
     box-sizing: border-box;
 }
 
+#button-container {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    padding: 0px 0;
+    background-color: #e0f0ff;
+}
+
+.admin-button {
+    background-color: #e0f0ff;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 5px 20px;
+    border-radius: 2px;
+    text-decoration: none;
+}
+
+.admin-button:hover {
+    background-color: #9fb1c3;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+.action-button {
+    padding: 5px 10px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.edit-button {
+    background-color: #66b5ff;
+    color: white;
+}
+
+.delete-button {
+    background-color: red;
+    color: white;
+}
+
 .logout-button {
     position: fixed;
     bottom: 5px;
@@ -29,13 +78,10 @@ body {
     font-size: 20px;
     font-weight: bold;
     padding: 8px 10px;
-    border: none;
     border-radius: 8px;
     text-decoration: none;
-    z-index: 1000;
-    cursor: pointer;
 }
 
 .logout-button:hover{
-    background-color: #9fb1c3;
+    background-color: #d3d3d3;
 }

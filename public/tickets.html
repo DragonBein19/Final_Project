@@ -1,11 +1,119 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="styles/button.css">
-    </head>
-    <body>
-        <div id="header-bar">TICKET LIVE TICKETS</div>
+<head>
+    <link rel="stylesheet" href="styles/button.css">
+</head>
+<body>
+    <div id="header-bar">TICKET LIVE TICKETS</div>
 
-        <a class="logout-button" href="index.html">Log out</a>
-    </body>
+    <div id="button-container">
+        <a href="tickets.html" class="admin-button">Tickets</a>
+        <a href="concerts.html" class="admin-button">Concerts</a>
+        <a href="users.html" class="admin-button">Users</a>
+    </div>
+
+    <table id="tickets-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Catagory</th>
+                <th>Concert ID</th>
+                <th>Seat</th>
+                <th>Status</th>
+                <th>Description ID</th>
+                <th>Catagory ID</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>VIP</td>
+                <td>101</td>
+                <td>A1</td>
+                <td>active</td>
+                <td>501</td>
+                <td>3</td>
+                <td>
+                    <button class="action-button edit-button" onclick="editTicket(this)">Redaguoti</button>
+                    <button class="action-button delete-button" onclick="deleteTicket(this)">Šalinti</button>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Standard</td>
+                <td>102</td>
+                <td>B15</td>
+                <td>sold</td>
+                <td>502</td>
+                <td>2</td>
+                <td>
+                    <button class="action-button edit-button" onclick="editTicket(this)">Redaguoti</button>
+                    <button class="action-button delete-button" onclick="deleteTicket(this)">Šalinti</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="text-align: center; margin-bottom: 20px;">
+        <button onclick="addTicket()" class="action-button edit-button">Add new</button>
+    </div>
+
+    <script>
+        function deleteTicket(button) {
+            const row = button.closest("tr");
+            if (confirm("Are you sure you want to delete?")) {
+                row.remove();
+            }
+        }
+
+        function editTicket(button) {
+            const row = button.closest("tr");
+            const cells = row.querySelectorAll("td");
+
+            const fields = [
+                "category", "concert_id", "seat_number", "status",
+                "ticket_description_id", "ticket_category_id"
+            ];
+
+            for (let i = 1; i <= 6; i++) {
+                const newValue = prompt(`Add new meaning "${fields[i - 1]}"`, cells[i].innerText);
+                if (newValue !== null) {
+                    cells[i].innerText = newValue;
+                }
+            }
+        }
+
+        function addTicket() {
+            const table = document.getElementById("tickets-table").getElementsByTagName("tbody")[0];
+            const newRow = table.insertRow();
+
+            const newId = table.rows.length + 1;
+            const category = prompt("Enter new catagory: ");
+            const concertId = prompt("Enter new concert ID");
+            const seatNumber = prompt("Enter new seat number:");
+            const status = prompt("Enter new status:");
+            const descriptionId = prompt("Enter new desciption ID:");
+            const categoryId = prompt("Enter new catagory ID:");
+
+            const values = [
+                newId, category, concertId, seatNumber,
+                status, descriptionId, categoryId
+            ];
+
+            values.forEach(value => {
+                const cell = newRow.insertCell();
+                cell.innerText = value;
+            });
+
+            const actionsCell = newRow.insertCell();
+            actionsCell.innerHTML = `
+                <button class="action-button edit-button" onclick="editTicket(this)">Redaguoti</button>
+                <button class="action-button delete-button" onclick="deleteTicket(this)">Šalinti</button>
+            `;
+        }
+    </script>
+
+    <a class="logout-button" href="index.html">Log out</a>
+</body>
 </html>
