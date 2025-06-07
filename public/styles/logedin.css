@@ -1,3 +1,4 @@
+
         body {
             margin: 0;
             background-color: #000412;
@@ -194,4 +195,111 @@
 
         #logout-button:hover {
             background-color: #272727;
+        }
+
+        #full-page-window {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            display: none; 
+            flex-direction: column;
+            z-index: 9999;
+        }
+
+        #header-bar-white {
+            background-color: #ffffff;
+            height: 90px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 40px;
+            font-family: Impact, sans-serif;
+            font-weight: bold;
+            color: black;
+            padding: 0 20px;
+            border-bottom: 2px solid #00000020;
+        }
+
+        #center-title-white {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 70px;
+        }
+
+        #menu-close {
+            font-size: 30px;
+            cursor: pointer;
+            color: black;
+        }
+
+        #content-area {
+            flex-grow: 1;
+            padding: 20px 40px 10px 40px;
+            font-family: 'Afacad';
+            font-size: 20px;
+            color: black;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #bottom-box-white {
+            height: 100px;
+            background-color: #f0f0f0;
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Afacad';
+            font-size: 20px;
+            border-top: 1px solid #ccc;
+        }
+
+        #footer-bar-white {
+            height: 60px;
+            background-color: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 15px;
+            font-family: 'Afacad';
+            font-weight: bold;
+            color: black;
+        }
+
+        #concert-filter-box {
+            width: 80%;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        #concert-filter-box select {
+            padding: 5px;
+            font-size: 16px;
+            font-family: 'Afacad';
+            border-radius: 5px;
+            border: none;
+            background-color: #505050;
+            color: white;
+            cursor: pointer;
+        }
+
+        #concert-list-container {
+            margin: 10px auto 20px auto;
+            width: 80%;
+            background-color: #505050;
+            color: white;
+            font-family: 'Afacad';
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        #concert-list-container div {
+            border-bottom: 1px solid #444;
+            padding: 10px 0;
         }
