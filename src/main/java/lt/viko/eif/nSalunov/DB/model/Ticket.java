@@ -6,15 +6,14 @@ import jakarta.persistence.*;
 @Table(name = "ticket")
 public class Ticket {
 
+    //---table---
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "ticket_description_id", nullable = false)
-    private int ticketDescriptionId;
-
-    @Column(name = "concert_id", nullable = false)
-    private int concertId;
+    @OneToOne
+    @JoinColumn(name = "concert_id", nullable = false)
+    private Concert concert;
 
     @Column(nullable = false, length = 45)
     private String category;
@@ -25,6 +24,7 @@ public class Ticket {
     @Column(nullable = false, length = 45)
     private String status;
 
+    //---Forgein key---
     @ManyToOne
     @JoinColumn(name = "ticket_category_id", nullable = false)
     private TicketCategory ticketCategory;
@@ -32,59 +32,31 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(int ticketDescriptionId, int concertId, String category, String seatNumber, String status) {
-        this.ticketDescriptionId = ticketDescriptionId;
-        this.concertId = concertId;
+    public Ticket(Concert concert, TicketCategory ticketCategory, String category, String seatNumber, String status) {
+        this.concert = concert;
+        this.ticketCategory = ticketCategory;
         this.category = category;
         this.seatNumber = seatNumber;
         this.status = status;
     }
 
+    //---Getters and Setters---
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
 
-    public int getTicketDescriptionId() {
-        return ticketDescriptionId;
-    }
+    public Concert getConcert() { return concert; }
+    public void setConcert(Concert concert) { this.concert = concert; }
 
-    public void setTicketDescriptionId(int ticketDescriptionId) {
-        this.ticketDescriptionId = ticketDescriptionId;
-    }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
 
-    public int getConcertId() {
-        return concertId;
-    }
+    public String getSeatNumber() { return seatNumber; }
+    public void setSeatNumber(String seatNumber) { this.seatNumber = seatNumber; }
 
-    public void setConcertId(int concertId) {
-        this.concertId = concertId;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getSeatNumber() {
-        return seatNumber;
-    }
-
-    public void setSeatNumber(String seatNumber) {
-        this.seatNumber = seatNumber;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }

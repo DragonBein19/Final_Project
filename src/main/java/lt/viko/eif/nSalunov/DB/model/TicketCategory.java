@@ -29,14 +29,14 @@ public class TicketCategory {
     private String venue;
 
     // 🔗 Ryšys su koncertu
-    @ManyToOne
-    @JoinColumn(name = "concert_id", nullable = false)
-    private Concert concert;
+    /*@ManyToOne
+    @JoinColumn(name = "concert_id", nullable = true)
+    private Concert concert;*/
 
     // 🔗 Naujas ryšys su concertDate (kad veiktų mappedBy ConcertDate klasėje)
-    @ManyToOne
-    @JoinColumn(name = "concert_date_id", nullable = false)
-    private ConcertDate concertDate;
+    /*@ManyToOne
+    @JoinColumn(name = "concert_date_id", nullable = true)
+    private ConcertDate concertDate;*/
 
     // 🔗 Viena kategorija turi daug bilietų
     @OneToMany(mappedBy = "ticketCategory", cascade = CascadeType.ALL)
@@ -45,14 +45,12 @@ public class TicketCategory {
     public TicketCategory() {}
 
     public TicketCategory(String description, BigDecimal price, LocalDate startDate,
-                          LocalDate endDate, String venue, Concert concert, ConcertDate concertDate) {
+                          LocalDate endDate, String venue) {
         this.description = description;
         this.price = price;
         this.startDate = startDate;
         this.endDate = endDate;
         this.venue = venue;
-        this.concert = concert;
-        this.concertDate = concertDate;
     }
 
     // === Getteriai ir Setteriai ===
@@ -104,21 +102,11 @@ public class TicketCategory {
         this.venue = venue;
     }
 
-    public Concert getConcert() {
-        return concert;
-    }
+    /*public Concert getConcert() { return concert; }
+    public void setConcert(Concert concert) { this.concert = concert; }*/
 
-    public void setConcert(Concert concert) {
-        this.concert = concert;
-    }
-
-    public ConcertDate getConcertDate() {
-        return concertDate;
-    }
-
-    public void setConcertDate(ConcertDate concertDate) {
-        this.concertDate = concertDate;
-    }
+    /*public ConcertDate getConcertDate() { return concertDate; }
+    public void setConcertDate(ConcertDate concertDate) { this.concertDate = concertDate; } */
 
     public Set<Ticket> getTickets() {
         return tickets;

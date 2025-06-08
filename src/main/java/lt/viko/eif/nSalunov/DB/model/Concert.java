@@ -36,6 +36,9 @@ public class Concert {
     @JsonManagedReference
     private Venue venue;
 
+    @OneToOne(mappedBy = "concert", cascade = CascadeType.ALL)
+    private Ticket ticket;
+
     @ManyToMany
     @JoinTable(
             name = "concert_artists",
@@ -44,8 +47,8 @@ public class Concert {
     )
     private Set<Artist> artists;
 
-    @OneToMany(mappedBy = "concert", cascade = CascadeType.ALL)
-    private Set<TicketCategory> ticketCategories;
+    /*@OneToMany(mappedBy = "concert", cascade = CascadeType.ALL)
+    private Set<TicketCategory> ticketCategories;*/
 
     public Concert() {
     }
@@ -87,6 +90,6 @@ public class Concert {
     public Set<Artist> getArtists() { return artists; }
     public void setArtists(Set<Artist> artists) { this.artists = artists; }
 
-    public Set<TicketCategory> getTicketCategories() { return ticketCategories; }
-    public void setTicketCategories(Set<TicketCategory> ticketCategories) { this.ticketCategories = ticketCategories; }
+    /*public Set<TicketCategory> getTicketCategories() { return ticketCategories; }
+    public void setTicketCategories(Set<TicketCategory> ticketCategories) { this.ticketCategories = ticketCategories; }*/
 }

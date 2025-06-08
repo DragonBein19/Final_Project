@@ -1,5 +1,6 @@
 package lt.viko.eif.nSalunov;
 
+import lt.viko.eif.nSalunov.DB.repository.TicketRepository;
 import lt.viko.eif.nSalunov.DB.seeder.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -12,18 +13,24 @@ public class StartupRunner implements CommandLineRunner {
     private final UserSeeder userSeeder;
     private final VenueSeeder venueSeeder;
     private final ConcertSeeder concertSeeder;
+    private final TicketCategorySeeder ticketCategorySeeder;
+    private final TicketSeeder ticketSeeder;
 
     public StartupRunner(
             ArtistSeeder artistSeeder,
             GenreSeeder genreSeeder,
             UserSeeder userSeeder,
             VenueSeeder venueSeeder,
-            ConcertSeeder concertSeeder) {
+            ConcertSeeder concertSeeder,
+            TicketCategorySeeder ticketCategorySeeder,
+            TicketSeeder ticketSeeder) {
         this.artistSeeder = artistSeeder;
         this.genreSeeder = genreSeeder;
         this.userSeeder = userSeeder;
         this.venueSeeder = venueSeeder;
         this.concertSeeder = concertSeeder;
+        this.ticketCategorySeeder = ticketCategorySeeder;
+        this.ticketSeeder = ticketSeeder;
     }
 
     @Override
@@ -33,5 +40,7 @@ public class StartupRunner implements CommandLineRunner {
         userSeeder.seedUsers();
         venueSeeder.seedVenue();
         concertSeeder.seedConcert();
+        ticketCategorySeeder.SeedTicketCategory();
+        ticketSeeder.SeedTicket();
     }
 }

@@ -23,8 +23,8 @@ public class ConcertDate {
     @JoinColumn(name = "concert_id", nullable = false)
     private Concert concert;
 
-    @OneToMany(mappedBy = "concertDate", cascade = CascadeType.ALL)
-    private Set<TicketCategory> ticketCategories;
+    /*@OneToMany(mappedBy = "concertDate", cascade = CascadeType.ALL)
+    private Set<TicketCategory> ticketCategories;*/
 
     @ManyToOne
     @JoinColumn(name = "artist_id", nullable = false)
@@ -33,11 +33,11 @@ public class ConcertDate {
     public ConcertDate() {
     }
 
-    public ConcertDate(LocalDate date, LocalDateTime time, Concert concert, Set<TicketCategory> ticketCategories) {
+    public ConcertDate(LocalDate date, LocalDateTime time, Concert concert) {
         this.date = date;
         this.time = time;
         this.concert = concert;
-        this.ticketCategories = ticketCategories;
+        //this.ticketCategories = ticketCategories;
     }
 
     public Long getId() {
@@ -72,11 +72,6 @@ public class ConcertDate {
         this.concert = concert;
     }
 
-    public Set<TicketCategory> getTicketCategories() {
-        return ticketCategories;
-    }
-
-    public void setTicketCategories(Set<TicketCategory> ticketCategories) {
-        this.ticketCategories = ticketCategories;
-    }
+    /*public Set<TicketCategory> getTicketCategories() { return ticketCategories; }
+    public void setTicketCategories(Set<TicketCategory> ticketCategories) { this.ticketCategories = ticketCategories; }*/
 }
