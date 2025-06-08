@@ -1,310 +1,361 @@
+/* === PAGRINDINIAI ELEMENTAI === */
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #000412;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000412;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
-        #header-bar {
-            background-color: #000107;
-            height: 90px;
-            width: 100%;
-            display: flex;
-            justify-content: space-between; 
-            align-items: center;
-            font-size: 70px;
-            font-family: Impact, sans-serif;
-            font-weight: bold;
-            color: white;
-            letter-spacing: 5px;
-            box-sizing: border-box;
-            padding: 0 20px;
-        }
+#header-bar {
+    background-color: #000107;
+    height: 90px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    font-size: 70px;
+    font-family: Impact, sans-serif;
+    font-weight: bold;
+    color: white;
+    letter-spacing: 5px;
+    box-sizing: border-box;
+    padding: 0 20px;
+}
 
-        #menu-button {
-            font-size: 30px;
-            cursor: pointer;
-            color: white;
-            margin-right: 20px;
-        }
+#menu-button {
+    font-size: 30px;
+    cursor: pointer;
+    color: white;
+    margin-right: 20px;
+}
 
-        #center-title {
-            position: relative;
-            left: 200px;
-        }
+#center-title {
+    position: relative;
+    left: 200px;
+}
 
-        #right-section {
-            display: flex;
-            align-items: center;
-        }
+#right-section {
+    display: flex;
+    align-items: center;
+}
 
-        #right-section a.toggle-btn {
-            letter-spacing: normal !important;
-            text-transform: none !important;
-            font-weight: normal !important;
-        }
+#right-section a.toggle-btn {
+    letter-spacing: normal !important;
+    text-transform: none !important;
+    font-weight: normal !important;
+}
 
-        .toggle-btn {
-            font-family: 'Afacad';
-            font-size: 20px;
-            background-color: #000107;
-            color: #6c6c6c;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none; 
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            user-select: none;
-            font-weight: normal;      
-            text-transform: none; 
-            transition: background-color 0.3s ease;
-            margin-left: 10px;
-        }
+/* === TOGGLE MYGTUKAI === */
 
-        .toggle-btn:hover {
-            background-color: #272727;
-        }
+.toggle-btn {
+    font-family: 'Afacad';
+    font-size: 20px;
+    background-color: #000107;
+    color: #6c6c6c;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none; 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    font-weight: normal;      
+    text-transform: none; 
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+}
 
-        #search-input {
-            padding: 8px 10px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            margin-right: 10px;
-            font-family: 'Afacad';
-            background-color: #1a1a1a;
-            color: white; 
-        }
+.toggle-btn:hover {
+    background-color: #272727;
+}
 
-        #search-button {
-            background-color: #000107;
-            color: #6c6c6c;
-            font-size: 18px;
-            border: none;
-            border-radius: 5px;
-            padding: 8px 12px;
-            margin-right: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+/* === PAIEŠKOS LAUKAS IR MYGTUKAS === */
 
-        #search-button:hover {
-            background-color: #272727;
-        }
+#search-input {
+    padding: 8px 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-family: 'Afacad';
+    background-color: #1a1a1a;
+    color: white; 
+}
 
-        #background-image {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
-            opacity: 0.9;
-        }
+#search-button {
+    background-color: #000107;
+    color: #6c6c6c;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-        #bottom-box {
-            width: 100%;
-            height: 100px;
-            background-color: #000107;
-            opacity: 0.7;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: fixed;
-            bottom: 60px;
-            font-family: 'Afacad';
-            font-size: 20px;
-        }
+#search-button:hover {
+    background-color: #272727;
+}
 
-        #footer-bar {
-            background-color: #000107;
-            height: 60px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 15px;
-            font-family: 'Afacad';
-            font-weight: bold;
-            color: white;
-            box-sizing: border-box;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-        }
+/* === FONO PAVEIKSLĖLIS === */
 
-        #full-page-window {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: white;
-            display: none; 
-            flex-direction: column;
-            z-index: 9999;
-        }
+#background-image {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.9;
+}
 
-        #header-bar-white {
-            background-color: #ffffff;
-            height: 90px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 40px;
-            font-family: Impact, sans-serif;
-            font-weight: bold;
-            color: black;
-            padding: 0 20px;
-            border-bottom: 2px solid #00000020;
-        }
+/* === KONCERTŲ SKYRIUS === */
 
-        #center-title-white {
-            flex-grow: 1;
-            text-align: center;
-            font-size: 70px;
-        }
+#concert-section {
+    width: 90%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding-top: 20px;
+    padding-bottom: 160px; 
+    position: relative;
+    z-index: 1; 
+}
 
-        #menu-close {
-            font-size: 30px;
-            cursor: pointer;
-            color: black;
-        }
+/* === APATINIS JUOSTAS (juoda) === */
 
-        #content-area {
-            flex-grow: 1;
-            padding: 20px 40px 10px 40px;
-            font-family: 'Afacad';
-            font-size: 20px;
-            color: black;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+#bottom-box {
+    width: 100%;
+    height: 60px;
+    background-color: #000000e3;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 60px;
+    font-family: 'Afacad';
+    font-size: 20px;
+    z-index: 10;
+}
 
-        #bottom-box-white {
-            height: 100px;
-            background-color: #f0f0f0;
-            color: black;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Afacad';
-            font-size: 20px;
-            border-top: 1px solid #ccc;
-        }
+/* === FOOTER BARAS === */
 
-        #footer-bar-white {
-            height: 60px;
-            background-color: #ddd;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 15px;
-            font-family: 'Afacad';
-            font-weight: bold;
-            color: black;
-        }
+#footer-bar {
+    background-color: #000107;
+    height: 60px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    font-family: 'Afacad';
+    font-weight: bold;
+    color: white;
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 11; 
+}
 
-        #concert-filter-box {
-            width: 80%;
-            display: flex;
-            justify-content: space-around;
-        }
+/* === PILNO EKRANO LANGAS === */
 
-        #concert-filter-box select {
-            padding: 5px;
-            font-size: 16px;
-            font-family: 'Afacad';
-            border-radius: 5px;
-            border: none;
-            background-color: #505050;
-            color: white;
-            cursor: pointer;
-        }
+#full-page-window {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    display: none; 
+    flex-direction: column;
+    z-index: 9999;
+}
 
-        #concert-list-container {
-            margin: 10px auto 20px auto;
-            width: 80%;
-            background-color: #505050;
-            color: white;
-            font-family: 'Afacad';
-            padding: 20px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
+/* === PILNO EKRANO HEADER BARAS === */
 
-        #concert-list-container div {
-            border-bottom: 1px solid #444;
-            padding: 10px 0;
-        }
+#header-bar-white {
+    background-color: #ffffff;
+    height: 90px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 40px;
+    font-family: Impact, sans-serif;
+    font-weight: bold;
+    color: black;
+    padding: 0 20px;
+    border-bottom: 2px solid #00000020;
+}
 
-        #concert-section {
-            width: 90%;
-            max-width: 900px;
-            margin: 0 auto;
-            padding-top: 20px;
-        }
+#center-title-white {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 70px;
+}
 
-        #concert-title {
-            display: block;
-            text-align: center;
-            font-size: 22pt;
-            color: white;
-            margin-bottom: 10px;
-        }
+#menu-close {
+    font-size: 30px;
+    cursor: pointer;
+    color: black;
+}
 
-        #concert-container {
-            max-height: 670px;
-            margin-top: 10px;
-            overflow-y: auto;
-            padding: 15px 20px;
-            background: rgba(0, 0, 0, 0);
-            border-radius: 15px;
-            border: 1px solid rgba(0, 0, 0, 0);
-            box-sizing: border-box;
-        }
+/* === TURINIO PLOKŠTĖ === */
 
-        #concert-container::-webkit-scrollbar {
-            width: 0px;
-        }
+#content-area {
+    flex-grow: 1;
+    padding: 20px 40px 10px 40px;
+    font-family: 'Afacad';
+    font-size: 20px;
+    color: black;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-        #concert-container::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
+/* === APATINIS BOXAS BALTAI === */
 
-        #concert-container::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-        }
+#bottom-box-white {
+    height: 100px;
+    background-color: #f0f0f0;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Afacad';
+    font-size: 20px;
+    border-top: 1px solid #ccc;
+}
 
-        #concert-container::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.6);
-        }
+#footer-bar-white {
+    height: 60px;
+    background-color: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    font-family: 'Afacad';
+    font-weight: bold;
+    color: black;
+}
 
-        #concert-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+/* === KONCERTŲ FILTRAI IR SĄRAŠAS === */
 
-        .concert {
-            background: rgba(42, 42, 42, 0.4);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 15px;
-            font-size: 12pt;
-            color: white;
-            box-sizing: border-box;
-        }
-        
+#concert-filter-box {
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+}
+
+#concert-filter-box select {
+    padding: 5px;
+    font-size: 16px;
+    font-family: 'Afacad';
+    border-radius: 5px;
+    border: none;
+    background-color: #505050;
+    color: white;
+    cursor: pointer;
+}
+
+#concert-list-container {
+    margin: 10px auto 20px auto;
+    width: 80%;
+    background-color: #505050;
+    color: white;
+    font-family: 'Afacad';
+    padding: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#concert-list-container div {
+    border-bottom: 1px solid #444;
+    padding: 10px 0;
+}
+
+#concert-title {
+    display: block;
+    text-align: center;
+    font-size: 22pt;
+    color: white;
+    margin-bottom: 10px;
+}
+
+#concert-container {
+    max-height: 670px;
+    margin-top: 10px;
+    overflow-y: auto;
+    padding: 15px 20px;
+    background: rgba(0, 0, 0, 0);
+    border-radius: 15px;
+    border: 1px solid rgba(0, 0, 0, 0);
+    box-sizing: border-box;
+}
+
+#concert-container::-webkit-scrollbar {
+    width: 0px;
+}
+
+#concert-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+#concert-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+#concert-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+#concert-list {
+    display: flex;
+    flex-wrap: wrap;        
+    gap: 15px;                
+    justify-content: flex-start; 
+}
+
+.concert-card {
+    flex: 0 0 calc((100% - 30px) / 3); /* užima 1/3 pločio, atėmus tarpus */
+    background: rgba(42, 42, 42, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 15px;
+    font-size: 12pt;
+    color: white;
+    box-sizing: border-box;
+}
+
+#upcoming-events-title {
+    color: black;
+    font-family: 'Afacad';
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 10px;
+    margin-top: -10px;
+    letter-spacing: 3px;
+    text-shadow: 2px 2px 5px rgba(255, 255, 255, 1);
+}
+
+.concert {
+    background: rgba(255, 255, 255, 0.175);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.021);
+    border-radius: 12px;
+    padding: 15px;
+    font-size: 12pt;
+    color: black;
+    box-sizing: border-box;
+}

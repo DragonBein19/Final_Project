@@ -28,7 +28,7 @@ public class ConcertSeeder {
         if(concertRepository.count() == 0)
         {
             Concert concert1 = new Concert(
-                    "ImagenDragon",
+                    "ImagineDragon",
                     LocalDateTime.of(LocalDate.of(2025, 5, 5), LocalTime.of(0, 0)),
                     100,
                     "active",
@@ -37,15 +37,15 @@ public class ConcertSeeder {
             );
 
             Concert concert2 = new Concert(
-                    "ImagenDragon",
-                    LocalDateTime.of(LocalDate.of(2025, 10, 10), LocalTime.of(0, 0)),
-                    100,
+                    "Justin Timberlake",
+                    LocalDateTime.of(LocalDate.of(2025, 06, 8), LocalTime.of(0, 0)),
+                    50000,
                     "active",
                     "Description",
                     venuesRepository.findById(2L).orElseThrow(() -> new RuntimeException("Venue with ID 1 not found"))
             );
             Concert concert3 = new Concert(
-                    "ImagenDragon",
+                    "Free Finga",
                     LocalDateTime.of(LocalDate.of(2025, 11, 11), LocalTime.of(0, 0)),
                     100,
                     "active",

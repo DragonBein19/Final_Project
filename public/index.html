@@ -60,7 +60,7 @@
     <div id="footer-bar">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
 
     <div id="concert-section">
-        <a id="concert-title">Upcoming Concerts</a>
+        <h1 id="upcoming-events-title">Upcoming Events</h1>
         <div id="concert-container">
             <div id="concert-list">
                 <script>
@@ -133,6 +133,100 @@
 
             renderConcerts(concerts);
         };
+
+        let allConcerts = [];
+
+        fetch('http://localhost:3000/concerts')
+        .then(response => {
+            if (!response.ok) throw new Error("Error: " + response.statusText);
+            return response.json();
+        })
+        .then(concerts => {
+            // Jei reikia papildomo venue fetch - pridėsim vėliau
+            allConcerts = concerts.map(c => ({
+                artist: c["Concert name"],
+                location: c.city || "Unknown", // jei turi city iš venue
+                genre: c.genre || "Other",     // jei žanras yra backend'e
+                date: c["Concert date"]
+            }));
+
+            const artistSet = new Set();
+            const locationSet = new Set();
+            const genreSet = new Set();
+
+            allConcerts.forEach(c => {
+                artistSet.add(c.artist);
+                locationSet.add(c.location);
+                genreSet.add(c.genre);
+            });
+
+            fillSelect("artist-filter", [...artistSet]);
+            fillSelect("location-filter", [...locationSet]);
+            fillSelect("genre-filter", [...genreSet]);
+
+            renderConcerts(allConcerts);
+        })
+        .catch(error => {
+            console.error("Error loading concerts:", error);
+            document.getElementById("concert-list-container").innerHTML =
+            `<p style="color: red;">Failed to load concerts.</p>`;
+        });
+
+        function fillSelect(id, options) {
+            const select = document.getElementById(id);
+            options.forEach(opt => {
+                const option = document.createElement("option");
+                option.value = opt;
+                option.textContent = opt;
+                select.appendChild(option);
+            });
+        }
+
+        document.querySelectorAll("#concert-filter-box select").forEach(select => {
+            select.addEventListener("change", applyFilters);
+        });
+
+        function applyFilters() {
+            const artist = document.getElementById("artist-filter").value;
+            const location = document.getElementById("location-filter").value;
+            const genre = document.getElementById("genre-filter").value;
+            const dateOrder = document.getElementById("date-filter").value;
+
+            let filtered = allConcerts.filter(c => {
+                return (!artist || c.artist === artist) &&
+                    (!location || c.location === location) &&
+                    (!genre || c.genre === genre);
+            });
+
+            if (dateOrder === "asc") {
+                filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+            } else if (dateOrder === "desc") {
+                filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+            }
+
+            renderConcerts(filtered);
+        }
+
+        function renderConcerts(list) {
+            const container = document.getElementById("concert-list");
+            container.innerHTML = "";
+
+            if (list.length === 0) {
+                container.innerHTML = "<p>No results found.</p>";
+                return;
+            }
+
+            list.forEach(c => {
+                const div = document.createElement("div");
+                div.className = "concert-card";
+                div.innerHTML = `
+                    <strong>${c.artist}</strong> – ${c.genre}<br>
+                    Location: ${c.location}<br>
+                    Date: ${new Date(c.date).toLocaleDateString()}
+                `;
+                container.appendChild(div);
+            });
+        }
 
         function fillSelect(id, options) {
             const select = document.getElementById(id);

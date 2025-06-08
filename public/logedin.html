@@ -69,12 +69,12 @@
     <div id="footer-bar">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
     <a href="index.html" id="logout-button">Log out</a>
 
-    <div id="concert-section">
-        <a id="concert-title">Upcoming Concerts</a>
+   <div id="concert-section">
+    <h1 id="upcoming-events-title">Upcoming Events</h1>
         <div id="concert-container">
             <div id="concert-list">
                 <script>
-                    fetch('/concerts').then(response => {
+                    fetch('http://localhost:3000/concerts').then(response => {
                         if (!response.ok) {
                            throw new Error("Error: " + response.statusText);
                         }

@@ -25,34 +25,10 @@
                 <th>Edit</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>VIP</td>
-                <td>101</td>
-                <td>A1</td>
-                <td>active</td>
-                <td>501</td>
-                <td>3</td>
-                <td>
-                    <button class="action-button edit-button" onclick="editTicket(this)">Edit</button>
-                    <button class="action-button delete-button" onclick="deleteTicket(this)">Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Standard</td>
-                <td>102</td>
-                <td>B15</td>
-                <td>sold</td>
-                <td>502</td>
-                <td>2</td>
-                <td>
-                    <button class="action-button edit-button" onclick="editTicket(this)">Edit</button>
-                    <button class="action-button delete-button" onclick="deleteTicket(this)">Remove</button>
-                </td>
-            </tr>
+        <tbody id="tickets-body">
+            <!-- čia bus dinamiškai įkelti duomenys -->
         </tbody>
+
     </table>
 
     <div style="text-align: center; margin-bottom: 20px;">
@@ -60,57 +36,54 @@
     </div>
 
     <script>
-        function deleteTicket(button) {
-            const row = button.closest("tr");
+        function loadTickets() {
+            fetch('http://localhost:8080/ticket')  // pakeisk adresą jei reikia
+                .then(response => response.json())
+                .then(tickets => {
+                    const tbody = document.getElementById('tickets-body');
+                    tbody.innerHTML = '';  // išvalom esamą turinį
+                    
+                    tickets.forEach(ticket => {
+                        const tr = document.createElement('tr');
+
+                        tr.innerHTML = `
+                            <td>${ticket.id}</td>
+                            <td>${ticket.category || ''}</td>
+                            <td>${ticket.concert_id || ''}</td>
+                            <td>${ticket.seat_number || ''}</td>
+                            <td>${ticket.status || ''}</td>
+                            <td>${ticket.ticket_description_id || ''}</td>
+                            <td>${ticket.ticket_category_id || ''}</td>
+                            <td>
+                                <button class="action-button edit-button" onclick="editTicket(this)">Edit</button>
+                                <button class="action-button delete-button" onclick="deleteTicket(this, ${ticket.id})">Delete</button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                })
+                .catch(error => {
+                    console.error('Klaida užkraunant ticketus:', error);
+                });
+        }
+
+        // Kviečiame iš karto po puslapio užkrovimo
+        window.onload = loadTickets;
+
+        // Pakeisk deleteTicket funkciją, kad pašalintų ir iš backend
+        function deleteTicket(button, ticketId) {
             if (confirm("Are you sure you want to delete?")) {
-                row.remove();
+                fetch(`http://localhost:8080/ticket/${ticketId}`, { method: 'DELETE' })
+                    .then(response => {
+                        if (response.ok) {
+                            const row = button.closest("tr");
+                            row.remove();
+                        } else {
+                            alert('Nepavyko ištrinti ticket');
+                        }
+                    })
+                    .catch(error => alert('Klaida tryniant ticket: ' + error));
             }
-        }
-
-        function editTicket(button) {
-            const row = button.closest("tr");
-            const cells = row.querySelectorAll("td");
-
-            const fields = [
-                "category", "concert_id", "seat_number", "status",
-                "ticket_description_id", "ticket_category_id"
-            ];
-
-            for (let i = 1; i <= 6; i++) {
-                const newValue = prompt(`Add new meaning "${fields[i - 1]}"`, cells[i].innerText);
-                if (newValue !== null) {
-                    cells[i].innerText = newValue;
-                }
-            }
-        }
-
-        function addTicket() {
-            const table = document.getElementById("tickets-table").getElementsByTagName("tbody")[0];
-            const newRow = table.insertRow();
-
-            const newId = table.rows.length + 1;
-            const category = prompt("Enter new catagory: ");
-            const concertId = prompt("Enter new concert ID");
-            const seatNumber = prompt("Enter new seat number:");
-            const status = prompt("Enter new status:");
-            const descriptionId = prompt("Enter new desciption ID:");
-            const categoryId = prompt("Enter new catagory ID:");
-
-            const values = [
-                newId, category, concertId, seatNumber,
-                status, descriptionId, categoryId
-            ];
-
-            values.forEach(value => {
-                const cell = newRow.insertCell();
-                cell.innerText = value;
-            });
-
-            const actionsCell = newRow.insertCell();
-            actionsCell.innerHTML = `
-                <button class="action-button edit-button" onclick="editTicket(this)">Edit</button>
-                <button class="action-button delete-button" onclick="deleteTicket(this)">Delete</button>
-            `;
         }
     </script>
 

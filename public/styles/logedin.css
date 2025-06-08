@@ -247,6 +247,17 @@
             align-items: center;
         }
 
+        #concert-section {
+            width: 90%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding-top: 20px;
+            padding-bottom: 160px; 
+            position: relative;
+            z-index: 1; 
+            font-family: 'Afacad';
+        }
+
         #bottom-box-white {
             height: 100px;
             background-color: #f0f0f0;
@@ -271,99 +282,100 @@
             color: black;
         }
 
-        #concert-filter-box {
-            width: 80%;
-            display: flex;
-            justify-content: space-around;
-        }
+#upcoming-events-title {
+    color: black;
+    font-family: 'Afacad';
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 25px;
+    letter-spacing: 3px;
+    text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.7);
+}
 
-        #concert-filter-box select {
-            padding: 5px;
-            font-size: 16px;
-            font-family: 'Afacad';
-            border-radius: 5px;
-            border: none;
-            background-color: #505050;
-            color: white;
-            cursor: pointer;
-        }
+#concert-section {
+    padding-top: 80px;
+}
+     
+#concert-list-container {
+    margin: 10px auto 20px auto;
+    width: 80%;
+    background-color: #505050;
+    color: white;
+    font-family: 'Afacad';
+    padding: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+}
 
-        #concert-list-container {
-            margin: 10px auto 20px auto;
-            width: 80%;
-            background-color: #505050;
-            color: white;
-            font-family: 'Afacad';
-            padding: 20px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
+#concert-list-container div {
+    border-bottom: 1px solid #444;
+    padding: 10px 0;
+}
 
-        #concert-list-container div {
-            border-bottom: 1px solid #444;
-            padding: 10px 0;
-        }
+#concert-title {
+    display: block;
+    text-align: center;
+    font-size: 22pt;
+    color: white;
+    margin-bottom: 10px;
+}
 
-        #concert-section {
-            width: 90%;
-            max-width: 900px;
-            margin: 0 auto;
-            padding-top: 120px;
-        }
+#concert-container {
+    max-height: 670px;
+    margin-top: 10px;
+    overflow-y: auto;
+    padding: 15px 20px;
+    background: rgba(0, 0, 0, 0);
+    border-radius: 15px;
+    border: 1px solid rgba(0, 0, 0, 0);
+    box-sizing: border-box;
+}
 
-        #concert-title {
-            display: block;
-            text-align: center;
-            font-size: 22pt;
-            font-family: 'Afacad';
-            color: white;
-            margin-bottom: 10px;
-        }
+#concert-container::-webkit-scrollbar {
+    width: 0px;
+}
 
-        #concert-container {
-            max-height: 775px;
-            margin-top: 10px;
-            overflow-y: auto;
-            padding: 15px 20px;
-            background: rgba(0, 0, 0, 0);
-            border-radius: 15px;
-            border: 1px solid rgba(0, 0, 0, 0);
-            box-sizing: border-box;
-            font-family: 'Afacad';
-        }
+#concert-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
 
-        #concert-container::-webkit-scrollbar {
-            width: 0px;
-        }
+#concert-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
 
-        #concert-container::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
+#concert-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.6);
+}
 
-        #concert-container::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-        }
+#concert-list {
+    display: flex;
+    flex-wrap: wrap;        
+    gap: 15px;                
+    justify-content: flex-start; 
+}
 
-        #concert-container::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.6);
-        }
-
-        #concert-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .concert {
-            background: rgba(42, 42, 42, 0.4);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 15px;
-            font-size: 12pt;
-            color: white;
-            box-sizing: border-box;
-        }
+.concert-card {
+    flex: 0 0 calc((100% - 30px) / 3); /* užima 1/3 pločio, atėmus tarpus */
+    background: rgba(42, 42, 42, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 15px;
+    font-size: 12pt;
+    color: white;
+    box-sizing: border-box;
+}
+.concert {
+    background: rgba(255, 255, 255, 0.175);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.021);
+    border-radius: 12px;
+    padding: 15px;
+    font-size: 12pt;
+    color: black;
+    box-sizing: border-box;
+}
