@@ -1,123 +1,165 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <title>Ticket Live Users</title>
     <link rel="stylesheet" href="styles/button.css">
+    <style>
+        .admin-row {
+            background-color: #cdefff !important;
+        }
+        #users-table tr td {
+            transition: background-color 0.3s ease;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #d1eaff;
+        }
+    </style>
 </head>
 <body>
-    <div id="header-bar">TICKET LIVE USERS</div>
+<div id="header-bar">TICKET LIVE USERS</div>
 
-    <div id="button-container">
-        <a href="tickets.html" class="admin-button">Tickets</a>
-        <a href="concerts.html" class="admin-button">Concerts</a>
-        <a href="users.html" class="admin-button">Users</a>
-    </div>
+<div id="button-container">
+    <a href="tickets.html" class="admin-button">Tickets</a>
+    <a href="concerts.html" class="admin-button">Concerts</a>
+    <a href="users.html" class="admin-button">Users</a>
+</div>
 
-    <table id="users-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Email</th>
-                <th>Admin</th>
-                <th>Name</th>
-                <th>Password</th>
-                <th>Phone number</th>
-                <th>Registration date</th>
-                <th>Surname</th>
-                <th>Username</th>
-                <th>Edit</th>
-            </tr>
-        </thead>
-    </table>
+<table id="users-table">
+    <thead>
+    <tr>
+        <th>Admin</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Email</th>
+        <th>Phone number</th>
+        <th>Username</th>
+        <th>Registration date</th>
+        <th>Edit</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
 
-    <script>
-        function deleteUser(button) {
-            const row = button.closest("tr");
-            if (confirm("Are you sure you want to delete?")) {
-                row.remove();
-            }
-        }
+<script>
+    function deleteUser(button) {
+        const row = button.closest("tr");
+        const userId = row.getAttribute("data-id");
 
-        function editUser(button) {
-            const row = button.closest("tr");
-            const cells = row.querySelectorAll("td");
-
-            const fields = [
-                "email", "is_admin", "name", "password",
-                "phone", "registration_date", "surname", "username"
-            ];
-
-            for (let i = 1; i <= 8; i++) {
-                const newValue = prompt(`Add new meaning  "${fields[i - 1]}"`, cells[i].innerText);
-                if (newValue !== null) {
-                    cells[i].innerText = newValue;
-                }
-            }
-        }
-
-        function addUser() {
-            const table = document.getElementById("users-table").getElementsByTagName("tbody")[0];
-            const newRow = table.insertRow();
-
-            const newId = table.rows.length + 1;
-            const email = prompt("Enter new email:");
-            const isAdmin = prompt("Is the user admin? (1 - yes, 0 - no):");
-            const name = prompt("Enter new name:");
-            const password = prompt("Enter new password:");
-            const phone = prompt("Enter new phone number:");
-            const regDate = new Date().toISOString().split('T')[0] + " " + new Date().toTimeString().split(' ')[0];
-            const surname = prompt("Enter new surname:");
-            const username = prompt("Enter new username:");
-
-            const values = [
-                newId, email, isAdmin, name, password,
-                phone, regDate, surname, username
-            ];
-
-            values.forEach(value => {
-                const cell = newRow.insertCell();
-                cell.innerText = value;
-            });
-
-            const actionsCell = newRow.insertCell();
-            actionsCell.innerHTML = `
-                <button class="action-button edit-button" onclick="editUser(this)">Redaguoti</button>
-                <button class="action-button delete-button" onclick="deleteUser(this)">Šalinti</button>
-            `;
-        }
-
-        window.onload = function () {
-            fetch("http://localhost:8080/users")
-                .then(response => response.json())
-                .then(users => {
-                    const tableBody = document.querySelector("#users-table tbody");
-                    tableBody.innerHTML = ""; // išvalo placeholder'ius
-
-                    users.forEach(user => {
-                        const row = document.createElement("tr");
-                        row.innerHTML = `
-                            <td>${user.id}</td>
-                            <td>${user.email}</td>
-                            <td>${user.is_admin ? 1 : 0}</td>
-                            <td>${user.name}</td>
-                            <td>${user.password}</td>
-                            <td>${user.phone}</td>
-                            <td>${new Date(user.registration_date).toLocaleString()}</td>
-                            <td>${user.surname}</td>
-                            <td>${user.username}</td>
-                            <td>
-                                <button class="action-button edit-button" onclick="editUser(this)">Redaguoti</button>
-                                <button class="action-button delete-button" onclick="deleteUser(this)">Šalinti</button>
-                            </td>
-                        `;
-                        tableBody.appendChild(row);
-                    });
+        if (confirm("Are you sure you want to delete this user?")) {
+            fetch(`http://localhost:8080/admin/users/${userId}`, {
+                method: "DELETE"
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Failed to delete user from server.");
+                    }
+                    row.remove(); // iš lentelės
                 })
                 .catch(error => {
-                    console.error("Klaida gaunant vartotojus:", error);
+                    console.error("Error deleting user:", error);
+                    alert("Failed to delete user.");
                 });
+        }
+    }
+
+    function editUser(button) {
+        const row = button.closest("tr");
+        const userId = row.getAttribute("data-id");
+        const cells = row.querySelectorAll("td");
+
+        const name = prompt("Edit name:", cells[1].innerText);
+        if (name === null) return;
+
+        const surname = prompt("Edit surname:", cells[2].innerText);
+        if (surname === null) return;
+
+        const email = prompt("Edit email:", cells[3].innerText);
+        if (email === null) return;
+
+        const phone = prompt("Edit phone:", cells[4].innerText);
+        if (phone === null) return;
+
+        const userName = prompt("Edit username:", cells[5].innerText);
+        if (userName === null) return;
+
+        const updatedUser = {
+            isAdmin: cells[0].innerText === "Yes" ? 1 : 0,
+            name,
+            surname,
+            email,
+            phone,
+            userName
+            // ⛔️ NEsiunčiame registrationDate
         };
+
+        fetch(`http://localhost:8080/admin/users/${userId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(updatedUser)
+        })
+            .then(response => {
+                if (!response.ok) throw new Error("Failed to update user");
+                alert("User updated successfully.");
+                window.location.reload(); // atsinaujina lentelė
+            })
+            .catch(error => {
+                console.error("Update failed:", error);
+                alert("Failed to update user.");
+            });
+    }
+
+    window.onload = function () {
+        fetch("http://localhost:8080/admin/users")
+            .then(res => res.json())
+            .then(users => {
+                const tbody = document.querySelector("#users-table tbody");
+                tbody.innerHTML = "";
+
+                users.forEach(user => {
+                    const row = document.createElement("tr");
+
+                    const isAdmin = user.isAdmin === true || user.isAdmin === 1;
+                    if (isAdmin) row.classList.add("admin-row");
+
+                    row.setAttribute("data-id", user.id);
+
+                    row.innerHTML = `
+                        <td>${isAdmin ? 'Yes' : 'No'}</td>
+                        <td>${user.name}</td>
+                        <td>${user.surname}</td>
+                        <td>${user.email}</td>
+                        <td>${user.phone}</td>
+                        <td>${user.userName}</td>
+                        <td>${new Date(user.registrationDate).toLocaleString()}</td>
+                        <td>
+                            ${isAdmin
+                                ? '<span style="color: gray; font-style: italic;">Negalima redaguoti</span>'
+                                : `
+                                    <button class="action-button edit-button" onclick="editUser(this)">Redaguoti</button>
+                                    <button class="action-button delete-button" onclick="deleteUser(this)">Šalinti</button>
+                                  `
+                            }
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(err => console.error("Failed to fetch users:", err));
+    };
 </script>
 
-    <a class="logout-button" href="index.html">Log out</a>
+<a class="logout-button" href="index.html">Log out</a>
 </body>
 </html>

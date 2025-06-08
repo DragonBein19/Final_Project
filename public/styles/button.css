@@ -42,9 +42,14 @@ body {
     background-color: #9fb1c3;
 }
 
+.admin-row {
+    background-color: #b0edf1;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
+    margin-top: 10px;;
 }
 
 th, td {
@@ -53,10 +58,23 @@ th, td {
     text-align: left;
 }
 
+thead {
+    background-color: #b0d4f1;
+}
+
+thead th {
+    color: #000;
+    font-weight: bold;
+    font-size: 16px;
+}
+
 .action-button {
-    padding: 5px 10px;
+    padding: 6px 12px;
     margin-right: 5px;
     cursor: pointer;
+    border-radius: 10px;
+    font-weight: bold;
+    border: none;
 }
 
 .edit-button {
