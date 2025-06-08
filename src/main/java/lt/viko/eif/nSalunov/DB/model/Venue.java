@@ -1,5 +1,6 @@
 package lt.viko.eif.nSalunov.DB.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -34,6 +35,7 @@ public class Venue {
     private String mapUrl;
 
     @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL)
+    @JsonBackReference
     private Set<Concert> concerts;
 
     public Venue() {}

@@ -1,5 +1,6 @@
 package lt.viko.eif.nSalunov.DB.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -30,8 +31,9 @@ public class Concert {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-   @ManyToOne
+    @OneToOne
     @JoinColumn(name = "venue_id", nullable = false)
+    @JsonManagedReference
     private Venue venue;
 
     @ManyToMany

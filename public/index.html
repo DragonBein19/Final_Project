@@ -64,26 +64,33 @@
         <div id="concert-container">
             <div id="concert-list">
                 <script>
-                    fetch('http://localhost:8080/concerts')
-                    .then(response => response.json())
-                    .then(concerts => {
-                        const list = document.getElementById('concert-list');
+                    fetch('/concerts').then(response => {
+                        if (!response.ok) {
+                           throw new Error("Error: " + response.statusText);
+                        }
+                        return response.json();
+                    }).then(concerts => {
+                        const list = document.getElementById("concert-list");
+                        list.innerHTML = "";
 
                         concerts.forEach(concert => {
-                            const concertDiv = document.createElement('div');
-                            concertDiv.className = 'concert';
-                            concertDiv.innerHTML = `
-                                <h2>${concert.title}</h2>
-                                <p><strong>Date:</strong> ${concert.dateTime}</p>
-                                <p><strong>Status:</strong> ${concert.status}</p>
-                                <p><strong>Description:</strong> ${concert.description}</p>
-                                <p><strong>Tickets:</strong> ${concert.tickets}</p>
-                                <p><strong>Venue:</strong> ${concert.venue?.name || "Unknown"}</p>
-                            `;
-                            list.appendChild(concertDiv);
-                        });
-                    })
-                    .catch(error => console.error('Error loading concerts:', error));
+                        const card = document.createElement("div");
+                        card.className = "concert";
+                        card.innerHTML = `
+                            <h2>${concert["Concert name"] || "No name"}</h2>
+                            <p><strong>Date:</strong> ${concert["Concert date"] ? new Date(concert["Concert date"]).toLocaleDateString() : "N/A"}</p>
+                            <p><strong>Status:</strong> ${concert.status || "N/A"}</p>
+                            <p><strong>Tickets limit:</strong> ${concert["Ticket limit"] ?? "N/A"}</p>
+                            <p><strong>Tickets sold:</strong> ${concert["Ticket Sold"] ?? "N/A"}</p>
+                            <p><strong>Registered:</strong> ${concert.registrationDate ? new Date(concert.registrationDate).toLocaleDateString() : "N/A"}</p>`;
+                            list.appendChild(card);
+                            });
+                        })
+                        .catch(error => {
+                            console.error("Error loading concerts:", error);
+                            document.getElementById("concert-list").innerHTML =
+                            `<p style="color: red;">Failed to load concerts.</p>`;
+                    });
                 </script>
             </div>
         </div>
