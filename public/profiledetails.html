@@ -8,13 +8,13 @@
         <div id="footer-bar">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
 
         <div id="dark-box">
-            <h2>Naudotojo informacija</h2>
+            <h2>Profile details</h2>
             <div id="userInfo">
-                <p><strong>Vardas:</strong> <span id="name"></span></p>
-                <p><strong>Pavardė:</strong> <span id="surname"></span></p>
-                <p><strong>El. paštas:</strong> <span id="email"></span></p>
-                <p><strong>Telefonas:</strong> <span id="phone"></span></p>
-                <p><strong>Registracijos data:</strong> <span id="registrationDate"></span></p>
+                <p><strong>Name:</strong> <span id="name"></span></p>
+                <p><strong>Surname:</strong> <span id="surname"></span></p>
+                <p><strong>Email:</strong> <span id="email"></span></p>
+                <p><strong>Phone number:</strong> <span id="phone"></span></p>
+                <p><strong>Registration date:</strong> <span id="registrationDate"></span></p>
             </div>
         </div>
     </head>
@@ -39,7 +39,7 @@
                 document.getElementById("registrationDate").textContent = new Date(user.registrationDate).toLocaleString();
             })
             .catch(error => {
-                document.getElementById("userInfo").innerHTML = "<p>Klaida kraunant duomenis.</p>";
+                document.getElementById("userInfo").innerHTML = "<p>Error while loading data.</p>";
                 console.error(error);
             });
         </script>

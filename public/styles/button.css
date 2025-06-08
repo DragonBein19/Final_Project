@@ -103,3 +103,22 @@ thead th {
 .logout-button:hover{
     background-color: #d3d3d3;
 }
+
+.admin-row {
+    background-color: #cdefff !important;
+}
+#users-table tr td {
+    transition: background-color 0.3s ease;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+th {
+    background-color: #d1eaff;
+}

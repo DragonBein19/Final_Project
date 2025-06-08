@@ -17,32 +17,17 @@
     <table id="concerts-table">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Title</th>
-                <th>Description</th>
+                <th>Date</th>
                 <th>Status</th>
                 <th>Ticket limit</th>
                 <th>Sold</th>
-                <th>Time</th>
-                <th>Venue ID</th>
+                <th>Registration Date</th>
                 <th>Edit</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>Koncertas Alpha</td>
-                <td>Didelis koncertas</td>
-                <td>aktyvus</td>
-                <td>500</td>
-                <td>150</td>
-                <td>2025-08-15 20:00</td>
-                <td>10</td>
-                <td>
-                    <button class="action-button edit-button" onclick="editConcert(this)">Redaguoti</button>
-                    <button class="action-button delete-button" onclick="deleteConcert(this)">Šalinti</button>
-                </td>
-            </tr>
+            <!-- rows will be inserted here by JavaScript -->
         </tbody>
     </table>
 
@@ -51,57 +36,183 @@
     </div>
 
     <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch('/concerts')
+                .then(response => {
+                    if (!response.ok) throw new Error("Tinklo atsakymas buvo netinkamas");
+                    return response.json();
+                })
+                .then(data => {
+                    const tableBody = document.querySelector("#concerts-table tbody");
+                    if (!tableBody) {
+                        console.error("No <tbody> found in table");
+                        return;
+                    }
+
+                    tableBody.innerHTML = '';
+                    data.forEach(concert => {
+                        const row = document.createElement("tr");
+
+                        // This will fail if concert["id"] is undefined
+                        row.setAttribute("data-id", concert["id"]); 
+
+                        // Optional: console log to check what’s inside
+                        if (concert["id"] === undefined) {
+                            console.warn("Concert is missing ID:", concert);
+                        }
+
+                        row.innerHTML = `
+                            <td>${concert["Concert name"]}</td>
+                            <td>${concert["Concert date"]}</td>
+                            <td>${concert["status"]}</td>
+                            <td>${concert["Ticket limit"]}</td>
+                            <td>${concert["Ticket Sold"]}</td>
+                            <td>${concert["registrationDate"]}</td>
+                            <td>
+                                <button class="action-button edit-button" onclick="editConcert(this)">Edit</button>
+                                <button class="action-button delete-button" onclick="deleteConcert(this)">Delete</button>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                })
+
+                .catch(error => {
+                    console.error("Klaida gaunant koncertus:", error);
+                });
+        });
+
         function editConcert(button) {
-            const row = button.closest("tr");
-            const cells = row.querySelectorAll("td");
+        const row = button.closest("tr");
+        const cells = row.querySelectorAll("td");
 
-            const fields = [
-                "concert_name", "description", "status", "tickets_limit",
-                "tickets_sold", "time", "venue_id"
-            ];
+        const fields = [
+            "Concert name", "Concert date", "status", "Ticket limit",
+            "Ticket Sold", "registrationDate"
+        ];
 
-            for (let i = 1; i <= 7; i++) {
-                const newValue = prompt(`Add new meaning "${fields[i - 1]}"`, cells[i].innerText);
-                if (newValue !== null) cells[i].innerText = newValue;
+        // Prompt for new values
+        let updatedData = {};
+        for (let i = 0; i < fields.length; i++) {
+            const newValue = prompt(`Edit "${fields[i]}"`, cells[i].innerText);
+            if (newValue !== null) {
+                cells[i].innerText = newValue;
+                updatedData[fields[i]] = newValue;
+            } else {
+                updatedData[fields[i]] = cells[i].innerText;
             }
         }
 
+        const concertId = row.getAttribute("data-id");
+        if (!concertId) {
+            alert("Cannot update: ID missing");
+            return;
+        }
+
+        // Send updated data to server
+        fetch(`/concerts/${concertId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedData)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("Failed to update concert");
+            alert("Concert updated successfully");
+        })
+        .catch(error => {
+            console.error("Error updating concert:", error);
+            alert("Could not update concert");
+        });
+    }
+
+
         function deleteConcert(button) {
             const row = button.closest("tr");
+            const concertId = row.getAttribute("data-id");
+
+            if (!concertId || concertId === "null") {
+                alert("Cannot delete: ID not available.");
+                return;
+            }
+
             if (confirm("Are you sure you want to delete?")) {
-                row.remove();
+                fetch(`/concerts/${concertId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error("Failed to delete");
+                    row.remove();
+                })
+                .catch(error => {
+                    console.error("Error deleting concert:", error);
+                    alert("Could not delete the concert.");
+                });
             }
         }
 
         function addConcert() {
-            const table = document.getElementById("concerts-table").getElementsByTagName("tbody")[0];
-            const row = table.insertRow();
+            const title = prompt("Enter concert title:");
+            if (!title) return alert("Concert title is required.");
 
-            const id = table.rows.length + 1;
-            const concertName = prompt("Enter new title:");
-            const description = prompt("Enter new description:");
-            const status = prompt("Enter new status:");
-            const ticketsLimit = prompt("Enter new ticket limit:");
-            const ticketsSold = prompt("Enter sold state:");
-            const time = prompt("Enter new time:");
-            const venueId = prompt("Enter new venue ID:");
+            const date = prompt("Enter concert date (ISO format e.g. 2025-06-08T19:00:00):");
+            if (!date) return alert("Concert date is required.");
 
-            const values = [
-                id, concertName, description, status,
-                ticketsLimit, ticketsSold, time, venueId
-            ];
+            const status = prompt("Enter status:");
+            const ticketLimit = prompt("Enter ticket limit:");
+            const sold = prompt("Enter tickets sold:");
 
-            values.forEach(value => {
-                const cell = row.insertCell();
-                cell.innerText = value;
-            });
+            const selectedVenueId = prompt("Enter Venue ID (required):");
+            if (!selectedVenueId) {
+            alert("Venue ID is required");
+            return;
+            }
 
-            const actionsCell = row.insertCell();
-            actionsCell.innerHTML = `
-                <button class="action-button edit-button" onclick="editConcert(this)">Redaguoti</button>
-                <button class="action-button delete-button" onclick="deleteConcert(this)">Šalinti</button>
+            const newConcert = {
+            concertName: title,
+            concert_date: date,
+            status: status,
+            ticketsLimit: parseInt(ticketLimit) || 0,
+            ticketsSold: parseInt(sold) || 0,
+            description: "",
+            venue: { id: parseInt(selectedVenueId) }
+            };
+
+            fetch('/concerts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newConcert)
+            })
+            .then(response => {
+            if (!response.ok) throw new Error("Failed to add concert");
+            return response.json();
+            })
+            .then(createdConcert => {
+            alert("Concert added successfully!");
+            const tableBody = document.querySelector("#concerts-table tbody");
+            const row = document.createElement("tr");
+            row.setAttribute("data-id", createdConcert.id);
+            row.innerHTML = `
+                <td>${createdConcert.concertName}</td>
+                <td>${createdConcert.concert_date}</td>
+                <td>${createdConcert.status}</td>
+                <td>${createdConcert.ticketsLimit}</td>
+                <td>${createdConcert.ticketsSold}</td>
+                <td>${createdConcert.concert_date}</td>
+                <td>
+                    <button class="action-button edit-button" onclick="editConcert(this)">Edit</button>
+                    <button class="action-button delete-button" onclick="deleteConcert(this)">Delete</button>
+                </td>
             `;
+            tableBody.appendChild(row);
+            })
+            .catch(error => {
+            console.error("Error adding concert:", error);
+            alert("Could not add concert");
+            });
         }
+
     </script>
 
     <a class="logout-button" href="index.html">Log out</a>

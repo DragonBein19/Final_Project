@@ -35,8 +35,8 @@
                 <td>501</td>
                 <td>3</td>
                 <td>
-                    <button class="action-button edit-button" onclick="editTicket(this)">Redaguoti</button>
-                    <button class="action-button delete-button" onclick="deleteTicket(this)">Šalinti</button>
+                    <button class="action-button edit-button" onclick="editTicket(this)">Edit</button>
+                    <button class="action-button delete-button" onclick="deleteTicket(this)">Delete</button>
                 </td>
             </tr>
             <tr>
@@ -48,8 +48,8 @@
                 <td>502</td>
                 <td>2</td>
                 <td>
-                    <button class="action-button edit-button" onclick="editTicket(this)">Redaguoti</button>
-                    <button class="action-button delete-button" onclick="deleteTicket(this)">Šalinti</button>
+                    <button class="action-button edit-button" onclick="editTicket(this)">Edit</button>
+                    <button class="action-button delete-button" onclick="deleteTicket(this)">Remove</button>
                 </td>
             </tr>
         </tbody>
@@ -108,8 +108,8 @@
 
             const actionsCell = newRow.insertCell();
             actionsCell.innerHTML = `
-                <button class="action-button edit-button" onclick="editTicket(this)">Redaguoti</button>
-                <button class="action-button delete-button" onclick="deleteTicket(this)">Šalinti</button>
+                <button class="action-button edit-button" onclick="editTicket(this)">Edit</button>
+                <button class="action-button delete-button" onclick="deleteTicket(this)">Delete</button>
             `;
         }
     </script>

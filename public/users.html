@@ -4,26 +4,6 @@
     <meta charset="UTF-8">
     <title>Ticket Live Users</title>
     <link rel="stylesheet" href="styles/button.css">
-    <style>
-        .admin-row {
-            background-color: #cdefff !important;
-        }
-        #users-table tr td {
-            transition: background-color 0.3s ease;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: left;
-        }
-        th {
-            background-color: #d1eaff;
-        }
-    </style>
 </head>
 <body>
 <div id="header-bar">TICKET LIVE USERS</div>
@@ -63,7 +43,7 @@
                     if (!response.ok) {
                         throw new Error("Failed to delete user from server.");
                     }
-                    row.remove(); // iš lentelės
+                    row.remove();
                 })
                 .catch(error => {
                     console.error("Error deleting user:", error);
@@ -99,7 +79,6 @@
             email,
             phone,
             userName
-            // ⛔️ NEsiunčiame registrationDate
         };
 
         fetch(`http://localhost:8080/admin/users/${userId}`, {
@@ -112,7 +91,7 @@
             .then(response => {
                 if (!response.ok) throw new Error("Failed to update user");
                 alert("User updated successfully.");
-                window.location.reload(); // atsinaujina lentelė
+                window.location.reload();
             })
             .catch(error => {
                 console.error("Update failed:", error);
@@ -145,10 +124,10 @@
                         <td>${new Date(user.registrationDate).toLocaleString()}</td>
                         <td>
                             ${isAdmin
-                                ? '<span style="color: gray; font-style: italic;">Negalima redaguoti</span>'
+                                ? '<span style="color: gray; font-style: italic;">Can not edit</span>'
                                 : `
-                                    <button class="action-button edit-button" onclick="editUser(this)">Redaguoti</button>
-                                    <button class="action-button delete-button" onclick="deleteUser(this)">Šalinti</button>
+                                    <button class="action-button edit-button" onclick="editUser(this)">Edit</button>
+                                    <button class="action-button delete-button" onclick="deleteUser(this)">Delete</button>
                                   `
                             }
                         </td>
