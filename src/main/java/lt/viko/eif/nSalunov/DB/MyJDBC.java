@@ -8,7 +8,7 @@ import java.sql.*;
  * It provides methods to open and close the connection, as well as retrieve the current connection instance.
  */
 public class MyJDBC {
-    private final String URL = "jdbc:mysql://127.0.0.1:3306/koncertuschema";
+    private final String URL = "jdbc:mysql://127.0.0.1:8/koncertuschema";
     private final String USER = "root";
     private final String PASSWORD = ""; //input password if needed
     private Connection connection;
