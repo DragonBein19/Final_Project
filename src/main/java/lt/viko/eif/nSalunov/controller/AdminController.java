@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
-@CrossOrigin(origins = "*") // leidžia prieiti iš JS (front-end)
+@CrossOrigin(origins = "*")
 public class AdminController {
 
     private final UserRepository userRepository;
@@ -21,13 +21,13 @@ public class AdminController {
         this.userRepository = userRepository;
     }
 
-    // ✅ Gauti visus vartotojus
+    // Get all users
     @GetMapping("/users")
     public List<Users> getAllUsers() {
         return userRepository.findAll();
     }
 
-    // ✅ Ištrinti vartotoją pagal ID
+    // Delete user by their ID
     @DeleteMapping("/users/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable int id) {
         System.out.println("Gauta trynimo užklausa ID: " + id);

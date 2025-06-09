@@ -43,9 +43,12 @@ public class ConcertController {
     public ResponseEntity<?> updateConcert(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
         return concertRepository.findById(id).map(concert -> {
             try {
-                if (updates.containsKey("concertName")) {
+                if (updates.containsKey("Concert name")) {
+                    concert.setConcertName((String) updates.get("Concert name"));
+                } else if (updates.containsKey("concertName")) {
                     concert.setConcertName((String) updates.get("concertName"));
                 }
+
                 if (updates.containsKey("Concert date")) {
                     concert.setConcert_date(LocalDateTime.parse((String) updates.get("Concert date")));
                 }

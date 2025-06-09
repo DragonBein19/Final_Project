@@ -11,7 +11,6 @@ public class ConcertRequest {
     private int ticketsSold;
     private Long venueId;
 
-    // Getters and setters
     public String getConcertName() {
         return concertName;
     }
