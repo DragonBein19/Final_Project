@@ -1,220 +1,249 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Concert Management</title>
     <link rel="stylesheet" href="styles/button.css">
+    <style>
+        td input, td textarea {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        #add-concert-form {
+            display: none;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #aaa;
+            width: 60%;
+            background: #f8f8f8;
+        }
+
+        #add-concert-form input, #add-concert-form textarea {
+            width: 100%;
+            margin: 5px 0;
+        }
+    </style>
 </head>
 <body>
-    <div id="header-bar">TICKET LIVE CONCERTS</div>
+<div id="header-bar">TICKET LIVE CONCERTS</div>
 
-    <div id="button-container">
-        <a href="tickets.html" class="admin-button">Tickets</a>
-        <a href="concerts.html" class="admin-button">Concerts</a>
-        <a href="users.html" class="admin-button">Users</a>
-    </div>
+<div id="button-container">
+    <a href="tickets.html" class="admin-button">Tickets</a>
+    <a href="concerts.html" class="admin-button">Concerts</a>
+    <a href="users.html" class="admin-button">Users</a>
+</div>
 
-    <table id="concerts-table">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Ticket limit</th>
-                <th>Sold</th>
-                <th>Registration Date</th>
-                <th>Edit</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- rows will be inserted here by JavaScript -->
-        </tbody>
-    </table>
+<table id="concerts-table">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Date</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Ticket limit</th>
+        <th>Sold</th>
 
-    <div style="text-align: center; margin-bottom: 20px;">
-        <button onclick="addConcert()" class="action-button edit-button">Add new</button>
-    </div>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            fetch('/concerts')
-                .then(response => {
-                    if (!response.ok) throw new Error("Tinklo atsakymas buvo netinkamas");
-                    return response.json();
-                })
-                .then(data => {
-                    const tableBody = document.querySelector("#concerts-table tbody");
-                    if (!tableBody) {
-                        console.error("No <tbody> found in table");
-                        return;
-                    }
+<div style="text-align: center; margin-bottom: 20px;">
+    <button onclick="showForm()" class="action-button edit-button">Add new</button>
+</div>
 
-                    tableBody.innerHTML = '';
-                    data.forEach(concert => {
-                        const row = document.createElement("tr");
+<!-- Add concert form -->
+<div id="add-concert-form">
+    <h3>Add New Concert</h3>
+    <form id="concertForm">
+        <label>Title: <input type="text" name="concertName" required></label><br>
+        <label>Date: <input type="datetime-local" name="concert_date" required></label><br>
+        <label>Description: <textarea name="description" rows="3" required></textarea></label><br>
+        <label>Status: <input type="text" name="status" required></label><br>
+        <label>Ticket Limit: <input type="number" name="ticketsLimit" required></label><br>
+        <label>Tickets Sold: <input type="number" name="ticketsSold" required></label><br>
+        <label>Venue ID: <input type="number" name="venueId" required></label><br><br>
+        <button type="submit" class="action-button edit-button">Save</button>
+        <button type="button" onclick="hideForm()" class="action-button delete-button">Cancel</button>
+    </form>
+</div>
 
-                        // This will fail if concert["id"] is undefined
-                        row.setAttribute("data-id", concert["id"]); 
+<script>
+    const fields = [
+        "concert_name", "concert_date", "description", "status",
+        "tickets_limit", "tickets_sold"
+    ];
 
-                        // Optional: console log to check what’s inside
-                        if (concert["id"] === undefined) {
-                            console.warn("Concert is missing ID:", concert);
-                        }
+    document.addEventListener("DOMContentLoaded", () => {
+        loadConcerts();
+    });
 
-                        row.innerHTML = `
-                            <td>${concert["Concert name"]}</td>
-                            <td>${concert["Concert date"]}</td>
-                            <td>${concert["status"]}</td>
-                            <td>${concert["Ticket limit"]}</td>
-                            <td>${concert["Ticket Sold"]}</td>
-                            <td>${concert["registrationDate"]}</td>
-                            <td>
-                                <button class="action-button edit-button" onclick="editConcert(this)">Edit</button>
-                                <button class="action-button delete-button" onclick="deleteConcert(this)">Delete</button>
-                            </td>
-                        `;
-                        tableBody.appendChild(row);
+    function loadConcerts() {
+        fetch('/concerts')
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.querySelector("#concerts-table tbody");
+                tbody.innerHTML = "";
+                data.forEach(concert => {
+                    const tr = document.createElement("tr");
+                    tr.setAttribute("data-id", concert.id);
+
+                    fields.forEach((field) => {
+                        const td = document.createElement("td");
+                        td.textContent = concert[field] ?? '';
+                        tr.appendChild(td);
                     });
-                })
 
-                .catch(error => {
-                    console.error("Klaida gaunant koncertus:", error);
+                    const actionTd = document.createElement("td");
+                    actionTd.innerHTML = `
+                        <button class="action-button edit-button" onclick="toggleEdit(this)">Edit</button>
+                        <button class="action-button delete-button" onclick="deleteConcert(this)">Delete</button>
+                    `;
+                    tr.appendChild(actionTd);
+
+                    tbody.appendChild(tr);
                 });
-        });
-
-        function editConcert(button) {
-        const row = button.closest("tr");
-        const cells = row.querySelectorAll("td");
-
-        const fields = [
-            "Concert name", "Concert date", "status", "Ticket limit",
-            "Ticket Sold", "registrationDate"
-        ];
-
-        // Prompt for new values
-        let updatedData = {};
-        for (let i = 0; i < fields.length; i++) {
-            const newValue = prompt(`Edit "${fields[i]}"`, cells[i].innerText);
-            if (newValue !== null) {
-                cells[i].innerText = newValue;
-                updatedData[fields[i]] = newValue;
-            } else {
-                updatedData[fields[i]] = cells[i].innerText;
-            }
-        }
-
-        const concertId = row.getAttribute("data-id");
-        if (!concertId) {
-            alert("Cannot update: ID missing");
-            return;
-        }
-
-        // Send updated data to server
-        fetch(`/concerts/${concertId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updatedData)
-        })
-        .then(response => {
-            if (!response.ok) throw new Error("Failed to update concert");
-            alert("Concert updated successfully");
-        })
-        .catch(error => {
-            console.error("Error updating concert:", error);
-            alert("Could not update concert");
-        });
+            });
     }
 
+    function toggleEdit(button) {
+        const tr = button.closest("tr");
+        const isSaving = button.textContent === "Save";
+        const concertId = tr.getAttribute("data-id");
+        const tds = tr.querySelectorAll("td");
+
+        if (!isSaving) {
+            for (let i = 0; i < fields.length; i++) {
+                const val = tds[i].textContent.trim();
+                const input = fields[i] === "description" ? document.createElement("textarea") : document.createElement("input");
+                if (fields[i].includes("date")) input.type = "datetime-local";
+                input.value = val;
+                tds[i].innerHTML = '';
+                tds[i].appendChild(input);
+            }
+
+            const actionTd = tds[tds.length - 1];
+            actionTd.innerHTML = '';
+
+            const saveBtn = document.createElement("button");
+            saveBtn.className = "action-button edit-button";
+            saveBtn.textContent = "Save";
+            saveBtn.onclick = () => toggleEdit(saveBtn);
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.className = "action-button delete-button";
+            deleteBtn.textContent = "Delete";
+            deleteBtn.onclick = () => deleteConcert(deleteBtn);
+
+            actionTd.appendChild(saveBtn);
+            actionTd.appendChild(deleteBtn);
+        } else {
+            let updatedData = {};
+            for (let i = 0; i < fields.length; i++) {
+                const input = tds[i].querySelector("input, textarea");
+                updatedData[fields[i]] = input.type === "number" || fields[i].includes("tickets")
+                    ? parseInt(input.value)
+                    : input.value;
+            }
+
+            fetch(`/concerts/${concertId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedData)
+            })
+            .then(res => {
+                if (!res.ok) throw new Error("Update failed");
+
+                for (let i = 0; i < fields.length; i++) {
+                    tds[i].textContent = updatedData[fields[i]];
+                }
+
+                const actionTd = tds[tds.length - 1];
+                actionTd.innerHTML = '';
+
+                const editBtn = document.createElement("button");
+                editBtn.className = "action-button edit-button";
+                editBtn.textContent = "Edit";
+                editBtn.onclick = () => toggleEdit(editBtn);
+
+                const deleteBtn = document.createElement("button");
+                deleteBtn.className = "action-button delete-button";
+                deleteBtn.textContent = "Delete";
+                deleteBtn.onclick = () => deleteConcert(deleteBtn);
+
+                actionTd.appendChild(editBtn);
+                actionTd.appendChild(deleteBtn);
+
+                alert("Saved successfully!");
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Failed to save!");
+            });
+        }
+    }
 
         function deleteConcert(button) {
             const row = button.closest("tr");
             const concertId = row.getAttribute("data-id");
 
-            if (!concertId || concertId === "null") {
-                alert("Cannot delete: ID not available.");
-                return;
-            }
-
             if (confirm("Are you sure you want to delete?")) {
-                fetch(`/concerts/${concertId}`, {
-                    method: 'DELETE'
-                })
-                .then(response => {
-                    if (!response.ok) throw new Error("Failed to delete");
-                    row.remove();
-                })
-                .catch(error => {
-                    console.error("Error deleting concert:", error);
-                    alert("Could not delete the concert.");
-                });
+                fetch(`/concerts/${concertId}`, { method: 'DELETE' })
+                    .then(res => {
+                        if (!res.ok) throw new Error("Delete failed");
+                        row.remove();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert("Failed to delete concert.");
+                    });
             }
         }
 
-        function addConcert() {
-            const title = prompt("Enter concert title:");
-            if (!title) return alert("Concert title is required.");
+        function showForm() {
+            document.getElementById("add-concert-form").style.display = "block";
+        }
 
-            const date = prompt("Enter concert date (ISO format e.g. 2025-06-08T19:00:00):");
-            if (!date) return alert("Concert date is required.");
+        function hideForm() {
+            document.getElementById("concertForm").reset();
+            document.getElementById("add-concert-form").style.display = "none";
+        }
 
-            const status = prompt("Enter status:");
-            const ticketLimit = prompt("Enter ticket limit:");
-            const sold = prompt("Enter tickets sold:");
-
-            const selectedVenueId = prompt("Enter Venue ID (required):");
-            if (!selectedVenueId) {
-            alert("Venue ID is required");
-            return;
-            }
-
+        document.getElementById("concertForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
             const newConcert = {
-            concertName: title,
-            concert_date: date,
-            status: status,
-            ticketsLimit: parseInt(ticketLimit) || 0,
-            ticketsSold: parseInt(sold) || 0,
-            description: "",
-            venue: { id: parseInt(selectedVenueId) }
+                concertName: formData.get("concertName"),
+                concert_date: formData.get("concert_date"),
+                description: formData.get("description"),
+                status: formData.get("status"),
+                ticketsLimit: parseInt(formData.get("ticketsLimit")),
+                ticketsSold: parseInt(formData.get("ticketsSold")),
+                venue: { id: parseInt(formData.get("venueId")) }
             };
 
             fetch('/concerts', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newConcert)
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newConcert)
             })
-            .then(response => {
-            if (!response.ok) throw new Error("Failed to add concert");
-            return response.json();
+            .then(res => {
+                if (!res.ok) throw new Error("Failed to add");
+                return res.json();
             })
-            .then(createdConcert => {
-            alert("Concert added successfully!");
-            const tableBody = document.querySelector("#concerts-table tbody");
-            const row = document.createElement("tr");
-            row.setAttribute("data-id", createdConcert.id);
-            row.innerHTML = `
-                <td>${createdConcert.concertName}</td>
-                <td>${createdConcert.concert_date}</td>
-                <td>${createdConcert.status}</td>
-                <td>${createdConcert.ticketsLimit}</td>
-                <td>${createdConcert.ticketsSold}</td>
-                <td>${createdConcert.concert_date}</td>
-                <td>
-                    <button class="action-button edit-button" onclick="editConcert(this)">Edit</button>
-                    <button class="action-button delete-button" onclick="deleteConcert(this)">Delete</button>
-                </td>
-            `;
-            tableBody.appendChild(row);
+            .then(() => {
+                hideForm();
+                loadConcerts();
             })
-            .catch(error => {
-            console.error("Error adding concert:", error);
-            alert("Could not add concert");
+            .catch(err => {
+                console.error(err);
+                alert("Could not add concert.");
             });
-        }
+        });
+</script>
 
-    </script>
-
-    <a class="logout-button" href="index.html">Log out</a>
+<a class="logout-button" href="index.html">Log out</a>
 </body>
 </html>

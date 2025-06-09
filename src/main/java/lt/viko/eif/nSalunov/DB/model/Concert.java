@@ -31,7 +31,7 @@ public class Concert {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "venue_id", nullable = false)
     @JsonManagedReference
     private Venue venue;
@@ -58,6 +58,7 @@ public class Concert {
         this.concertName = concertName;
         this.concert_date = concert_date;
         this.ticketsLimit = ticketsLimit;
+        this.ticketsSold = ticketsSold;
         this.status = status;
         this.description = description;
         this.venue = venue;
