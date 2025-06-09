@@ -2,6 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="styles/button.css">
+    <title>Ticket Management</title>
 </head>
 <body>
     <div id="header-bar">TICKET LIVE TICKETS</div>
@@ -25,9 +26,7 @@
                 <th>Edit</th>
             </tr>
         </thead>
-        <tbody id="tickets-body">
-            <!-- čia bus dinamiškai įkelti duomenys -->
-        </tbody>
+        <tbody id="tickets-body"></tbody>
 
     </table>
 
@@ -37,11 +36,11 @@
 
     <script>
         function loadTickets() {
-            fetch('http://localhost:8080/ticket')  // pakeisk adresą jei reikia
+            fetch('http://localhost:8080/ticket')
                 .then(response => response.json())
                 .then(tickets => {
                     const tbody = document.getElementById('tickets-body');
-                    tbody.innerHTML = '';  // išvalom esamą turinį
+                    tbody.innerHTML = '';
                     
                     tickets.forEach(ticket => {
                         const tr = document.createElement('tr');

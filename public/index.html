@@ -3,6 +3,7 @@
 <head>
     <link href="https://fonts.googleapis.com/css?family=Afacad" rel="stylesheet">
     <link rel="stylesheet" href="styles/index.css">
+    <title>Ticket Live</title>
 </head>
 <body>
     <div id="navigation"></div>
@@ -43,6 +44,11 @@
                     <option value="desc">Most distant</option>
                 </select>
             </div>
+
+            <div id="concert-image-container">
+                <img src="/konc2.jpeg" alt="Concert Image">
+            </div>
+
             <div id="concert-list-container"></div>
         </div>
 
@@ -109,13 +115,6 @@
             fullWindow.style.display = "none";
         });
 
-        const concerts = [
-            { artist: "Justine Timberlake", location: "Kaunas", genre: "Pop", date: "2025-06-06" },
-            { artist: "BA.", location: "Vilnius", genre: "Rock", date: "2025-06-10" },
-            { artist: "Free finga", location: "Vilnius", genre: "R&B", date: "2025-07-01" },
-            { artist: "OG Version", location: "Klaipėda", genre: "Rap", date: "2025-06-20" },
-        ];
-
         window.onload = function () {
             const artistSet = new Set();
             const locationSet = new Set();
@@ -142,11 +141,10 @@
             return response.json();
         })
         .then(concerts => {
-            // Jei reikia papildomo venue fetch - pridėsim vėliau
             allConcerts = concerts.map(c => ({
                 artist: c["Concert name"],
-                location: c.city || "Unknown", // jei turi city iš venue
-                genre: c.genre || "Other",     // jei žanras yra backend'e
+                location: c.city || "Other", 
+                genre: c.genre || "Other", 
                 date: c["Concert date"]
             }));
 

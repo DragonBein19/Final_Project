@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link href='https://fonts.googleapis.com/css?family=Afacad' rel='stylesheet'>
+        <link rel="stylesheet" href="styles/profiledetails.css">     
+    </head>
+
+    <body>
         <img src="/konc2.jpeg" alt="Fonas" id="background-image" />
 
         <div id="header-bar" id="center-title">TICKET LIVE</div>
@@ -9,22 +14,17 @@
 
         <div id="dark-box">
             <h2>Profile details</h2>
-            <div id="userInfo">
-                <p><strong>Name:</strong> <span id="name"></span></p>
-                <p><strong>Surname:</strong> <span id="surname"></span></p>
-                <p><strong>Email:</strong> <span id="email"></span></p>
-                <p><strong>Phone number:</strong> <span id="phone"></span></p>
-                <p><strong>Registration date:</strong> <span id="registrationDate"></span></p>
-            </div>
+            <div id="user-info">
+                <p><span class="label">Name:</span> <span class="value" id="name"></span></p>
+                <p><span class="label">Surname:</span> <span class="value" id="surname"></span></p>
+                <p><span class="label">Email:</span> <span class="value" id="email"></span></p>
+                <p><span class="label">Phone number:</span> <span class="value" id="phone"></span></p>
+                <p><span class="label">Registration date:</span> <span class="value" id="registrationDate"></span></p>
+                </div>
+            <a id="button" href="logedin.html">Done</a>
         </div>
-    </head>
-
-    <body>
-        <link href='https://fonts.googleapis.com/css?family=Afacad' rel='stylesheet'>
-        <link rel="stylesheet" href="styles/profiledetails.css">
-
         <script>
-            fetch('http://localhost:3000/users)
+            fetch('http://localhost:3000/users')
             .then(response => {
                 if (!response.ok) {
                     throw new Error("Error: " + response.statusText);

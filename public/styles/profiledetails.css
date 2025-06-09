@@ -13,6 +13,12 @@
                 z-index: -1;
                 opacity: 0.9;
             }
+
+            #user-info {
+                font-family: 'Afacad';
+                font-size: 20px;
+            }
+
             #header-bar {
                 background-color: #000107;
                 height: 90px;
@@ -51,6 +57,26 @@
                 font-weight: normal;
                 font-family: 'Afacad';
                 font-size: 50px;
+            
+            }
+
+            #button {
+                padding: 15px;
+                font-size: 22px;
+                background-color: #3f8ecb;
+                border: none;
+                border-radius: 10px;
+                color: white;
+                cursor: pointer;
+                font-family: 'Afacad';
+                transition: background-color 0.3s ease;
+                text-align: center;
+                text-decoration: none;
+                margin-top: auto;
+            }
+
+            #button:hover {
+                background-color: #0a4471;
             }
 
             #footer-bar {
