@@ -11,9 +11,10 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "concert_id", nullable = false)
     private Concert concert;
+
 
     @Column(nullable = false, length = 45)
     private String category;
@@ -59,4 +60,12 @@ public class Ticket {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+    public TicketCategory getTicketCategory() {
+        return ticketCategory;
+    }
+
+    public void setTicketCategory(TicketCategory ticketCategory) {
+        this.ticketCategory = ticketCategory;
+    }
+
 }

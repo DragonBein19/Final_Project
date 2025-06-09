@@ -1,91 +1,223 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <title>Ticket Management Debug</title>
     <link rel="stylesheet" href="styles/button.css">
-    <title>Ticket Management</title>
+    <style>
+        input[type="text"], select {
+            padding: 6px 10px;
+            margin: 5px;
+            width: 160px;
+            font-size: 14px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        #add-ticket-form {
+            margin-bottom: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        thead {
+            background-color: #e0f0ff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 <body>
-    <div id="header-bar">TICKET LIVE TICKETS</div>
+<div id="header-bar">TICKET LIVE TICKETS</div>
 
-    <div id="button-container">
-        <a href="tickets.html" class="admin-button">Tickets</a>
-        <a href="concerts.html" class="admin-button">Concerts</a>
-        <a href="users.html" class="admin-button">Users</a>
-    </div>
+<div id="button-container">
+    <a href="tickets.html" class="admin-button">Tickets</a>
+    <a href="concerts.html" class="admin-button">Concerts</a>
+    <a href="users.html" class="admin-button">Users</a>
+</div>
 
-    <table id="tickets-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Catagory</th>
-                <th>Concert ID</th>
-                <th>Seat</th>
-                <th>Status</th>
-                <th>Description ID</th>
-                <th>Catagory ID</th>
-                <th>Edit</th>
-            </tr>
-        </thead>
-        <tbody id="tickets-body"></tbody>
+<h3>Add New Ticket</h3>
+<div id="add-ticket-form">
+    <input type="text" id="new-category" placeholder="Category">
+    <select id="new-concert"></select>
+    <input type="text" id="new-seat" placeholder="Seat Number">
+    <input type="text" id="new-status" placeholder="Status">
+    <input type="text" id="new-description" placeholder="Description">
+    <button class="action-button save-button" onclick="addTicket()">Add Ticket</button>
+</div>
 
-    </table>
+<table id="tickets-table" border="1" style="width: 100%;">
+    <thead>
+    <tr>
+        <th>Category</th>
+        <th>Concert</th>
+        <th>Seat</th>
+        <th>Status</th>
+        <th>Description</th>
+        <th>Edit</th>
+    </tr>
+    </thead>
+    <tbody id="tickets-body"></tbody>
+</table>
 
-    <div style="text-align: center; margin-bottom: 20px;">
-        <button onclick="addTicket()" class="action-button edit-button">Add new</button>
-    </div>
+<script>
+    let concertOptions = [];
 
-    <script>
-        function loadTickets() {
-            fetch('http://localhost:8080/ticket')
-                .then(response => response.json())
-                .then(tickets => {
-                    const tbody = document.getElementById('tickets-body');
-                    tbody.innerHTML = '';
-                    
-                    tickets.forEach(ticket => {
-                        const tr = document.createElement('tr');
+async function fetchConcerts() {
+    try {
+        const res = await fetch("http://localhost:8080/concerts");
+        const concerts = await res.json();
 
-                        tr.innerHTML = `
-                            <td>${ticket.id}</td>
-                            <td>${ticket.category || ''}</td>
-                            <td>${ticket.concert_id || ''}</td>
-                            <td>${ticket.seat_number || ''}</td>
-                            <td>${ticket.status || ''}</td>
-                            <td>${ticket.ticket_description_id || ''}</td>
-                            <td>${ticket.ticket_category_id || ''}</td>
-                            <td>
-                                <button class="action-button edit-button" onclick="editTicket(this)">Edit</button>
-                                <button class="action-button delete-button" onclick="deleteTicket(this, ${ticket.id})">Delete</button>
-                            </td>
-                        `;
-                        tbody.appendChild(tr);
-                    });
-                })
-                .catch(error => {
-                    console.error('Klaida užkraunant ticketus:', error);
-                });
+        console.log("🎵 Concerts from API:", concerts);
+
+        if (!Array.isArray(concerts)) {
+            throw new Error("Concert data is not an array.");
         }
 
-        // Kviečiame iš karto po puslapio užkrovimo
-        window.onload = loadTickets;
+        concertOptions = concerts.map(c => ({
+            id: c["id"],
+            name: c["Concert name"]
+        }));
 
-        // Pakeisk deleteTicket funkciją, kad pašalintų ir iš backend
-        function deleteTicket(button, ticketId) {
-            if (confirm("Are you sure you want to delete?")) {
-                fetch(`http://localhost:8080/ticket/${ticketId}`, { method: 'DELETE' })
-                    .then(response => {
-                        if (response.ok) {
-                            const row = button.closest("tr");
-                            row.remove();
-                        } else {
-                            alert('Nepavyko ištrinti ticket');
-                        }
-                    })
-                    .catch(error => alert('Klaida tryniant ticket: ' + error));
-            }
+        const select = document.getElementById("new-concert");
+        select.innerHTML = concertOptions.map(opt =>
+            `<option value="${opt.name}">${opt.name}</option>`
+        ).join('');
+    } catch (error) {
+        console.error("❌ Error fetching concerts:", error);
+        alert("Could not load concerts. Check console for details.");
+    }
+}
+
+
+    async function loadTickets() {
+        try {
+            const res = await fetch("http://localhost:8080/ticket");
+            const tickets = await res.json();
+
+            const tbody = document.getElementById("tickets-body");
+            tbody.innerHTML = "";
+
+            tickets.forEach(ticket => {
+                const row = document.createElement("tr");
+
+                const dataCells = `
+                    <td>${ticket.category || '-'}</td>
+                    <td>${ticket.concert_name || '-'}</td>
+                    <td>${ticket.seat_number || '-'}</td>
+                    <td>${ticket.status || '-'}</td>
+                    <td>${ticket.ticket_category_description || '-'}</td>
+                `;
+
+                const editCell = `
+                    <td>
+                        <button class="action-button edit-button" onclick="editRow(this)">Edit</button>
+                    </td>
+                `;
+
+                row.innerHTML = dataCells + editCell;
+                row.dataset.ticket = JSON.stringify(ticket);
+                tbody.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Error loading tickets:", error);
         }
-    </script>
+    }
 
-    <a class="logout-button" href="index.html">Log out</a>
+    function editRow(button) {
+        const row = button.closest("tr");
+        const ticket = JSON.parse(row.dataset.ticket);
+
+        const concertDropdown = concertOptions.map(opt =>
+            `<option value="${opt.name}" ${opt.name === ticket.concert_name ? 'selected' : ''}>${opt.name}</option>`
+        ).join('');
+
+        row.innerHTML = `
+            <td><input type="text" value="${ticket.category || ''}"></td>
+            <td><select>${concertDropdown}</select></td>
+            <td><input type="text" value="${ticket.seat_number || ''}"></td>
+            <td><input type="text" value="${ticket.status || ''}"></td>
+            <td><input type="text" value="${ticket.ticket_category_description || ''}"></td>
+            <td><button class="action-button save-button" onclick="saveRow(this)">Save</button></td>
+        `;
+    }
+
+    function saveRow(button) {
+        const row = button.closest("tr");
+        const inputs = row.querySelectorAll("input");
+        const select = row.querySelector("select");
+
+        const updated = {
+            category: inputs[0].value,
+            concert_name: select.value,
+            seat_number: inputs[1].value,
+            status: inputs[2].value,
+            ticket_category_description: inputs[3].value,
+        };
+
+        row.innerHTML = `
+            <td>${updated.category}</td>
+            <td>${updated.concert_name}</td>
+            <td>${updated.seat_number}</td>
+            <td>${updated.status}</td>
+            <td>${updated.ticket_category_description}</td>
+            <td><button class="action-button edit-button" onclick="editRow(this)">Edit</button></td>
+        `;
+    }
+
+    async function addTicket() {
+        const category = document.getElementById("new-category").value;
+        const concert = document.getElementById("new-concert").value;
+        const seat = document.getElementById("new-seat").value;
+        const status = document.getElementById("new-status").value;
+        const description = document.getElementById("new-description").value;
+
+        const newTicket = {
+            category,
+            concert_name: concert,
+            seat_number: seat,
+            status,
+            ticket_category_description: description
+        };
+
+        try {
+            const res = await fetch("http://localhost:8080/ticket", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newTicket)
+            });
+
+            if (!res.ok) throw new Error("Failed to add ticket");
+            alert("Ticket added successfully");
+            document.getElementById("new-category").value = '';
+            document.getElementById("new-seat").value = '';
+            document.getElementById("new-status").value = '';
+            document.getElementById("new-description").value = '';
+            await loadTickets();
+        } catch (error) {
+            console.error("Add ticket error:", error);
+            alert("Failed to add ticket");
+        }
+    }
+
+    window.onload = async function () {
+        await fetchConcerts();
+        await loadTickets();
+    };
+</script>
+
+<a class="logout-button" href="index.html">Log out</a>
 </body>
 </html>
