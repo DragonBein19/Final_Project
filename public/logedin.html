@@ -75,7 +75,7 @@
         <div id="concert-container">
             <div id="concert-list">
                 <script>
-                    fetch('http://localhost:3000/concerts').then(response => {
+                    fetch('http://localhost:8080/concerts').then(response => {
                         if (!response.ok) {
                            throw new Error("Error: " + response.statusText);
                         }

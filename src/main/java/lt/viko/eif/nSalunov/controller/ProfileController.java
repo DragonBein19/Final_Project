@@ -56,19 +56,24 @@ public class ProfileController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> UpdateUser(@PathVariable int id, @RequestBody Map<String, Object> updates) {
-        return userRepository.findById(id).map(user -> {
-            if(updates.containsKey("Name")) {
-                user.setName((String) updates.get("Name"));
+    @PutMapping("/edit")
+    public ResponseEntity<?> updatedUser(@RequestBody Map<String, Object> updates, HttpSession session) {
+        Integer userId = (Integer) session.getAttribute("userID");
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in");
+        }
+
+        return userRepository.findById(userId).map(user -> {
+            if (updates.containsKey("name")) {
+                user.setName((String) updates.get("name"));
             }
-            if(updates.containsKey("Surname")) {
-                user.setSurname((String) updates.get("Surname"));
+            if (updates.containsKey("surname")) {
+                user.setSurname((String) updates.get("surname"));
             }
-            if(updates.containsKey("email")) {
+            if (updates.containsKey("email")) {
                 user.setEmail((String) updates.get("email"));
             }
-            if(updates.containsKey("phone")) {
+            if (updates.containsKey("phone")) {
                 user.setPhone((String) updates.get("phone"));
             }
             userRepository.save(user);
@@ -76,11 +81,12 @@ public class ProfileController {
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+
+    /*@PostMapping
     public ResponseEntity<Users> cretateUsers(@RequestBody Users users) {
         Users savedUsers = userRepository.save(users);
         return ResponseEntity.ok(savedUsers);
-    }
+    }*/
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> DeleteUser(@PathVariable int id) {

@@ -2,7 +2,46 @@
 <html>
     <head>
         <link href='https://fonts.googleapis.com/css?family=Afacad' rel='stylesheet'>
-        <link rel="stylesheet" href="styles/profiledetails.css">     
+        <link rel="stylesheet" href="styles/profiledetails.css">
+        <style>
+            #EditButton, #DoneButton {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px 5px 0;
+    text-align: center;
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-family: sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#DoneButton:hover, #EditButton:hover {
+    background-color: #555;
+    transform: scale(1.05);
+}
+
+            #SaveButton {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #4CAF50; /* зелёный */
+        color: white;
+        text-decoration: none;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-left: 10px;
+    }
+
+    #SaveButton:hover {
+        background-color: #45a049;
+    }
+        </style>
     </head>
 
     <body>
@@ -21,27 +60,80 @@
                 <p><span class="label">Phone number:</span> <span class="value" id="phone"></span></p>
                 <p><span class="label">Registration date:</span> <span class="value" id="registrationDate"></span></p>
                 </div>
-            <a id="button" href="logedin.html">Done</a>
+            <a id="DoneButton" href="logedin.html">Done</a>
+            <a id="EditButton">Edit</a>
+            <script>
+                let userId = null;
+
+                // Getting user data
+                fetch('http://localhost:8080/users')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Error: " + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(user => {
+                        userId = user.id;  // Сохраняем id для последующего PUT-запроса
+
+                        // Заполняем текстовые значения
+                        document.getElementById("name").textContent = user.name;
+                        document.getElementById("surname").textContent = user.surname;
+                        document.getElementById("email").textContent = user.email;
+                        document.getElementById("phone").textContent = user.phone;
+                        document.getElementById("registrationDate").textContent = new Date(user.registrationDate).toLocaleString();
+                    })
+                    .catch(error => {
+                        document.getElementById("user-info").innerHTML = "<p>Error while loading data.</p>";
+                        console.error(error);
+                    });
+
+                // Обработчик кнопки Edit
+                document.getElementById("EditButton").addEventListener("click", function () {
+                    const fields = ["name", "surname", "email", "phone"];
+
+                    fields.forEach(field => {
+                        const span = document.getElementById(field);
+                        const currentValue = span.textContent;
+                        const input = document.createElement("input");
+                        input.type = "text";
+                        input.value = currentValue;
+                        input.id = field + "-input";
+                        span.replaceWith(input);
+                    });
+
+                    // registrationDate остаётся как текст
+                    this.textContent = "Save";
+                    this.id = "SaveButton";
+
+                    // Добавляем обработчик для Save
+                    document.getElementById("SaveButton").addEventListener("click", function () {
+                        const updatedUser = {
+                            name: document.getElementById("name-input").value,
+                            surname: document.getElementById("surname-input").value,
+                            email: document.getElementById("email-input").value,
+                            phone: document.getElementById("phone-input").value
+                        };
+
+                        fetch('http://localhost:8080/users/edit', {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(updatedUser)
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error("Failed to update");
+                            }
+                            return response.text(); // ← не .json(), потому что тело пустое
+                        })
+                        .then(() => location.reload())
+                        .catch(error => alert("Update failed: " + error));
+                    }, { once: true });
+                });
+
+            </script>
         </div>
-        <script>
-            fetch('http://localhost:3000/users')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Error: " + response.statusText);
-                }
-                return response.json();
-            })
-            .then(user => {
-                document.getElementById("name").textContent = user.name;
-                document.getElementById("surname").textContent = user.surname;
-                document.getElementById("email").textContent = user.email;
-                document.getElementById("phone").textContent = user.phone;
-                document.getElementById("registrationDate").textContent = new Date(user.registrationDate).toLocaleString();
-            })
-            .catch(error => {
-                document.getElementById("userInfo").innerHTML = "<p>Error while loading data.</p>";
-                console.error(error);
-            });
-        </script>
     </body>
 </html>
