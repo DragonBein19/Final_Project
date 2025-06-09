@@ -28,7 +28,7 @@ body {
 #menu-button {
     font-size: 30px;
     cursor: pointer;
-    color: white;
+    color: rgb(85, 85, 85);
     margin-right: 20px;
 }
 
@@ -171,16 +171,30 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: white;
+    background-color: black;
     display: none; 
     flex-direction: column;
     z-index: 9999;
 }
 
+#full-page-window::before {
+    content: "";
+    background-image: url("/konc2.jpeg");
+    background-size: cover;
+    background-position: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; 
+    opacity: 0.6; 
+}
+
 /* === PILNO EKRANO HEADER BARAS === */
 
 #header-bar-white {
-    background-color: #ffffff;
+    background-color: #000000;
     height: 90px;
     display: flex;
     justify-content: space-between;
@@ -188,8 +202,8 @@ body {
     font-size: 40px;
     font-family: Impact, sans-serif;
     font-weight: bold;
-    color: black;
-    padding: 0 20px;
+    color: white;
+    padding: 20px;
     border-bottom: 2px solid #00000020;
 }
 
@@ -202,7 +216,7 @@ body {
 #menu-close {
     font-size: 30px;
     cursor: pointer;
-    color: black;
+    color: rgb(65, 65, 65);
 }
 
 /* === TURINIO PLOKŠTĖ === */
@@ -219,34 +233,6 @@ body {
     align-items: center;
 }
 
-/* === APATINIS BOXAS BALTAI === */
-
-#bottom-box-white {
-    height: 100px;
-    background-color: #f0f0f0;
-    color: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Afacad';
-    font-size: 20px;
-    border-top: 1px solid #ccc;
-}
-
-#footer-bar-white {
-    height: 60px;
-    background-color: #ddd;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 15px;
-    font-family: 'Afacad';
-    font-weight: bold;
-    color: black;
-}
-
-/* === KONCERTŲ FILTRAI IR SĄRAŠAS === */
-
 #concert-filter-box {
     width: 80%;
     display: flex;
@@ -254,84 +240,31 @@ body {
 }
 
 #concert-filter-box select {
-    padding: 5px;
+    padding: 1px;
     font-size: 16px;
     font-family: 'Afacad';
     border-radius: 5px;
     border: none;
-    background-color: #505050;
+    background-color: rgba(255, 255, 255, 0.2); /* mažiau nepermatomas, bet permatomas */
     color: white;
     cursor: pointer;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: background-color 0.3s ease;
 }
 
-#concert-list-container {
-    margin: 10px auto 20px auto;
-    width: 80%;
-    background-color: #505050;
-    color: white;
-    font-family: 'Afacad';
-    padding: 20px;
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-#concert-image-container {
-  text-align: center;        /* Centruoja nuotrauką horizontaliai */
-  margin: 15px 0;            /* Viršus ir apačia tarpai po 15px */
-  padding: 10px 0;           /* Papildomi tarpai viršuje ir apačioje, jei reikia */
-  background-color: #f9f9f9; /* Šviesiai pilkas fonas (nebūtina, galima keisti arba šalinti) */
-  border-radius: 8px;        /* Švelnūs kampai, kad atrodytų maloniau */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Lengvas šešėlis */
-}
-
-#concert-image-container img {
-  max-width: 100%;    /* Nuotrauka neužlipa už konteinerio ribų */
-  height: auto;       /* Išlaiko proporcijas */
-  border-radius: 5px; /* Švelnūs kampai nuotraukai */
-  display: inline-block; /* Kad veiktų kartu su centravimu */
-} 
-
-#concert-list-container div {
-    border-bottom: 1px solid #444;
-    padding: 10px 0;
+#concert-filter-box select:focus {
+    color: black;
 }
 
 #concert-title {
     display: block;
     text-align: center; 
     font-size: 22pt;
-    color: white;
+    color: black;
     margin-bottom: 10px;
 }
 
-#concert-container {
-    max-height: 670px;
-    margin-top: 10px;
-    overflow-y: auto;
-    padding: 15px 20px;
-    background: rgba(0, 0, 0, 0);
-    border-radius: 15px;
-    border: 1px solid rgba(0, 0, 0, 0);
-    box-sizing: border-box;
-}
-
-#concert-container::-webkit-scrollbar {
-    width: 0px;
-}
-
-#concert-container::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-}
-
-#concert-container::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
-}
-
-#concert-container::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.6);
-}
 
 #concert-list {
     display: flex;
@@ -342,26 +275,26 @@ body {
 
 .concert-card {
     flex: 0 0 calc((100% - 30px) / 3);
-    background: rgba(42, 42, 42, 0.4);
+    background-color: rgba(255, 255, 255, 0.229);
     backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(8px);
     border-radius: 12px;
     padding: 15px;
-    font-size: 12pt;
+    font-size: 20pt;
     color: white;
     box-sizing: border-box;
+    margin-top: 15px;
 }
 
 #upcoming-events-title {
-    color: black;
+    color: white;
     font-family: 'Afacad';
     font-size: 40px;
     text-align: center;
     margin-bottom: 10px;
     margin-top: -10px;
     letter-spacing: 3px;
-    text-shadow: 2px 2px 5px rgba(255, 255, 255, 1);
+    text-shadow: 2px 2px 5px rgb(0, 0, 0);
 }
 
 .concert {
@@ -372,6 +305,6 @@ body {
     border-radius: 12px;
     padding: 15px;
     font-size: 12pt;
-    color: black;
+    color: white;
     box-sizing: border-box;
 }

@@ -22,7 +22,7 @@
     </div>
 
     <div id="full-page-window">
-        <div id="header-bar-white">
+        <div id="header-bar">
             <div id="menu-close">✕</div>
             <div id="center-title-white">TICKET LIVE</div>
         </div>
@@ -45,18 +45,14 @@
                 </select>
             </div>
 
-            <div id="concert-image-container">
-                <img src="/konc2.jpeg" alt="Concert Image">
-            </div>
-
             <div id="concert-list-container"></div>
         </div>
 
-        <div id="bottom-box-white">
+        <div id="bottom-box">
             <p>Live music starts here. Discover the best live concerts, from chart-topping headliners to rising local talent.</p>
         </div>
 
-        <div id="footer-bar-white">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
+        <div id="footer-bar">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
     </div>
 
     <div id="bottom-box">
@@ -66,7 +62,7 @@
     <div id="footer-bar">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
 
     <div id="concert-section">
-        <h1 id="upcoming-events-title">Upcoming Events</h1>
+        <h1 id="upcoming-events-title">UPCOMING EVENTS</h1>
         <div id="concert-container">
             <div id="concert-list">
                 <script>
@@ -102,185 +98,109 @@
         </div>
     </div>
 
-    <script>
-        const menuBtn = document.getElementById("menu-button");
-        const fullWindow = document.getElementById("full-page-window");
-        const closeBtn = document.getElementById("menu-close");
+        <script>
+            const menuBtn = document.getElementById("menu-button");
+            const fullWindow = document.getElementById("full-page-window");
+            const closeBtn = document.getElementById("menu-close");
 
-        menuBtn.addEventListener("click", () => {
-            fullWindow.style.display = "flex";
-        });
+            menuBtn.addEventListener("click", () => fullWindow.style.display = "flex");
+            closeBtn.addEventListener("click", () => fullWindow.style.display = "none");
 
-        closeBtn.addEventListener("click", () => {
-            fullWindow.style.display = "none";
-        });
+            let allConcerts = [];
 
-        window.onload = function () {
-            const artistSet = new Set();
-            const locationSet = new Set();
-            const genreSet = new Set();
+            fetch('http://localhost:3000/concerts')
+                .then(response => {
+                    if (!response.ok) throw new Error("Error: " + response.statusText);
+                    return response.json();
+                })
+                .then(concerts => {
+                    allConcerts = concerts.map(c => ({
+                        artist: c["Concert name"],
+                        location: c.city || "Other",
+                        genre: c.genre || "Other",
+                        date: c["Concert date"]
+                    }));
 
-            concerts.forEach(c => {
-                artistSet.add(c.artist);
-                locationSet.add(c.location);
-                genreSet.add(c.genre);
-            });
+                    const artistSet = new Set();
+                    const locationSet = new Set();
+                    const genreSet = new Set();
 
-            fillSelect("artist-filter", [...artistSet]);
-            fillSelect("location-filter", [...locationSet]);
-            fillSelect("genre-filter", [...genreSet]);
+                    allConcerts.forEach(c => {
+                        artistSet.add(c.artist);
+                        locationSet.add(c.location);
+                        genreSet.add(c.genre);
+                    });
 
-            renderConcerts(concerts);
-        };
+                    fillSelect("artist-filter", [...artistSet]);
+                    fillSelect("location-filter", [...locationSet]);
+                    fillSelect("genre-filter", [...genreSet]);
 
-        let allConcerts = [];
+                    renderConcerts(allConcerts);
+                })
+                .catch(error => {
+                    console.error("Error loading concerts:", error);
+                    document.getElementById("concert-list-container").innerHTML =
+                        `<p style="color: red;">Failed to load concerts.</p>`;
+                });
 
-        fetch('http://localhost:3000/concerts')
-        .then(response => {
-            if (!response.ok) throw new Error("Error: " + response.statusText);
-            return response.json();
-        })
-        .then(concerts => {
-            allConcerts = concerts.map(c => ({
-                artist: c["Concert name"],
-                location: c.city || "Other", 
-                genre: c.genre || "Other", 
-                date: c["Concert date"]
-            }));
-
-            const artistSet = new Set();
-            const locationSet = new Set();
-            const genreSet = new Set();
-
-            allConcerts.forEach(c => {
-                artistSet.add(c.artist);
-                locationSet.add(c.location);
-                genreSet.add(c.genre);
-            });
-
-            fillSelect("artist-filter", [...artistSet]);
-            fillSelect("location-filter", [...locationSet]);
-            fillSelect("genre-filter", [...genreSet]);
-
-            renderConcerts(allConcerts);
-        })
-        .catch(error => {
-            console.error("Error loading concerts:", error);
-            document.getElementById("concert-list-container").innerHTML =
-            `<p style="color: red;">Failed to load concerts.</p>`;
-        });
-
-        function fillSelect(id, options) {
-            const select = document.getElementById(id);
-            options.forEach(opt => {
-                const option = document.createElement("option");
-                option.value = opt;
-                option.textContent = opt;
-                select.appendChild(option);
-            });
-        }
-
-        document.querySelectorAll("#concert-filter-box select").forEach(select => {
-            select.addEventListener("change", applyFilters);
-        });
-
-        function applyFilters() {
-            const artist = document.getElementById("artist-filter").value;
-            const location = document.getElementById("location-filter").value;
-            const genre = document.getElementById("genre-filter").value;
-            const dateOrder = document.getElementById("date-filter").value;
-
-            let filtered = allConcerts.filter(c => {
-                return (!artist || c.artist === artist) &&
-                    (!location || c.location === location) &&
-                    (!genre || c.genre === genre);
-            });
-
-            if (dateOrder === "asc") {
-                filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
-            } else if (dateOrder === "desc") {
-                filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+            function fillSelect(id, options) {
+                const select = document.getElementById(id);
+                options.forEach(opt => {
+                    const option = document.createElement("option");
+                    option.value = opt;
+                    option.textContent = opt;
+                    select.appendChild(option);
+                });
             }
 
-            renderConcerts(filtered);
-        }
+            function applyFilters() {
+                const artist = document.getElementById("artist-filter").value;
+                const location = document.getElementById("location-filter").value;
+                const genre = document.getElementById("genre-filter").value;
+                const dateOrder = document.getElementById("date-filter").value;
 
-        function renderConcerts(list) {
-            const container = document.getElementById("concert-list");
-            container.innerHTML = "";
+                let filtered = allConcerts.filter(c => {
+                    return (!artist || c.artist === artist) &&
+                        (!location || c.location === location) &&
+                        (!genre || c.genre === genre);
+                });
 
-            if (list.length === 0) {
-                container.innerHTML = "<p>No results found.</p>";
-                return;
+                if (dateOrder === "asc") {
+                    filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+                } else if (dateOrder === "desc") {
+                    filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+                }
+
+                renderConcerts(filtered);
             }
 
-            list.forEach(c => {
-                const div = document.createElement("div");
-                div.className = "concert-card";
-                div.innerHTML = `
-                    <strong>${c.artist}</strong> – ${c.genre}<br>
-                    Location: ${c.location}<br>
-                    Date: ${new Date(c.date).toLocaleDateString()}
-                `;
-                container.appendChild(div);
-            });
-        }
+            function renderConcerts(list) {
+                const container = document.getElementById("concert-list-container");
+                container.innerHTML = "";
 
-        function fillSelect(id, options) {
-            const select = document.getElementById(id);
-            options.forEach(opt => {
-                const option = document.createElement("option");
-                option.value = opt;
-                option.textContent = opt;
-                select.appendChild(option);
-            });
-        }
+                if (list.length === 0) {
+                    container.innerHTML = "<p>No results found.</p>";
+                    return;
+                }
 
-        document.querySelectorAll("#concert-filter-box select").forEach(select => {
-            select.addEventListener("change", applyFilters);
-        });
-
-        function applyFilters() {
-            const artist = document.getElementById("artist-filter").value;
-            const location = document.getElementById("location-filter").value;
-            const genre = document.getElementById("genre-filter").value;
-            const dateOrder = document.getElementById("date-filter").value;
-
-            let filtered = concerts.filter(c => {
-                return (!artist || c.artist === artist) &&
-                       (!location || c.location === location) &&
-                       (!genre || c.genre === genre);
-            });
-
-            if (dateOrder === "asc") {
-                filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
-            } else if (dateOrder === "desc") {
-                filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+                list.forEach(c => {
+                    const div = document.createElement("div");
+                    div.className = "concert-card";
+                    div.innerHTML = `
+                        <strong>${c.artist}</strong> – ${c.genre}<br>
+                        Location: ${c.location}<br>
+                        Date: ${new Date(c.date).toLocaleDateString()}
+                    `;
+                    container.appendChild(div);
+                });
             }
 
-            renderConcerts(filtered);
-        }
-
-        function renderConcerts(list) {
-            const container = document.getElementById("concert-list-container");
-            container.innerHTML = "";
-
-            if (list.length === 0) {
-                container.innerHTML = "<p>No results found.</p>";
-                return;
-            }
-
-            list.forEach(c => {
-                const div = document.createElement("div");
-                div.innerHTML = `
-                    <strong>${c.artist}</strong> – ${c.genre}<br>
-                    Location: ${c.location}<br>
-                    Date: ${new Date(c.date).toLocaleDateString()}
-                `;
-                container.appendChild(div);
+            // Filter event listeners
+            document.querySelectorAll("#concert-filter-box select").forEach(select => {
+                select.addEventListener("change", applyFilters);
             });
-        }
-    </script>
+        </script>
+
     </script>
 </body>
 </html>
