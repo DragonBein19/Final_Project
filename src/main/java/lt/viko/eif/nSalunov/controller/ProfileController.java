@@ -9,10 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @RestController
 @RequestMapping("/users")
@@ -26,7 +24,8 @@ public class ProfileController {
 
     //---Naudotojos informacija atvaizdavimas---
     @GetMapping
-    public ResponseEntity<?> getUserByIdOrAll(@RequestParam(required = false) Integer id, HttpSession session) {
+    public ResponseEntity<?> getUserByIdOrAll(@RequestParam(value = "id", required = false) Integer id, HttpSession session)
+    {
         id = (int) session.getAttribute("userID");
         if (id != null) {
             Optional<Users> optionalUser = userRepository.findById(id);
@@ -54,6 +53,42 @@ public class ProfileController {
                 return dto;
             }).toList();
             return ResponseEntity.ok(result);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> UpdateUser(@PathVariable int id, @RequestBody Map<String, Object> updates) {
+        return userRepository.findById(id).map(user -> {
+            if(updates.containsKey("Name")) {
+                user.setName((String) updates.get("Name"));
+            }
+            if(updates.containsKey("Surname")) {
+                user.setSurname((String) updates.get("Surname"));
+            }
+            if(updates.containsKey("email")) {
+                user.setEmail((String) updates.get("email"));
+            }
+            if(updates.containsKey("phone")) {
+                user.setPhone((String) updates.get("phone"));
+            }
+            userRepository.save(user);
+            return ResponseEntity.ok().build();
+        }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<Users> cretateUsers(@RequestBody Users users) {
+        Users savedUsers = userRepository.save(users);
+        return ResponseEntity.ok(savedUsers);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> DeleteUser(@PathVariable int id) {
+        if(userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 }
