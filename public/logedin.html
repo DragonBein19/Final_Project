@@ -12,7 +12,7 @@
     <div id="header-bar">
         <div id="left-section">
             <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
-            <button id="filter-button" class="toggle-btn">▼</button>
+            <a id="filter-button" class="toggle-btn" href="filterR.html">▼</a>
         </div>
 
         <a href="index.html" id="center-title">TICKET LIVE</a>
@@ -34,38 +34,6 @@
         <p style="color:white;">Total: $0.00</p>
     </div>
 
-    <div id="full-page-window">
-        <div id="header-bar-white">
-            <div id="menu-close">✕</div>
-            <div id="center-title-white">TICKET LIVE</div>
-        </div>
-
-        <div id="content-area">
-            <div id="concert-filter-box">
-                <select id="artist-filter">
-                    <option value="">All artists</option>
-                </select>
-                <select id="location-filter">
-                    <option value="">All locations</option>
-                </select>
-                <select id="genre-filter">
-                    <option value="">All genres</option>
-                </select>
-                <select id="date-filter">
-                    <option value="">All Dates</option>
-                    <option value="asc">Upcoming concert</option>
-                    <option value="desc">Most distant</option>
-                </select>
-            </div>
-            <div id="concert-list-container"></div>
-        </div>
-
-        <div id="bottom-box-white">
-            <p>Live music starts here. Discover the best live concerts, from chart-topping headliners to rising local talent.</p>
-        </div>
-
-        <div id="footer-bar-white">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
-    </div>
 
     <div id="footer-bar">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
     <a href="index.html" id="logout-button">Log out</a>
@@ -106,109 +74,5 @@
             </div>
         </div>
     </div>
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById("sidebar");
-            sidebar.classList.toggle("active");
-        }
-
-        function toggleCartSidebar() {
-            const cartSidebar = document.getElementById("cart-sidebar");
-            cartSidebar.classList.toggle("active");
-        }
-
-        const filterBtn = document.getElementById("filter-button");
-        const fullWindow = document.getElementById("full-page-window");
-        const closeBtn = document.getElementById("menu-close");
-
-        filterBtn.addEventListener("click", () => {
-            fullWindow.style.display = "flex";
-        });
-
-        closeBtn.addEventListener("click", () => {
-            fullWindow.style.display = "none";
-        });
-
-
-        const concerts = [
-            { artist: "Justine Timberlake", location: "Kaunas", genre: "Pop", date: "2025-06-06" },
-            { artist: "BA.", location: "Vilnius", genre: "Rock", date: "2025-06-10" },
-            { artist: "Free finga", location: "Vilnius", genre: "R&B", date: "2025-07-01" },
-            { artist: "OG Version", location: "Klaipėda", genre: "Rap", date: "2025-06-20" },
-        ];
-
-        window.onload = function () {
-            const artistSet = new Set();
-            const locationSet = new Set();
-            const genreSet = new Set();
-
-            concerts.forEach(c => {
-                artistSet.add(c.artist);
-                locationSet.add(c.location);
-                genreSet.add(c.genre);
-            });
-
-            fillSelect("artist-filter", [...artistSet]);
-            fillSelect("location-filter", [...locationSet]);
-            fillSelect("genre-filter", [...genreSet]);
-
-            renderConcerts(concerts);
-        };
-
-        function fillSelect(id, options) {
-            const select = document.getElementById(id);
-            options.forEach(opt => {
-                const option = document.createElement("option");
-                option.value = opt;
-                option.textContent = opt;
-                select.appendChild(option);
-            });
-        }
-
-        document.querySelectorAll("#concert-filter-box select").forEach(select => {
-            select.addEventListener("change", applyFilters);
-        });
-
-        function applyFilters() {
-            const artist = document.getElementById("artist-filter").value;
-            const location = document.getElementById("location-filter").value;
-            const genre = document.getElementById("genre-filter").value;
-            const dateOrder = document.getElementById("date-filter").value;
-
-            let filtered = concerts.filter(c => {
-                return (!artist || c.artist === artist) &&
-                       (!location || c.location === location) &&
-                       (!genre || c.genre === genre);
-            });
-
-            if (dateOrder === "asc") {
-                filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
-            } else if (dateOrder === "desc") {
-                filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
-            }
-
-            renderConcerts(filtered);
-        }
-
-        function renderConcerts(list) {
-            const container = document.getElementById("concert-list-container");
-            container.innerHTML = "";
-
-            if (list.length === 0) {
-                container.innerHTML = "<p>No results found.</p>";
-                return;
-            }
-
-            list.forEach(c => {
-                const div = document.createElement("div");
-                div.innerHTML = `
-                    <strong>${c.artist}</strong> – ${c.genre}<br>
-                    Location: ${c.location}<br>
-                    Date: ${new Date(c.date).toLocaleDateString()}
-                `;
-                container.appendChild(div);
-            });
-        }
-    </script>
 </body>
 </html>
