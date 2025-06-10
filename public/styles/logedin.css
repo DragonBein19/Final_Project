@@ -133,6 +133,23 @@
             background-color: #414141;
         }
 
+        .togglee-btn {
+            padding: 10px 20px;
+            font-size: 25px;
+            background-color: #050002;
+            font-family: 'Afacad';
+            color: #6c6c6c;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .togglee-btn:hover {
+            background-color: #414141;
+        }
+
         .menu-btn {
             font-family: 'Afacad';
             font-size: 20px;

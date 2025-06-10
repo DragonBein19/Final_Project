@@ -34,7 +34,6 @@
         <p style="color:white;">Total: $0.00</p>
     </div>
 
-
     <div id="footer-bar">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
     <a href="index.html" id="logout-button">Log out</a>
 
@@ -74,5 +73,28 @@
             </div>
         </div>
     </div>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("active");
+        }
+
+        function toggleCartSidebar() {
+            const cartSidebar = document.getElementById("cart-sidebar");
+            cartSidebar.classList.toggle("active");
+        }
+
+        const filterBtn = document.getElementById("filter-button");
+        const fullWindow = document.getElementById("full-page-window");
+        const closeBtn = document.getElementById("menu-close");
+
+        filterBtn.addEventListener("click", () => {
+            fullWindow.style.display = "flex";
+        });
+
+        closeBtn.addEventListener("click", () => {
+            fullWindow.style.display = "none";
+        });
+    </script>
 </body>
 </html>
