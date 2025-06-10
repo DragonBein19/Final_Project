@@ -4,6 +4,28 @@
     <link href="https://fonts.googleapis.com/css?family=Afacad" rel="stylesheet">
     <link rel="stylesheet" href="styles/index.css">
     <title>Ticket Live</title>
+    <style>
+        .concert {
+    background-color: rgba(0, 0, 0, 0.6); /* Полупрозрачный черный */
+    margin: 20px;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px #000; /* Тень чуть темнее */
+    color: white; /* Белый текст */
+}
+
+.songs {
+    margin-top: 10px;
+}
+
+.songs-list {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-top: 5px;
+    color: white; /* Белый текст для песен */
+}
+
+    </style>
 </head>
 <body>
     <div id="navigation"></div>
@@ -32,33 +54,74 @@
         <div id="concert-container">
             <div id="concert-list">
                 <script>
-                    fetch('http://localhost:8080/concerts').then(response => {
-                        if (!response.ok) {
-                           throw new Error("Error: " + response.statusText);
-                        }
-                        return response.json();
-                    }).then(concerts => {
-                        const list = document.getElementById("concert-list");
-                        list.innerHTML = "";
+                    fetch('http://localhost:8080/concerts')
+                        .then(response => {
+                            if (!response.ok) throw new Error("Error: " + response.statusText);
+                            return response.json();
+                        })
+                        .then(concerts => {
+                            const list = document.getElementById("concert-list");
+                            list.innerHTML = "";
 
-                        concerts.forEach(concert => {
-                        const card = document.createElement("div");
-                        card.className = "concert";
-                        card.innerHTML = `
-                            <h2>${concert["Concert name"] || "No name"}</h2>
-                            <p><strong>Date:</strong> ${concert["Concert date"] ? new Date(concert["Concert date"]).toLocaleDateString() : "N/A"}</p>
-                            <p><strong>Status:</strong> ${concert.status || "N/A"}</p>
-                            <p><strong>Tickets limit:</strong> ${concert["Ticket limit"] ?? "N/A"}</p>
-                            <p><strong>Tickets sold:</strong> ${concert["Ticket Sold"] ?? "N/A"}</p>
-                            <p><strong>Registered:</strong> ${concert.registrationDate ? new Date(concert.registrationDate).toLocaleDateString() : "N/A"}</p>`;
-                            list.appendChild(card);
+                            concerts.forEach(concert => {
+                                const artistName = concert["Concert name"] || "Unknown Artist";
+
+                                const card = document.createElement("div");
+                                card.className = "concert";
+                                card.innerHTML = `
+                                    <h2>${artistName}</h2>
+                                    <p><strong>Date:</strong> ${concert["Concert date"] ? new Date(concert["Concert date"]).toLocaleDateString() : "N/A"}</p>
+                                    <p><strong>Status:</strong> ${concert.status || "N/A"}</p>
+                                    <p><strong>Tickets limit:</strong> ${concert["Ticket limit"] ?? "N/A"}</p>
+                                    <p><strong>Tickets sold:</strong> ${concert["Ticket Sold"] ?? "N/A"}</p>
+                                    <p><strong>Registered:</strong> ${concert.registrationDate ? new Date(concert.registrationDate).toLocaleDateString() : "N/A"}</p>
+                                    <div class="songs">
+                                        <p><strong>Top Songs:</strong></p>
+                                        <ul class="songs-list"><li>Loading...</li></ul>
+                                    </div>
+                                `;
+                                list.appendChild(card);
+
+                                // Функция для случайной выборки N элементов из массива
+                                function getRandomSubset(arr, n) {
+                                    const shuffled = arr.slice(); // копия массива
+                                    for (let i = shuffled.length - 1; i > 0; i--) {
+                                        const j = Math.floor(Math.random() * (i + 1));
+                                        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                                    }
+                                    return shuffled.slice(0, n);
+                                }
+
+                                // Загрузка песен с backend
+                                fetch(`http://localhost:8080/spotify/top-tracks?artist=${encodeURIComponent(artistName)}`)
+                                    .then(resp => {
+                                        if (!resp.ok) throw new Error("Spotify API error");
+                                        return resp.json();
+                                    })
+                                    .then(data => {
+                                        const ul = card.querySelector(".songs-list");
+                                        ul.innerHTML = "";
+
+                                        const songsToShow = data.length > 5 ? getRandomSubset(data, 5) : data;
+
+                                        songsToShow.forEach(song => {
+                                            const li = document.createElement("li");
+                                            li.textContent = song;
+                                            ul.appendChild(li);
+                                        });
+                                    })
+                                    .catch(err => {
+                                        console.error("Spotify error:", err);
+                                        const ul = card.querySelector(".songs-list");
+                                        ul.innerHTML = `<li style="color:red;">Failed to load songs.</li>`;
+                                    });
                             });
                         })
                         .catch(error => {
                             console.error("Error loading concerts:", error);
                             document.getElementById("concert-list").innerHTML =
-                            `<p style="color: red;">Failed to load concerts.</p>`;
-                    });
+                                `<p style="color: red;">Failed to load concerts.</p>`;
+                        });
                 </script>
             </div>
         </div>
