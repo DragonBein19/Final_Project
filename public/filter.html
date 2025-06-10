@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Afacad" rel="stylesheet">
+        <link rel="stylesheet" href="styles/filter.css">
+        <title>Filter</title>
+    </head>
+    <body>
+        <img src="/konc2.jpeg" alt="Fonas" id="background-image" />
+        <div id="header-bar">
+            <a id="menu-close" href="index.html">✕</a>
+            <div id="center-title-white">TICKET LIVE</div>
+        </div>
+
+        <div id="content-area">
+            <div id="concert-filter-box">
+                <select id="artist-filter">
+                    <option value="">All artists</option>
+                </select>
+                <select id="location-filter">
+                    <option value="">All locations</option>
+                </select>
+                <select id="genre-filter">
+                    <option value="">All genres</option>
+                </select>
+                <select id="date-filter">
+                    <option value="">All Dates</option>
+                    <option value="asc">Upcoming concert</option>
+                    <option value="desc">Most distant</option>
+                </select>
+            </div>
+
+            <div id="concert-list-container"></div>
+        </div>
+
+        <div id="bottom-box">
+            <p>Live music starts here. Discover the best live concerts, from chart-topping headliners to rising local talent.</p>
+        </div>
+
+        <div id="footer-bar">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
+    
+        <script>
+    let allConcerts = []; // Globalus kintamasis visiems koncertams
+
+    // Gauti koncertų duomenis
+    fetch('http://localhost:3000/concerts')
+        .then(response => {
+            if (!response.ok) throw new Error("Error: " + response.statusText);
+            return response.json();
+        })
+        .then(concerts => {
+            allConcerts = concerts;
+
+            // Užpildyti filtrus
+            const artistSet = new Set();
+            const locationSet = new Set();
+            const genreSet = new Set();
+
+            concerts.forEach(c => {
+                if (c.artist) artistSet.add(c.artist);
+                if (c.location) locationSet.add(c.location);
+                if (c.genre) genreSet.add(c.genre);
+            });
+
+            fillSelect("artist-filter", [...artistSet]);
+            fillSelect("location-filter", [...locationSet]);
+            fillSelect("genre-filter", [...genreSet]);
+
+            // Pradinis atvaizdavimas
+            renderConcerts(concerts);
+        })
+        .catch(error => {
+            console.error("Error loading concerts:", error);
+            document.getElementById("concert-list-container").innerHTML =
+                `<p style="color: red;">Failed to load concerts.</p>`;
+        });
+
+    function fillSelect(id, options) {
+        const select = document.getElementById(id);
+        options.forEach(opt => {
+            const option = document.createElement("option");
+            option.value = opt;
+            option.textContent = opt;
+            select.appendChild(option);
+        });
+    }
+
+    document.querySelectorAll("#concert-filter-box select").forEach(select => {
+        select.addEventListener("change", applyFilters);
+    });
+
+    function applyFilters() {
+        const artist = document.getElementById("artist-filter").value;
+        const location = document.getElementById("location-filter").value;
+        const genre = document.getElementById("genre-filter").value;
+        const dateOrder = document.getElementById("date-filter").value;
+
+        let filtered = allConcerts.filter(c => {
+            return (!concert_name || c.concert_name === concert_name)
+        });
+
+        if (dateOrder === "asc") {
+            filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+        } else if (dateOrder === "desc") {
+            filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+        }
+
+        renderConcerts(filtered);
+    }
+
+    function renderConcerts(list) {
+        const container = document.getElementById("concert-list-container");
+        container.innerHTML = "";
+
+        if (list.length === 0) {
+            container.innerHTML = "<p>No results found.</p>";
+            return;
+        }
+
+        list.forEach(c => {
+            const div = document.createElement("div");
+            div.innerHTML = `
+                <strong>${c.artist}</strong> – ${c.genre}<br>
+                Location: ${c.location}<br>
+                Date: ${new Date(c.date).toLocaleDateString()}
+            `;
+            container.appendChild(div);
+        });
+    }
+</script>
+
+
+    </body>
+</html>

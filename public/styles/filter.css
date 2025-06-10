@@ -1,0 +1,164 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000412;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#header-bar {
+    background-color: #000107;
+    height: 90px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    font-size: 70px;
+    font-family: Impact, sans-serif;
+    font-weight: bold;
+    color: white;
+    letter-spacing: 5px;
+    box-sizing: border-box;
+    padding: 0 20px;
+}
+
+#menu-close {
+    font-size: 30px;
+    cursor: pointer;
+    color: #6c6c6c;
+    padding: 10px 15px;
+    margin-right: 20px;
+    text-decoration: none; 
+    border-radius: 5px;
+}
+
+#menu-close:hover{
+    background-color: #272727;
+}
+
+#center-title-white {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 70px;
+}
+
+#content-area {
+    flex-grow: 1;
+    padding: 20px 40px 10px 40px;
+    font-family: 'Afacad';
+    font-size: 20px;
+    color: white;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#concert-filter-box {
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+}
+
+#concert-filter-box select {
+    padding: 1px;
+    font-size: 16px;
+    font-family: 'Afacad';
+    border-radius: 5px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.2); /* mažiau nepermatomas, bet permatomas */
+    color: white;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: background-color 0.3s ease;
+}
+
+#concert-filter-box select:focus {
+    color: black;
+}
+
+
+#concert-title {
+    display: block;
+    text-align: center; 
+    font-size: 22pt;
+    color: black;
+    margin-bottom: 10px;
+}
+
+
+#concert-list {
+    display: flex;
+    flex-wrap: wrap;        
+    gap: 15px;                
+    justify-content: flex-start; 
+}
+
+#concert-section {
+    width: 90%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding-top: 20px;
+    padding-bottom: 160px; 
+    position: relative;
+    z-index: 1; 
+}
+
+.concert-card {
+    flex: 0 0 calc((100% - 30px) / 3);
+    background-color: rgba(255, 255, 255, 0.229);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 15px;
+    font-size: 20pt;
+    color: white;
+    box-sizing: border-box;
+    margin-top: 15px;
+}
+
+#background-image {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.6; 
+}
+
+#bottom-box {
+    width: 100%;
+    height: 60px;
+    background-color: #000000e3;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 60px;
+    font-family: 'Afacad';
+    font-size: 20px;
+    z-index: 10;
+}
+
+/* === FOOTER BARAS === */
+
+#footer-bar {
+    background-color: #000107;
+    height: 60px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    font-family: 'Afacad';
+    font-weight: bold;
+    color: white;
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 11; 
+}
