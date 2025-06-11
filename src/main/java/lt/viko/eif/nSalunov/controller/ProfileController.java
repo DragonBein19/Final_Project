@@ -22,7 +22,6 @@ public class ProfileController {
         this.userRepository = userRepository;
     }
 
-    //---Naudotojos informacija atvaizdavimas---
     @GetMapping
     public ResponseEntity<?> getUserByIdOrAll(@RequestParam(value = "id", required = false) Integer id, HttpSession session)
     {

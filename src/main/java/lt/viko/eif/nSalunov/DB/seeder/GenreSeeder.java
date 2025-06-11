@@ -5,6 +5,14 @@ import lt.viko.eif.nSalunov.DB.repository.GenreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Seeder component responsible for populating the database with initial Genre data.
+ * <p>
+ * This class checks if the genre table is empty and, if so,
+ * inserts a predefined set of music genres.
+ * </p>
+ */
+
 @Component
 public class GenreSeeder {
 

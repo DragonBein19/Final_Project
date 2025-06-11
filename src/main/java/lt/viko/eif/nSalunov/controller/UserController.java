@@ -3,7 +3,8 @@ package lt.viko.eif.nSalunov.controller;
 import jakarta.servlet.http.HttpSession;
 import lt.viko.eif.nSalunov.DB.model.Users;
 import lt.viko.eif.nSalunov.DB.repository.UserRepository;
-import lt.viko.eif.nSalunov.controller.LoginRequest;
+import lt.viko.eif.nSalunov.request.LoginRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +12,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.Optional;
 
+/**
+ * REST controller for managing user authentication and registration.
+ * <p>
+ * Provides endpoints for user login and user registration.
+ * </p>
+ */
+
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins = "*") // leidžia frontend prieiti prie API
+@CrossOrigin(origins = "*") 
 public class UserController {
 
     private final UserRepository userRepository;
@@ -23,7 +31,6 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    // ---------- LOGIN ----------
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
         Optional<Users> userOpt = userRepository.findByUserNameAndPassword(
@@ -32,8 +39,8 @@ public class UserController {
         );
 
         if (userOpt.isPresent()) {
-            session.setAttribute("userID", userOpt.get().getId()); //Išsaugome šios sesijos naudotojo ID
-            return ResponseEntity.ok(userOpt.get()); // grąžina visą user'į su isAdmin ir t.t.
+            session.setAttribute("userID", userOpt.get().getId());
+            return ResponseEntity.ok(userOpt.get()); 
 
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -41,8 +48,7 @@ public class UserController {
         }
     }
 
-    // ---------- SIGN UP ----------
-    @PostMapping("/register") // naudok /register kad aiškiau
+    @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody Users newUser) {
         boolean exists = userRepository.existsByUserName(newUser.getUserName()) ||
                 userRepository.existsByEmail(newUser.getEmail());

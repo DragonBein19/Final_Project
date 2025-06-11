@@ -47,7 +47,7 @@
 
         if (!passwordRegex.test(password)) {
             document.getElementById("errorMsg").textContent = 
-            "Slaptažodis turi būti bent 8 simbolių ilgio, su didžiąja raide ir skaičiais.";
+            "Password should be at least 8 simbols long, capital letter and numbers.";
             return;
         } else {
             document.getElementById("errorMsg").textContent = "";
@@ -91,7 +91,7 @@
 
         if (!passwordRegex.test(password)) {
             document.getElementById("errorMsg").textContent = 
-            "Slaptažodis turi būti bent 8 simbolių ilgio, su didžiąja raide ir skaičiais.";
+            "Password should be at least 8 simbols long, capital letter and numbers.";
             return;
         } else {
             document.getElementById("errorMsg").textContent = "";

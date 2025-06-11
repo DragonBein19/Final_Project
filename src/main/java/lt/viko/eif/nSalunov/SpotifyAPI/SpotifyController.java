@@ -4,8 +4,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * REST controller for Spotify-related endpoints.
+ * 
+ * Provides access to Spotify data such as the top tracks of a given artist.
+ */
+
 @RestController
-@CrossOrigin(origins = "*") // разрешает доступ с любого домена, настрой при необходимости
+@CrossOrigin(origins = "*")
 @RequestMapping("/spotify")
 public class SpotifyController {
 

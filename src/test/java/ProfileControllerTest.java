@@ -20,6 +20,14 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * Test class for {@link ProfileController}.
+ * <p>
+ * Sets up Spring MVC test environment for ProfileController, mocking the {@link UserRepository}.
+ * Tests cover retrieving user info by session, updating user profile, and deleting users.
+ * </p>
+ */
+
 @WebMvcTest(ProfileController.class)
 @ContextConfiguration(classes = {ProfileController.class, ProfileControllerTest.MockConfig.class})
 public class ProfileControllerTest {

@@ -5,6 +5,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
 
+/**
+ * Represents a ticket pricing category that defines the price,
+ * availability period, and related venue for a group of tickets.
+ */
+
 @Entity
 @Table(name = "ticket_category")
 public class TicketCategory {
@@ -28,17 +33,14 @@ public class TicketCategory {
     @Column(length = 255)
     private String venue;
 
-    // 🔗 Ryšys su koncertu
     /*@ManyToOne
     @JoinColumn(name = "concert_id", nullable = true)
     private Concert concert;*/
 
-    // 🔗 Naujas ryšys su concertDate (kad veiktų mappedBy ConcertDate klasėje)
     /*@ManyToOne
     @JoinColumn(name = "concert_date_id", nullable = true)
     private ConcertDate concertDate;*/
 
-    // 🔗 Viena kategorija turi daug bilietų
     @OneToMany(mappedBy = "ticketCategory", cascade = CascadeType.ALL)
     private Set<Ticket> tickets;
 
@@ -53,7 +55,6 @@ public class TicketCategory {
         this.venue = venue;
     }
 
-    // === Getteriai ir Setteriai ===
     public Long getId() {
         return id;
     }

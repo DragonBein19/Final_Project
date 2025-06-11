@@ -7,6 +7,14 @@ import lt.viko.eif.nSalunov.DB.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Seeder component responsible for populating the database with initial Ticket data.
+ * <p>
+ * This class inserts sample tickets linking concerts and ticket categories
+ * if no tickets currently exist in the database.
+ * </p>
+ */
+
 @Component
 public class TicketSeeder {
     private final TicketRepository ticketRepository;
@@ -30,8 +38,25 @@ public class TicketSeeder {
                     "A45",
                     "Active"
             );
+            
+            Ticket ticket2 = new Ticket(
+                    concertRepository.findById(2L).orElseThrow(() ->  new RuntimeException("Concert with ID 1 not exist")),
+                    ticketCategoryRepository.findById(2L).orElseThrow(() -> new RuntimeException("Ticket category with ID 1 not exist")),
+                    "Category ^^",
+                    "A45",
+                    "Active"
+            );
 
+            Ticket ticket3 = new Ticket(
+                    concertRepository.findById(3L).orElseThrow(() ->  new RuntimeException("Concert with ID 1 not exist")),
+                    ticketCategoryRepository.findById(3L).orElseThrow(() -> new RuntimeException("Ticket category with ID 1 not exist")),
+                    "Category ^^",
+                    "A45",
+                    "Active"
+            );
             ticketRepository.save(ticket1);
+            ticketRepository.save(ticket2);
+            ticketRepository.save(ticket3);
 
             System.out.println("👥 Tickets seeded.");
         }

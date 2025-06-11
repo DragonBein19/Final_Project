@@ -23,6 +23,16 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * Test class for {@link AdminController}.
+ * <p>
+ * Uses Spring's {@code @WebMvcTest} to load the controller layer and mocks dependencies such as {@link UserRepository}.
+ * This class tests the behavior of admin user management endpoints including retrieving all users, deleting users,
+ * and updating users.
+ * </p>
+ */
+
+
 @WebMvcTest(AdminController.class)
 @ContextConfiguration(classes = {AdminController.class, AdminControllerTest.MockConfig.class})
 public class AdminControllerTest {

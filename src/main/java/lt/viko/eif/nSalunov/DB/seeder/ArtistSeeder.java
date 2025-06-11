@@ -5,6 +5,10 @@ import lt.viko.eif.nSalunov.DB.repository.ArtistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Seeder component to populate initial Artist data into the database.
+ */
+
 @Component
 public class ArtistSeeder {
 

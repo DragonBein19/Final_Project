@@ -5,6 +5,11 @@ import lt.viko.eif.nSalunov.DB.model.Concert;
 import lt.viko.eif.nSalunov.DB.model.OrderEntity;
 import lt.viko.eif.nSalunov.DB.model.Ticket;
 import lt.viko.eif.nSalunov.DB.model.TicketCategory;
+<<<<<<< HEAD
+=======
+import lt.viko.eif.nSalunov.DB.repository.TicketRepository;
+import lt.viko.eif.nSalunov.request.TicketRequest;
+>>>>>>> 0b8723e088b4a63fa5376083abf18d36e90a03c7
 import lt.viko.eif.nSalunov.DB.repository.ConcertRepository;
 import lt.viko.eif.nSalunov.DB.repository.OrderRepository;
 import lt.viko.eif.nSalunov.DB.repository.TicketCategoryRepository;
@@ -13,8 +18,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+<<<<<<< HEAD
 import java.math.BigDecimal;
 import java.util.*;
+=======
+/**
+ * REST controller for managing tickets.
+ * <p>
+ * Provides endpoints to create, read, update, and delete tickets, as well as fetch all tickets.
+ * </p>
+ */
+>>>>>>> 0b8723e088b4a63fa5376083abf18d36e90a03c7
 
 @RestController
 @RequestMapping("/ticket")

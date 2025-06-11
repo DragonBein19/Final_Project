@@ -6,8 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+
+/**
+ * REST controller for admin-level user management operations.
+ * <p>
+ * Provides endpoints to retrieve, update, and delete users.
+ * </p>
+ */
 
 @RestController
 @RequestMapping("/admin")
@@ -26,7 +32,6 @@ public class AdminController {
         return userRepository.findAll();
     }
 
-    // Delete user by their ID
     @DeleteMapping("/users/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable int id) {
         System.out.println("Received deletion request ID: " + id);
@@ -49,7 +54,6 @@ public class AdminController {
             user.setEmail(updatedUser.getEmail());
             user.setPhone(updatedUser.getPhone());
             user.setUserName(updatedUser.getUserName());
-            // user.setRegistrationDate(...) – purposely skipped!
             userRepository.save(user);
             return ResponseEntity.ok("User updated");
         }).orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found"));

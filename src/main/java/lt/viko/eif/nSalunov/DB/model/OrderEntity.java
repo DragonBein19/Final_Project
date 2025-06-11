@@ -5,6 +5,14 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+/**
+ * Represents a customer's order, which may contain multiple tickets.
+ * <p>
+ * Each order includes delivery details, pricing (with optional discounts),
+ * and is associated with a user.
+ * </p>
+ */
+
 @Entity
 @Table(name = "orders")
 public class OrderEntity {

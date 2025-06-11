@@ -1,65 +1,65 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <link href='https://fonts.googleapis.com/css?family=Afacad' rel='stylesheet'>
-    <link rel="stylesheet" href="styles/login.css">
-    <title>Admin Log in</title>
-</head>
-<body>
-    <img src="/konc2.jpeg" alt="Fonas" id="background-image" />
-    <div id="header-bar" id="center-title">TICKET LIVE</div>
-    <div id="dark-box">
-        <h2>Admin log in</h2>
-        <form id="loginForm">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+    <head>
+        <link href='https://fonts.googleapis.com/css?family=Afacad' rel='stylesheet'>
+        <link rel="stylesheet" href="styles/login.css">
+        <title>Admin Log in</title>
+    </head>
+        
+    <body>
+        <img src="/konc2.jpeg" alt="Fonas" id="background-image" />
+        <div id="header-bar" id="center-title">TICKET LIVE</div>
+        <div id="dark-box">
+            <h2>Admin log in</h2>
+            <form id="loginForm">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
 
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
 
-            <button type="submit">Done</button>
-            <p id="errorMsg" style="color: red;"></p>
-        </form>
+                <button type="submit">Done</button>
+                <p id="errorMsg" style="color: red;"></p>
+            </form>
 
-        <script>
-            document.getElementById("loginForm").addEventListener("submit", function (event) {
-                event.preventDefault();
+            <script>
+                document.getElementById("loginForm").addEventListener("submit", function (event) {
+                    event.preventDefault();
 
-                const userName = document.getElementById("username").value;
-                const password = document.getElementById("password").value;
-                const errorMsg = document.getElementById("errorMsg");
-                errorMsg.textContent = "";
+                    const userName = document.getElementById("username").value;
+                    const password = document.getElementById("password").value;
+                    const errorMsg = document.getElementById("errorMsg");
+                    errorMsg.textContent = "";
 
-                fetch("http://localhost:8080/users/login", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ userName, password })
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.text().then(text => {
-                            throw new Error(text);
-                        });
-                    }
-                    return response.json();
-                })
-                .then(user => {
-                    if (user.isAdmin) {
-                        window.location.href = "concerts.html";
-                    } else {
-                        errorMsg.textContent = "You are not authorized as admin.";
-                    }
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                    errorMsg.textContent = error.textContent || "Server error. Please try again.";
+                    fetch("http://localhost:8080/users/login", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ userName, password })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.text().then(text => {
+                                throw new Error(text);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(user => {
+                        if (user.isAdmin) {
+                            window.location.href = "concerts.html";
+                        } else {
+                            errorMsg.textContent = "You are not authorized as admin.";
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        errorMsg.textContent = error.textContent || "Server error. Please try again.";
+                    });
                 });
-            });
-        </script>
-
-    </div>
-</body>
-<div id="footer-bar">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
+            </script>
+        </div>
+    </body>
+    <div id="footer-bar">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
 </html>

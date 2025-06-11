@@ -7,6 +7,14 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+/**
+ * Seeder component responsible for populating the database with initial user data.
+ * <p>
+ * This class seeds a set of predefined users including an admin and several regular users,
+ * if the user table is empty.
+ * </p>
+ */
+
 @Component
 public class UserSeeder {
 
@@ -26,7 +34,7 @@ public class UserSeeder {
                     "User",
                     "admin@example.com",
                     "+37060000001",
-                    "admin123", // 👉 patartina naudoti hash tikrame projekte
+                    "admin123", 
                     new Date(),
                     true
             );
@@ -43,8 +51,48 @@ public class UserSeeder {
                     false
             );
 
+            Users user1 = new Users(
+                    0,
+                    "miau",
+                    "Gabriele",
+                    "Siaudvytyte",
+                    "miau@example.com",
+                    "+37060000004",
+                    "slap",
+                    new Date(),
+                    false
+            );
+
+            Users user2 = new Users(
+                    0,
+                    "Inedaa",
+                    "Ineda",
+                    "Gaigalaite",
+                    "ineda@example.com",
+                    "+37060000003",
+                    "123",
+                    new Date(),
+                    false
+            );
+
+            Users user3 = new Users(
+                    0,
+                    "Nik",
+                    "Nikita",
+                    "Sulanovas",
+                    "nikita@example.com",
+                    "+37060000006",
+                    "password",
+                    new Date(),
+                    false
+            );
+
+
             userRepository.save(admin);
             userRepository.save(user);
+            userRepository.save(user1);
+            userRepository.save(user2);
+            userRepository.save(user3);
 
             System.out.println("👥 Users seeded.");
         }

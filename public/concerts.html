@@ -1,290 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Concert Management</title>
-    <link rel="stylesheet" href="styles/button.css">
-    <style>
-        td input, td textarea {
-            width: 100%;
-            box-sizing: border-box;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <title>Concert Management</title>
+        <link rel="stylesheet" href="styles/button.css">
+    </head>
 
-        #add-concert-form {
-            display: none;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #aaa;
-            width: 60%;
-            background: #f8f8f8;
-        }
+    <body>
+        <div id="header-bar">TICKET LIVE CONCERTS</div>
 
-        #add-concert-form input, #add-concert-form textarea {
-            width: 100%;
-            margin: 5px 0;
-        }
-    </style>
-</head>
-<body>
-<div id="header-bar">TICKET LIVE CONCERTS</div>
+        <div id="button-container">
+            <a href="tickets.html" class="admin-button">Tickets</a>
+            <a href="concerts.html" class="admin-button">Concerts</a>
+            <a href="users.html" class="admin-button">Users</a>
+        </div>
 
-<div id="button-container">
-    <a href="tickets.html" class="admin-button">Tickets</a>
-    <a href="concerts.html" class="admin-button">Concerts</a>
-    <a href="users.html" class="admin-button">Users</a>
-</div>
+        <table id="concerts-table">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Ticket limit</th>
+                <th>Sold</th>
+                <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
 
-<table id="concerts-table">
-    <thead>
-    <tr>
-        <th>Title</th>
-        <th>Date</th>
-        <th>Description</th>
-        <th>Status</th>
-        <th>Ticket limit</th>
-        <th>Sold</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+        <div style="text-align: center; margin-bottom: 20px;">
+            <button onclick="showForm()" class="action-button edit-button">Add new</button>
+        </div>
 
-<div style="text-align: center; margin-bottom: 20px;">
-    <button onclick="showForm()" class="action-button edit-button">Add new</button>
-</div>
+        <div id="add-concert-form">
+            <h3>Add New Concert</h3>
+            <form id="concertForm">
+                <label>Title: <input type="text" name="concertName" required></label><br>
+                <label>Date: <input type="datetime-local" name="concert_date" required></label><br>
+                <label>Description: <textarea name="description" rows="3" required></textarea></label><br>
+                <label>Status: <input type="text" name="status" required></label><br>
+                <label>Ticket Limit: <input type="number" name="ticketsLimit" required></label><br>
+                <label>Tickets Sold: <input type="number" name="ticketsSold" required></label><br>
+                <label>Venue ID: <input type="number" name="venueId" required></label><br><br>
+                <button type="submit" class="action-button edit-button">Save</button>
+                <button type="button" onclick="hideForm()" class="action-button delete-button">Cancel</button>
+            </form>
+        </div>
 
-<div id="add-concert-form">
-    <h3>Add New Concert</h3>
-    <form id="concertForm">
-        <label>Title: <input type="text" name="concertName" required></label><br>
-        <label>Date: <input type="datetime-local" name="concert_date" required></label><br>
-        <label>Description: <textarea name="description" rows="3" required></textarea></label><br>
-        <label>Status: <input type="text" name="status" required></label><br>
-        <label>Ticket Limit: <input type="number" name="ticketsLimit" required></label><br>
-        <label>Tickets Sold: <input type="number" name="ticketsSold" required></label><br>
-        <label>Venue ID: <input type="number" name="venueId" required></label><br><br>
-        <button type="submit" class="action-button edit-button">Save</button>
-        <button type="button" onclick="hideForm()" class="action-button delete-button">Cancel</button>
-    </form>
-</div>
+        <script>
+            const fields = [
+                "concertName",
+                "concert_date",
+                "description",
+                "status",
+                "ticketsLimit",
+                "ticketsSold"
+            ];
 
-<script>
-    const fields = [
-        "concertName",
-        "concert_date",
-        "description",
-        "status",
-        "ticketsLimit",
-        "ticketsSold"
-    ];
+            const backendFieldMap = {
+                concertName: "Concert name",
+                concert_date: "Concert date",
+                description: "description",
+                status: "status",
+                ticketsLimit: "Ticket limit",
+                ticketsSold: "Ticket Sold"
+            };
 
-    const backendFieldMap = {
-        concertName: "Concert name",
-        concert_date: "Concert date",
-        description: "description",
-        status: "status",
-        ticketsLimit: "Ticket limit",
-        ticketsSold: "Ticket Sold"
-    };
-
-    document.addEventListener("DOMContentLoaded", () => {
-        loadConcerts();
-    });
-
-    function loadConcerts() {
-        fetch('/concerts')
-            .then(res => res.json())
-            .then(data => {
-                const tbody = document.querySelector("#concerts-table tbody");
-                tbody.innerHTML = "";
-                data.forEach(concert => {
-                    const tr = document.createElement("tr");
-                    tr.setAttribute("data-id", concert.id);
-
-                    fields.forEach((field) => {
-                        const backendKey = backendFieldMap[field];
-                        const td = document.createElement("td");
-                        td.textContent = concert[backendKey] ?? '';
-                        tr.appendChild(td);
-                    });
-
-                    const actionTd = document.createElement("td");
-                    actionTd.innerHTML = `
-                        <button class="action-button edit-button" onclick="toggleEdit(this)">Edit</button>
-                        <button class="action-button delete-button" onclick="deleteConcert(this)">Delete</button>
-                    `;
-                    tr.appendChild(actionTd);
-
-                    tbody.appendChild(tr);
-                });
+            document.addEventListener("DOMContentLoaded", () => {
+                loadConcerts();
             });
-    }
 
-function toggleEdit(button) {
-    const tr = button.closest("tr");
-    const isSaving = button.textContent === "Save";
-    const concertId = tr.getAttribute("data-id");
-    const tds = tr.querySelectorAll("td");
+            function loadConcerts() {
+                fetch('/concerts')
+                    .then(res => res.json())
+                    .then(data => {
+                        const tbody = document.querySelector("#concerts-table tbody");
+                        tbody.innerHTML = "";
+                        data.forEach(concert => {
+                            const tr = document.createElement("tr");
+                            tr.setAttribute("data-id", concert.id);
 
-    const fields = [
-        "concertName",
-        "concert_date",
-        "description",
-        "status",
-        "ticketsLimit",
-        "ticketsSold"
-    ];
+                            fields.forEach((field) => {
+                                const backendKey = backendFieldMap[field];
+                                const td = document.createElement("td");
+                                td.textContent = concert[backendKey] ?? '';
+                                tr.appendChild(td);
+                            });
 
-    if (!isSaving) {
-        for (let i = 0; i < fields.length; i++) {
-            const val = tds[i].textContent.trim();
-            const input = fields[i] === "description" ? document.createElement("textarea") : document.createElement("input");
-            if (fields[i].includes("date")) input.type = "datetime-local";
-            input.value = val;
-            tds[i].innerHTML = '';
-            tds[i].appendChild(input);
-        }
+                            const actionTd = document.createElement("td");
+                            actionTd.innerHTML = `
+                                <button class="action-button edit-button" onclick="toggleEdit(this)">Edit</button>
+                                <button class="action-button delete-button" onclick="deleteConcert(this)">Delete</button>
+                            `;
+                            tr.appendChild(actionTd);
 
-        const actionTd = tds[tds.length - 1];
-        actionTd.innerHTML = '';
-
-        const saveBtn = document.createElement("button");
-        saveBtn.className = "action-button edit-button";
-        saveBtn.textContent = "Save";
-        saveBtn.onclick = () => toggleEdit(saveBtn);
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.className = "action-button delete-button";
-        deleteBtn.textContent = "Delete";
-        deleteBtn.onclick = () => deleteConcert(deleteBtn);
-
-        actionTd.appendChild(saveBtn);
-        actionTd.appendChild(deleteBtn);
-
-    } else {
-        let updatedData = {};
-        for (let i = 0; i < fields.length; i++) {
-            const input = tds[i].querySelector("input, textarea");
-            const value = input.value;
-            updatedData[fields[i]] = (fields[i].includes("tickets"))
-                ? parseInt(value)
-                : value;
-        }
-
-        const backendFieldMap = {
-            concertName: "Concert name",
-            concert_date: "Concert date",
-            description: "description",
-            status: "status",
-            ticketsLimit: "Ticket limit",
-            ticketsSold: "Ticket Sold"
-        };
-
-        const payload = {};
-        for (const key in updatedData) {
-            const mappedKey = backendFieldMap[key];
-            payload[mappedKey] = updatedData[key];
-        }
-
-        console.log("Sending PUT payload:", payload);
-
-        fetch(`/concerts/${concertId}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        })
-        .then(res => {
-            if (!res.ok) throw new Error("Update failed");
-
-            for (let i = 0; i < fields.length; i++) {
-                tds[i].textContent = updatedData[fields[i]];
+                            tbody.appendChild(tr);
+                        });
+                    });
             }
 
-            const actionTd = tds[tds.length - 1];
-            actionTd.innerHTML = '';
+        function toggleEdit(button) {
+            const tr = button.closest("tr");
+            const isSaving = button.textContent === "Save";
+            const concertId = tr.getAttribute("data-id");
+            const tds = tr.querySelectorAll("td");
 
-            const editBtn = document.createElement("button");
-            editBtn.className = "action-button edit-button";
-            editBtn.textContent = "Edit";
-            editBtn.onclick = () => toggleEdit(editBtn);
+            const fields = [
+                "concertName",
+                "concert_date",
+                "description",
+                "status",
+                "ticketsLimit",
+                "ticketsSold"
+            ];
 
-            const deleteBtn = document.createElement("button");
-            deleteBtn.className = "action-button delete-button";
-            deleteBtn.textContent = "Delete";
-            deleteBtn.onclick = () => deleteConcert(deleteBtn);
+            if (!isSaving) {
+                for (let i = 0; i < fields.length; i++) {
+                    const val = tds[i].textContent.trim();
+                    const input = fields[i] === "description" ? document.createElement("textarea") : document.createElement("input");
+                    if (fields[i].includes("date")) input.type = "datetime-local";
+                    input.value = val;
+                    tds[i].innerHTML = '';
+                    tds[i].appendChild(input);
+                }
 
-            actionTd.appendChild(editBtn);
-            actionTd.appendChild(deleteBtn);
+                const actionTd = tds[tds.length - 1];
+                actionTd.innerHTML = '';
 
-            alert("Saved successfully!");
-        })
-        .catch(err => {
-            console.error(err);
-            alert("Failed to save!");
-        });
-    }
-}
+                const saveBtn = document.createElement("button");
+                saveBtn.className = "action-button edit-button";
+                saveBtn.textContent = "Save";
+                saveBtn.onclick = () => toggleEdit(saveBtn);
 
+                const deleteBtn = document.createElement("button");
+                deleteBtn.className = "action-button delete-button";
+                deleteBtn.textContent = "Delete";
+                deleteBtn.onclick = () => deleteConcert(deleteBtn);
 
-    function deleteConcert(button) {
-        const row = button.closest("tr");
-        const concertId = row.getAttribute("data-id");
+                actionTd.appendChild(saveBtn);
+                actionTd.appendChild(deleteBtn);
 
-        if (confirm("Are you sure you want to delete?")) {
-            fetch(`/concerts/${concertId}`, { method: 'DELETE' })
+            } else {
+                let updatedData = {};
+                for (let i = 0; i < fields.length; i++) {
+                    const input = tds[i].querySelector("input, textarea");
+                    const value = input.value;
+                    updatedData[fields[i]] = (fields[i].includes("tickets"))
+                        ? parseInt(value)
+                        : value;
+                }
+
+                const backendFieldMap = {
+                    concertName: "Concert name",
+                    concert_date: "Concert date",
+                    description: "description",
+                    status: "status",
+                    ticketsLimit: "Ticket limit",
+                    ticketsSold: "Ticket Sold"
+                };
+
+                const payload = {};
+                for (const key in updatedData) {
+                    const mappedKey = backendFieldMap[key];
+                    payload[mappedKey] = updatedData[key];
+                }
+
+                console.log("Sending PUT payload:", payload);
+
+                fetch(`/concerts/${concertId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                })
                 .then(res => {
-                    if (!res.ok) throw new Error("Delete failed");
-                    row.remove();
+                    if (!res.ok) throw new Error("Update failed");
+
+                    for (let i = 0; i < fields.length; i++) {
+                        tds[i].textContent = updatedData[fields[i]];
+                    }
+
+                    const actionTd = tds[tds.length - 1];
+                    actionTd.innerHTML = '';
+
+                    const editBtn = document.createElement("button");
+                    editBtn.className = "action-button edit-button";
+                    editBtn.textContent = "Edit";
+                    editBtn.onclick = () => toggleEdit(editBtn);
+
+                    const deleteBtn = document.createElement("button");
+                    deleteBtn.className = "action-button delete-button";
+                    deleteBtn.textContent = "Delete";
+                    deleteBtn.onclick = () => deleteConcert(deleteBtn);
+
+                    actionTd.appendChild(editBtn);
+                    actionTd.appendChild(deleteBtn);
+
+                    alert("Saved successfully!");
                 })
                 .catch(err => {
                     console.error(err);
-                    alert("Failed to delete concert.");
+                    alert("Failed to save!");
                 });
+            }
         }
-    }
 
-    function showForm() {
-        document.getElementById("add-concert-form").style.display = "block";
-    }
 
-    function hideForm() {
-        document.getElementById("concertForm").reset();
-        document.getElementById("add-concert-form").style.display = "none";
-    }
+            function deleteConcert(button) {
+                const row = button.closest("tr");
+                const concertId = row.getAttribute("data-id");
 
-    document.getElementById("concertForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        const newConcert = {
-            concertName: formData.get("concertName"),
-            concert_date: formData.get("concert_date"),
-            description: formData.get("description"),
-            status: formData.get("status"),
-            ticketsLimit: parseInt(formData.get("ticketsLimit")),
-            ticketsSold: parseInt(formData.get("ticketsSold")),
-            venue: { id: parseInt(formData.get("venueId")) }
-        };
+                if (confirm("Are you sure you want to delete?")) {
+                    fetch(`/concerts/${concertId}`, { method: 'DELETE' })
+                        .then(res => {
+                            if (!res.ok) throw new Error("Delete failed");
+                            row.remove();
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            alert("Failed to delete concert.");
+                        });
+                }
+            }
 
-        fetch('/concerts', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newConcert)
-        })
-        .then(res => {
-            if (!res.ok) throw new Error("Failed to add");
-            return res.json();
-        })
-        .then(() => {
-            hideForm();
-            loadConcerts();
-        })
-        .catch(err => {
-            console.error(err);
-            alert("Could not add concert.");
-        });
-    });
-</script>
+            function showForm() {
+                document.getElementById("add-concert-form").style.display = "block";
+            }
 
-<a class="logout-button" href="index.html">Log out</a>
-</body>
+            function hideForm() {
+                document.getElementById("concertForm").reset();
+                document.getElementById("add-concert-form").style.display = "none";
+            }
+
+            document.getElementById("concertForm").addEventListener("submit", function (e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const newConcert = {
+                    concertName: formData.get("concertName"),
+                    concert_date: formData.get("concert_date"),
+                    description: formData.get("description"),
+                    status: formData.get("status"),
+                    ticketsLimit: parseInt(formData.get("ticketsLimit")),
+                    ticketsSold: parseInt(formData.get("ticketsSold")),
+                    venue: { id: parseInt(formData.get("venueId")) }
+                };
+
+                fetch('/concerts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newConcert)
+                })
+                .then(res => {
+                    if (!res.ok) throw new Error("Failed to add");
+                    return res.json();
+                })
+                .then(() => {
+                    hideForm();
+                    loadConcerts();
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Could not add concert.");
+                });
+            });
+        </script>
+
+        <a class="logout-button" href="index.html">Log out</a>
+    </body>
 </html>

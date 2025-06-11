@@ -4,6 +4,14 @@ import jakarta.persistence.*;
 
 import java.util.Set;
 
+/**
+ * Entity representing a music artist.
+ * <p>
+ * Each artist is associated with one or more genres, may participate in multiple concerts,
+ * and can have multiple scheduled concert dates.
+ * </p>
+ */
+
 @Entity
 @Table(name = "artist")
 public class Artist {

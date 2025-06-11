@@ -5,6 +5,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+/**
+ * Entity representing the specific date and time an artist will perform at a concert.
+ */
+
 @Entity
 @Table(name = "concert_date")
 public class ConcertDate {

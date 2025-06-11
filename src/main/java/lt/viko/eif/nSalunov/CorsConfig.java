@@ -5,6 +5,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * Configuration class to enable CORS (Cross-Origin Resource Sharing)
+ * allowing specific origins to access the backend APIs.
+ */
+
 @Configuration
 public class CorsConfig {
     @Bean

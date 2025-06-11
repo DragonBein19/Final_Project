@@ -23,6 +23,16 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * Test class for {@link ConcertController}.
+ * <p>
+ * Configures Spring MVC test infrastructure for the ConcertController, mocking
+ * dependencies such as {@link ConcertRepository} and {@link VenuesRepository}.
+ * Tests REST endpoints for concert management including retrieval, creation,
+ * update, deletion, and search functionality.
+ * </p>
+ */
+
 @WebMvcTest(ConcertController.class)
 @ContextConfiguration(classes = {ConcertController.class, ConcertControllerTest.MockConfig.class})
 public class ConcertControllerTest {

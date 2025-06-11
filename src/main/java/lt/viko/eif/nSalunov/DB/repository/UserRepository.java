@@ -6,15 +6,17 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Repository interface for managing Users entities.
+ * Provides CRUD operations and custom query methods for Users.
+ */
+
 @Repository
 public interface UserRepository extends JpaRepository<Users, Integer> {
 
-    // Patikrina, ar vartotojas su tokiu el. paštu egzistuoja
     boolean existsByEmail(String email);
 
-    // Naudojama prisijungimui – grąžina vartotoją pagal username ir password
     Optional<Users> findByUserNameAndPassword(String userName, String password);
 
     boolean existsByUserName(String userName);
-
 }
