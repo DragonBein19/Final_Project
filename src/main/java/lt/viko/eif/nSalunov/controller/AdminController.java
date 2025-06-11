@@ -21,7 +21,6 @@ public class AdminController {
         this.userRepository = userRepository;
     }
 
-    // Get all users
     @GetMapping("/users")
     public List<Users> getAllUsers() {
         return userRepository.findAll();
@@ -30,7 +29,7 @@ public class AdminController {
     // Delete user by their ID
     @DeleteMapping("/users/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable int id) {
-        System.out.println("Gauta trynimo užklausa ID: " + id);
+        System.out.println("Received deletion request ID: " + id);
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
             return ResponseEntity.ok("User deleted");
@@ -41,7 +40,7 @@ public class AdminController {
 
     @PutMapping("/users/{id}")
     public ResponseEntity<String> updateUser(@PathVariable int id, @RequestBody Users updatedUser) {
-        System.out.println("Gautas atnaujinimas: " + updatedUser); // ← debug
+        System.out.println("Update received: " + updatedUser);
 
         return userRepository.findById(id).map(user -> {
             user.setIsAdmin(updatedUser.getIsAdmin());
