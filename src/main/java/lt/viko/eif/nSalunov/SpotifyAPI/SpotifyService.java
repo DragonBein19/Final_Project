@@ -13,6 +13,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Service for interacting with the Spotify API.
+ * Provides methods to authenticate and fetch data such as top tracks of an artist.
+ */
+
 @Service
 public class SpotifyService {
 

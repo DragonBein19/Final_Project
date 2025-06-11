@@ -6,7 +6,8 @@ import lt.viko.eif.nSalunov.DB.repository.ConcertRepository;
 import lt.viko.eif.nSalunov.DB.repository.TicketCategoryRepository;
 import lt.viko.eif.nSalunov.DB.repository.TicketRepository;
 import lt.viko.eif.nSalunov.controller.TicketController;
-import lt.viko.eif.nSalunov.controller.TicketRequest;
+import lt.viko.eif.nSalunov.request.TicketRequest;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -23,6 +24,14 @@ import java.util.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+/**
+ * Test class for {@link TicketController}.
+ * <p>
+ * Sets up Spring MVC test environment with mocked repositories for Tickets, Concerts, and Ticket Categories.
+ * Covers basic CRUD operations: fetching all tickets, fetching by ID, creating, updating, and deleting tickets.
+ * </p>
+ */
 
 @WebMvcTest(TicketController.class)
 @ContextConfiguration(classes = {TicketController.class, TicketControllerTest.MockConfig.class})

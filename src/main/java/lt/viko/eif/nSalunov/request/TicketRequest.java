@@ -1,4 +1,11 @@
-package lt.viko.eif.nSalunov.controller;
+package lt.viko.eif.nSalunov.request;
+
+/**
+ * Represents a request to create or update a ticket.
+ * 
+ * Contains details about the ticket such as category, seat number, status,
+ * and associations to concert and ticket category by their IDs.
+ */
 
 public class TicketRequest {
     private String category;
@@ -6,8 +13,6 @@ public class TicketRequest {
     private String status;
     private Long concert_id;
     private Long ticket_category_id;
-
-    // Getters and setters
 
     public String getCategory() {
         return category;

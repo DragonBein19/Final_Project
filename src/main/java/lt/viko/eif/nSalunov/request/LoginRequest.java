@@ -1,4 +1,10 @@
-package lt.viko.eif.nSalunov.controller;
+package lt.viko.eif.nSalunov.request;
+
+/**
+ * Represents a login request containing user credentials.
+ * 
+ * This class holds the username and password required for authentication.
+ */
 
 public class LoginRequest {
     private String userName;

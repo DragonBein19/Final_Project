@@ -4,6 +4,13 @@ import jakarta.persistence.*;
 
 import java.util.Set;
 
+/**
+ * Entity representing a music genre.
+ * <p>
+ * Genres can be associated with multiple artists in a many-to-many relationship.
+ * </p>
+ */
+
 @Entity
 @Table(name = "genre")
 public class Genre {

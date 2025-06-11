@@ -1,4 +1,11 @@
-package lt.viko.eif.nSalunov.controller;
+package lt.viko.eif.nSalunov.request;
+
+/**
+ * Represents a user profile request containing personal information.
+ * 
+ * This class holds user details such as name, surname, email, phone number,
+ * and registration date, typically used for updating or displaying profile data.
+ */
 
 public class ProfileRequest {
     private String Name;

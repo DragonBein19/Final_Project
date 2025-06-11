@@ -5,6 +5,12 @@ import jakarta.persistence.*;
 
 import java.util.Set;
 
+/**
+ * Represents a venue where concerts take place.
+ * Contains information such as contact details, location,
+ * capacity, indoor/outdoor status, and associated concerts.
+ */
+
 @Entity
 @Table(name = "venues")
 public class Venue {

@@ -5,6 +5,11 @@ import jakarta.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
+/**
+ * Represents a user in the system with personal and authentication details.
+ * Includes information about the user's orders and administrative privileges.
+ */
+
 @Entity
 @Table(name = "users")
 public class Users {

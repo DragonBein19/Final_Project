@@ -1,6 +1,13 @@
-package lt.viko.eif.nSalunov.controller;
+package lt.viko.eif.nSalunov.request;
 
 import java.time.LocalDateTime;
+
+/**
+ * Represents a request payload for creating or updating a Concert.
+ * 
+ * Contains all necessary fields to describe a concert including its name, date, description,
+ * status, ticket limits and sales, and the associated venue.
+ */
 
 public class ConcertRequest {
     private String concertName;

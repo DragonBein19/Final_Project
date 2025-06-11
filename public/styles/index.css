@@ -1,5 +1,3 @@
-/* === PAGRINDINIAI ELEMENTAI === */
-
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -56,8 +54,6 @@ body {
     font-weight: normal !important;
 }
 
-/* === TOGGLE MYGTUKAI === */
-
 .toggle-btn {
     font-family: 'Afacad';
     font-size: 20px;
@@ -81,8 +77,6 @@ body {
 .toggle-btn:hover {
     background-color: #272727;
 }
-
-/* === PAIEŠKOS LAUKAS IR MYGTUKAS === */
 
 #search-input {
     padding: 8px 10px;
@@ -111,8 +105,6 @@ body {
     background-color: #272727;
 }
 
-/* === FONO PAVEIKSLĖLIS === */
-
 #background-image {
     position: fixed;
     width: 100%;
@@ -121,8 +113,6 @@ body {
     z-index: -1;
     opacity: 0.9;
 }
-
-/* === KONCERTŲ SKYRIUS === */
 
 #concert-section {
     width: 90%;
@@ -133,8 +123,6 @@ body {
     position: relative;
     z-index: 1; 
 }
-
-/* === APATINIS JUOSTAS (juoda) === */
 
 #bottom-box {
     width: 100%;
@@ -150,8 +138,6 @@ body {
     font-size: 20px;
     z-index: 10;
 }
-
-/* === FOOTER BARAS === */
 
 #footer-bar {
     background-color: #000107;
@@ -171,8 +157,6 @@ body {
     z-index: 11; 
 }
 
-/* === PILNO EKRANO LANGAS === */
-
 #full-page-window {
     position: fixed;
     top: 0;
@@ -184,8 +168,6 @@ body {
     flex-direction: column;
     z-index: 9999;
 }
-
-/* === PILNO EKRANO HEADER BARAS === */
 
 #header-bar-white {
     background-color: #000000;
@@ -201,10 +183,6 @@ body {
     border-bottom: 2px solid #00000020;
 }
 
-/* === TURINIO PLOKŠTĖ === */
-
-
-
 #concert-title {
     display: block;
     margin-right: 90px;
@@ -212,7 +190,6 @@ body {
     color: black;
     margin-bottom: 10px;
 }
-
 
 #concert-list {
     display: flex;
@@ -224,8 +201,8 @@ body {
 .concert-card {
     display: flex;
     flex-direction: column;
-    align-items: center; /* CENTRUOJA turinį horizontaliai */
-    justify-content: center; /* jei nori vertikaliai centruoti */
+    align-items: center;
+    justify-content: center;
     text-align: center;
 }
 
@@ -241,7 +218,7 @@ body {
 }
 
 .concert {
-    background: rgba(255, 255, 255, 0.175);
+    background-color: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.021);
@@ -251,4 +228,16 @@ body {
     color: white;
     box-sizing: border-box;
     width: 500px;
+    margin: 20px;
+}
+
+.songs {
+    margin-top: 10px;
+}
+
+.songs-list {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-top: 5px;
+    color: white;
 }

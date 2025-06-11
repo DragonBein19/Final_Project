@@ -5,6 +5,14 @@ import lt.viko.eif.nSalunov.DB.seeder.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+/**
+ * Runs at application startup to seed initial data into the database.
+ * <p>
+ * This class implements CommandLineRunner and executes the seed methods
+ * of various Seeder components to populate the database with initial data
+ * such as genres, artists, users, venues, concerts, ticket categories, and tickets.
+ */
+
 @Component
 public class StartupRunner implements CommandLineRunner {
 

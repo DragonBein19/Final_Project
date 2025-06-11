@@ -67,7 +67,7 @@ body {
     font-family: 'Afacad';
     border-radius: 5px;
     border: none;
-    background-color: rgba(255, 255, 255, 0.2); /* mažiau nepermatomas, bet permatomas */
+    background-color: rgba(255, 255, 255, 0.2);
     color: white;
     cursor: pointer;
     backdrop-filter: blur(8px);
@@ -79,7 +79,6 @@ body {
     color: black;
 }
 
-
 #concert-title {
     display: block;
     text-align: center; 
@@ -87,7 +86,6 @@ body {
     color: black;
     margin-bottom: 10px;
 }
-
 
 #concert-list {
     display: flex;
@@ -142,8 +140,6 @@ body {
     font-size: 20px;
     z-index: 10;
 }
-
-/* === FOOTER BARAS === */
 
 #footer-bar {
     background-color: #000107;

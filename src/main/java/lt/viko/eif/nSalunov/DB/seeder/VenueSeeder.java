@@ -5,6 +5,13 @@ import lt.viko.eif.nSalunov.DB.repository.VenuesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Seeder component responsible for populating the database with initial venue data.
+ * <p>
+ * This class inserts a set of predefined venues into the database if no venues exist.
+ * </p>
+ */
+
 @Component
 public class VenueSeeder {
 

@@ -6,10 +6,16 @@ import lt.viko.eif.nSalunov.DB.repository.ConcertRepository;
 import lt.viko.eif.nSalunov.DB.repository.VenuesRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+
+/**
+ * REST controller for managing concerts.
+ * <p>
+ * Provides endpoints to create, read, update, delete, and search concerts.
+ * </p>
+ */
 
 @RestController
 @RequestMapping("/concerts")

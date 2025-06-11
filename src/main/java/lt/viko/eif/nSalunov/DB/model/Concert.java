@@ -5,6 +5,14 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+/**
+ * Entity representing a concert event.
+ * <p>
+ * Each concert is held at a venue, may include multiple artists, and may have
+ * associated tickets and ticket limits.
+ * </p>
+ */
+
 @Entity
 @Table(name = "concerts")
 public class Concert {

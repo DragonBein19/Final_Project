@@ -2,11 +2,15 @@ package lt.viko.eif.nSalunov.DB.model;
 
 import jakarta.persistence.*;
 
+/**
+ * Represents a ticket for a concert, which includes information about
+ * its category, seat number, status, and the associated concert and ticket category.
+ */
+
 @Entity
 @Table(name = "ticket")
 public class Ticket {
 
-    //---table---
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,7 +29,6 @@ public class Ticket {
     @Column(nullable = false, length = 45)
     private String status;
 
-    //---Forgein key---
     @ManyToOne
     @JoinColumn(name = "ticket_category_id", nullable = false)
     private TicketCategory ticketCategory;
@@ -41,7 +44,6 @@ public class Ticket {
         this.status = status;
     }
 
-    //---Getters and Setters---
     public Long getId() {
         return id;
     }

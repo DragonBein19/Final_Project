@@ -7,6 +7,14 @@ import lt.viko.eif.nSalunov.DB.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Seeder component responsible for populating the database with initial Ticket data.
+ * <p>
+ * This class inserts sample tickets linking concerts and ticket categories
+ * if no tickets currently exist in the database.
+ * </p>
+ */
+
 @Component
 public class TicketSeeder {
     private final TicketRepository ticketRepository;

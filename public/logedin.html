@@ -1,197 +1,197 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <link href='https://fonts.googleapis.com/css?family=Afacad' rel='stylesheet'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="styles/logedin.css">
-    <title>Ticket Live Registered</title>
-</head>
-<body>
-    <img src="/konc2.jpeg" alt="Fonas" id="background-image" />
+    <head>
+        <link href='https://fonts.googleapis.com/css?family=Afacad' rel='stylesheet'>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        <link rel="stylesheet" href="styles/logedin.css">
+        <title>Ticket Live Registered</title>
+    </head>
+    
+    <body>
+        <img src="/konc2.jpeg" alt="Fonas" id="background-image" />
 
-    <div id="header-bar">
-        <div id="left-section">
-            <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
-            <a id="filter-button" class="toggle-btn" href="filterR.html">▼</a>
-        </div>
+        <div id="header-bar">
+            <div id="left-section">
+                <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+                <a id="filter-button" class="toggle-btn" href="filterR.html">▼</a>
+            </div>
 
-        <a href="index.html" id="center-title">TICKET LIVE</a>
+            <a href="index.html" id="center-title">TICKET LIVE</a>
 
-        <div id="right-icon">
-            <input type="text" placeholder="Search..." id="search-input">
-            <button id="search-button">⌕</button>
-            <i class="fa-solid fa-cart-shopping" onclick="toggleCartSidebar()" style="cursor:pointer;"></i>
-        </div>
-    </div>
-
-    <div id="sidebar">
-        <a class="menu-btn" href="tickethistory.html">Ticket history</a>
-        <a class="menu-btn" href="profiledetails.html">Profile details</a>
-    </div>
-
-    <div id="cart-sidebar">
-        <p style="color:white;">Your Cart is empty.</p>
-        <p style="color:white;">Total: $0.00</p>
-    </div>
-
-    <div id="footer-bar">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
-    <a href="index.html" id="logout-button">Log out</a>
-
-   <div id="concert-section">
-    <h1 id="upcoming-events-title">UPCOMING EVENTS</h1>
-        <div id="concert-container">
-            <div id="concert-list">
-                <script>
-                    fetch('http://localhost:8080/concerts').then(response => {
-                        if (!response.ok) {
-                           throw new Error("Error: " + response.statusText);
-                        }
-                        return response.json();
-                    }).then(concerts => {
-                        const list = document.getElementById("concert-list");
-                        list.innerHTML = "";
-
-                        concerts.forEach(concert => {
-                        const card = document.createElement("div");
-                        card.className = "concert";
-                        card.innerHTML = `
-                            <h2>${concert["Concert name"] || "No name"}</h2>
-                            <p><strong>Date:</strong> ${concert["Concert date"] ? new Date(concert["Concert date"]).toLocaleDateString() : "N/A"}</p>
-                            <p><strong>Status:</strong> ${concert.status || "N/A"}</p>
-                            <p><strong>Tickets limit:</strong> ${concert["Ticket limit"] ?? "N/A"}</p>
-                            <p><strong>Tickets sold:</strong> ${concert["Ticket Sold"] ?? "N/A"}</p>
-                            <p><strong>Registered:</strong> ${concert.registrationDate ? new Date(concert.registrationDate).toLocaleDateString() : "N/A"}</p>`;
-                            list.appendChild(card);
-                            });
-                        })
-                        .catch(error => {
-                            console.error("Error loading concerts:", error);
-                            document.getElementById("concert-list").innerHTML =
-                            `<p style="color: red;">Failed to load concerts.</p>`;
-                    });
-                </script>
+            <div id="right-icon">
+                <input type="text" placeholder="Search..." id="search-input">
+                <button id="search-button">⌕</button>
+                <i class="fa-solid fa-cart-shopping" onclick="toggleCartSidebar()" style="cursor:pointer;"></i>
             </div>
         </div>
-    </div>
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById("sidebar");
-            sidebar.classList.toggle("active");
-        }
 
-        function toggleCartSidebar() {
-            const cartSidebar = document.getElementById("cart-sidebar");
-            cartSidebar.classList.toggle("active");
-        }
+        <div id="sidebar">
+            <a class="menu-btn" href="tickethistory.html">Ticket history</a>
+            <a class="menu-btn" href="profiledetails.html">Profile details</a>
+        </div>
 
-        const filterBtn = document.getElementById("filter-button");
-        const fullWindow = document.getElementById("full-page-window");
-        const closeBtn = document.getElementById("menu-close");
+        <div id="cart-sidebar">
+            <p style="color:white;">Your Cart is empty.</p>
+            <p style="color:white;">Total: $0.00</p>
+        </div>
 
-        filterBtn.addEventListener("click", () => {
-            fullWindow.style.display = "flex";
-        });
+        <div id="footer-bar">©2025 GABRIELĖ GERMANTĖ NIKITA INEDA PI23A</div>
+        <a href="index.html" id="logout-button">Log out</a>
 
-        closeBtn.addEventListener("click", () => {
-            fullWindow.style.display = "none";
-        });
-    </script>
+    <div id="concert-section">
+        <h1 id="upcoming-events-title">UPCOMING EVENTS</h1>
+            <div id="concert-container">
+                <div id="concert-list">
+                    <script>
+                        fetch('http://localhost:8080/concerts').then(response => {
+                            if (!response.ok) {
+                            throw new Error("Error: " + response.statusText);
+                            }
+                            return response.json();
+                        }).then(concerts => {
+                            const list = document.getElementById("concert-list");
+                            list.innerHTML = "";
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            fetchAllConcerts();
-        });
+                            concerts.forEach(concert => {
+                            const card = document.createElement("div");
+                            card.className = "concert";
+                            card.innerHTML = `
+                                <h2>${concert["Concert name"] || "No name"}</h2>
+                                <p><strong>Date:</strong> ${concert["Concert date"] ? new Date(concert["Concert date"]).toLocaleDateString() : "N/A"}</p>
+                                <p><strong>Status:</strong> ${concert.status || "N/A"}</p>
+                                <p><strong>Tickets limit:</strong> ${concert["Ticket limit"] ?? "N/A"}</p>
+                                <p><strong>Tickets sold:</strong> ${concert["Ticket Sold"] ?? "N/A"}</p>
+                                <p><strong>Registered:</strong> ${concert.registrationDate ? new Date(concert.registrationDate).toLocaleDateString() : "N/A"}</p>`;
+                                list.appendChild(card);
+                                });
+                            })
+                            .catch(error => {
+                                console.error("Error loading concerts:", error);
+                                document.getElementById("concert-list").innerHTML =
+                                `<p style="color: red;">Failed to load concerts.</p>`;
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+        <script>
+            function toggleSidebar() {
+                const sidebar = document.getElementById("sidebar");
+                sidebar.classList.toggle("active");
+            }
 
-        document.getElementById("search-button").addEventListener("click", function () {
-            const query = document.getElementById("search-input").value.trim();
-            if (query === "") {
+            function toggleCartSidebar() {
+                const cartSidebar = document.getElementById("cart-sidebar");
+                cartSidebar.classList.toggle("active");
+            }
+
+            const filterBtn = document.getElementById("filter-button");
+            const fullWindow = document.getElementById("full-page-window");
+            const closeBtn = document.getElementById("menu-close");
+
+            filterBtn.addEventListener("click", () => {
+                fullWindow.style.display = "flex";
+            });
+
+            closeBtn.addEventListener("click", () => {
+                fullWindow.style.display = "none";
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
                 fetchAllConcerts();
-            } else {
-                fetch(`http://localhost:8080/concerts/search?name=${encodeURIComponent(query)}`)
+            });
+
+            document.getElementById("search-button").addEventListener("click", function () {
+                const query = document.getElementById("search-input").value.trim();
+                if (query === "") {
+                    fetchAllConcerts();
+                } else {
+                    fetch(`http://localhost:8080/concerts/search?name=${encodeURIComponent(query)}`)
+                        .then(response => {
+                            if (!response.ok) throw new Error("Search error");
+                            return response.json();
+                        })
+                        .then(concerts => renderConcerts(concerts))
+                        .catch(error => {
+                            console.error("Search failed:", error);
+                            document.getElementById("concert-list").innerHTML = `<p style="color:red;">Search failed.</p>`;
+                        });
+                }
+            });
+
+            document.getElementById("search-input").addEventListener("input", function () {
+                if (this.value.trim() === "") {
+                    fetchAllConcerts();
+                }
+            });
+
+            function fetchAllConcerts() {
+                fetch("http://localhost:8080/concerts")
                     .then(response => {
-                        if (!response.ok) throw new Error("Search error");
+                        if (!response.ok) throw new Error("Failed to load concerts");
                         return response.json();
                     })
                     .then(concerts => renderConcerts(concerts))
                     .catch(error => {
-                        console.error("Search failed:", error);
-                        document.getElementById("concert-list").innerHTML = `<p style="color:red;">Search failed.</p>`;
+                        console.error("Loading failed:", error);
+                        document.getElementById("concert-list").innerHTML = `<p style="color:red;">Failed to load concerts.</p>`;
                     });
             }
-        });
 
-        document.getElementById("search-input").addEventListener("input", function () {
-            if (this.value.trim() === "") {
-                fetchAllConcerts();
+            function getRandomSubset(arr, n) {
+                const shuffled = [...arr];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled.slice(0, n);
             }
-        });
 
-        function fetchAllConcerts() {
-            fetch("http://localhost:8080/concerts")
-                .then(response => {
-                    if (!response.ok) throw new Error("Failed to load concerts");
-                    return response.json();
-                })
-                .then(concerts => renderConcerts(concerts))
-                .catch(error => {
-                    console.error("Loading failed:", error);
-                    document.getElementById("concert-list").innerHTML = `<p style="color:red;">Failed to load concerts.</p>`;
-                });
-        }
+            function renderConcerts(concerts) {
+                const list = document.getElementById("concert-list");
+                list.innerHTML = "";
 
-        function getRandomSubset(arr, n) {
-            const shuffled = [...arr];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            return shuffled.slice(0, n);
-        }
+                concerts.forEach(concert => {
+                    const artist = concert["Concert name"] || "Unknown";
+                    const card = document.createElement("div");
+                    card.className = "concert";
+                    card.innerHTML = `
+                        <h2>${artist}</h2>
+                        <p><strong>Date:</strong> ${concert["Concert date"] ? new Date(concert["Concert date"]).toLocaleDateString() : "N/A"}</p>
+                        <p><strong>Status:</strong> ${concert.status || "N/A"}</p>
+                        <p><strong>Tickets limit:</strong> ${concert["Ticket limit"] ?? "N/A"}</p>
+                        <p><strong>Tickets sold:</strong> ${concert["Ticket Sold"] ?? "N/A"}</p>
+                        <div class="songs">
+                            <p><strong>Top Songs:</strong></p>
+                            <ul class="songs-list"><li>Loading...</li></ul>
+                        </div>`;
+                    list.appendChild(card);
 
-        function renderConcerts(concerts) {
-            const list = document.getElementById("concert-list");
-            list.innerHTML = "";
+                    fetch(`http://localhost:8080/spotify/top-tracks?artist=${encodeURIComponent(artist)}`)
+                        .then(resp => {
+                            if (!resp.ok) throw new Error("Spotify API error");
+                            return resp.json();
+                        })
+                        .then(data => {
+                            const ul = card.querySelector(".songs-list");
+                            ul.innerHTML = "";
 
-            concerts.forEach(concert => {
-                const artist = concert["Concert name"] || "Unknown";
-                const card = document.createElement("div");
-                card.className = "concert";
-                card.innerHTML = `
-                    <h2>${artist}</h2>
-                    <p><strong>Date:</strong> ${concert["Concert date"] ? new Date(concert["Concert date"]).toLocaleDateString() : "N/A"}</p>
-                    <p><strong>Status:</strong> ${concert.status || "N/A"}</p>
-                    <p><strong>Tickets limit:</strong> ${concert["Ticket limit"] ?? "N/A"}</p>
-                    <p><strong>Tickets sold:</strong> ${concert["Ticket Sold"] ?? "N/A"}</p>
-                    <div class="songs">
-                        <p><strong>Top Songs:</strong></p>
-                        <ul class="songs-list"><li>Loading...</li></ul>
-                    </div>`;
-                list.appendChild(card);
-
-                // Spotify dainos užkrovimas
-                fetch(`http://localhost:8080/spotify/top-tracks?artist=${encodeURIComponent(artist)}`)
-                    .then(resp => {
-                        if (!resp.ok) throw new Error("Spotify API error");
-                        return resp.json();
-                    })
-                    .then(data => {
-                        const ul = card.querySelector(".songs-list");
-                        ul.innerHTML = "";
-
-                        const songsToShow = data.length > 5 ? getRandomSubset(data, 5) : data;
-                        songsToShow.forEach(song => {
-                            const li = document.createElement("li");
-                            li.textContent = song;
-                            ul.appendChild(li);
+                            const songsToShow = data.length > 5 ? getRandomSubset(data, 5) : data;
+                            songsToShow.forEach(song => {
+                                const li = document.createElement("li");
+                                li.textContent = song;
+                                ul.appendChild(li);
+                            });
+                        })
+                        .catch(err => {
+                            console.error("Spotify error:", err);
+                            const ul = card.querySelector(".songs-list");
+                            ul.innerHTML = `<li style="color:red;">Could not load songs.</li>`;
                         });
-                    })
-                    .catch(err => {
-                        console.error("Spotify error:", err);
-                        const ul = card.querySelector(".songs-list");
-                        ul.innerHTML = `<li style="color:red;">Could not load songs.</li>`;
-                    });
-            });
-        }
-    </script>
-</body>
+                });
+            }
+        </script>
+    </body>
 </html>

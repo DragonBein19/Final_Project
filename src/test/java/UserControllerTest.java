@@ -1,8 +1,9 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lt.viko.eif.nSalunov.DB.model.Users;
 import lt.viko.eif.nSalunov.DB.repository.UserRepository;
-import lt.viko.eif.nSalunov.controller.LoginRequest;
 import lt.viko.eif.nSalunov.controller.UserController;
+import lt.viko.eif.nSalunov.request.LoginRequest;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,15 @@ import java.util.Optional;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+/**
+ * Test class for {@link UserController}.
+ * <p>
+ * This class sets up a Spring MVC test context with a mocked UserRepository to test
+ * user login and registration endpoints.
+ * It covers successful login, failed login, and user registration scenarios.
+ * </p>
+ */
 
 @WebMvcTest(UserController.class)
 @ContextConfiguration(classes = {UserController.class, UserControllerTest.MockConfig.class})

@@ -7,6 +7,14 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+/**
+ * Seeder component responsible for populating the database with initial user data.
+ * <p>
+ * This class seeds a set of predefined users including an admin and several regular users,
+ * if the user table is empty.
+ * </p>
+ */
+
 @Component
 public class UserSeeder {
 
@@ -26,7 +34,7 @@ public class UserSeeder {
                     "User",
                     "admin@example.com",
                     "+37060000001",
-                    "admin123", // 👉 patartina naudoti hash tikrame projekte
+                    "admin123", 
                     new Date(),
                     true
             );

@@ -8,6 +8,14 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * Seeder component responsible for populating the database with initial TicketCategory data.
+ * <p>
+ * This class checks if the ticket category table is empty and, if so,
+ * inserts predefined ticket categories with sample data.
+ * </p>
+ */
+
 @Component
 public class TicketCategorySeeder {
 

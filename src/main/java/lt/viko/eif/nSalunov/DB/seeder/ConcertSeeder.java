@@ -11,6 +11,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+/**
+ * Seeder component for initializing the database with predefined concert data.
+ * <p>
+ * This class inserts sample Concert entities into the database if none exist.
+ * Each concert is linked to an existing Venue.
+ * </p>
+ */
+
 @Component
 public class ConcertSeeder {
     private final ConcertRepository concertRepository;
