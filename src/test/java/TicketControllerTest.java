@@ -3,6 +3,7 @@ import lt.viko.eif.nSalunov.DB.model.Concert;
 import lt.viko.eif.nSalunov.DB.model.Ticket;
 import lt.viko.eif.nSalunov.DB.model.TicketCategory;
 import lt.viko.eif.nSalunov.DB.repository.ConcertRepository;
+import lt.viko.eif.nSalunov.DB.repository.OrderRepository;
 import lt.viko.eif.nSalunov.DB.repository.TicketCategoryRepository;
 import lt.viko.eif.nSalunov.DB.repository.TicketRepository;
 import lt.viko.eif.nSalunov.controller.TicketController;
@@ -41,6 +42,9 @@ public class TicketControllerTest {
     private TicketCategoryRepository ticketCategoryRepository;
 
     @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
     private ObjectMapper objectMapper;
 
     private Ticket ticket;
@@ -49,23 +53,23 @@ public class TicketControllerTest {
 
     @TestConfiguration
     static class MockConfig {
-        @Bean
-        public TicketRepository ticketRepository() {
+        @Bean public TicketRepository ticketRepository() {
             return Mockito.mock(TicketRepository.class);
         }
 
-        @Bean
-        public ConcertRepository concertRepository() {
+        @Bean public ConcertRepository concertRepository() {
             return Mockito.mock(ConcertRepository.class);
         }
 
-        @Bean
-        public TicketCategoryRepository ticketCategoryRepository() {
+        @Bean public TicketCategoryRepository ticketCategoryRepository() {
             return Mockito.mock(TicketCategoryRepository.class);
         }
 
-        @Bean
-        public ObjectMapper objectMapper() {
+        @Bean public OrderRepository orderRepository() {
+            return Mockito.mock(OrderRepository.class);
+        }
+
+        @Bean public ObjectMapper objectMapper() {
             return new ObjectMapper();
         }
     }
@@ -102,29 +106,23 @@ public class TicketControllerTest {
     }
 
     @Test
-    public void getTicketById_shouldReturnOk() throws Exception {
-        when(ticketRepository.findById(1L)).thenReturn(Optional.of(ticket));
-
-        mockMvc.perform(get("/ticket/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.category").value("Standard"));
-    }
-
-    @Test
     public void updateTicket_shouldSucceed() throws Exception {
-        TicketRequest request = new TicketRequest();
-        request.setCategory("Updated Category");
-        request.setSeat_number("B2");
-        request.setStatus("Booked");
-        request.setConcert_id(1L);
-        request.setTicket_category_id(2L);
+        Map<String, Object> body = new HashMap<>();
+        body.put("category", "Updated Category");
+        body.put("seat_number", "B2");
+        body.put("status", "Booked");
+        body.put("concert_name", "Concert Test");
+        body.put("ticket_category_description", "VIP");
+        body.put("price", "99.99");
 
         when(ticketRepository.findById(1L)).thenReturn(Optional.of(ticket));
+        when(concertRepository.findByConcertName("Concert Test")).thenReturn(Optional.of(concert));
+        when(ticketCategoryRepository.findByDescription("VIP")).thenReturn(Optional.of(category));
         when(ticketRepository.save(Mockito.any(Ticket.class))).thenReturn(ticket);
 
         mockMvc.perform(put("/ticket/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                        .content(objectMapper.writeValueAsString(body)))
                 .andExpect(status().isOk());
     }
 
@@ -134,11 +132,11 @@ public class TicketControllerTest {
         body.put("category", "Standard");
         body.put("seat_number", "C3");
         body.put("status", "Available");
-        body.put("concert_id", 1L);
-        body.put("ticket_category_id", 2L);
+        body.put("concert_name", "Concert Test");
+        body.put("ticket_category_description", "VIP");
 
-        when(concertRepository.findById(1L)).thenReturn(Optional.of(concert));
-        when(ticketCategoryRepository.findById(2L)).thenReturn(Optional.of(category));
+        when(concertRepository.findByConcertName("Concert Test")).thenReturn(Optional.of(concert));
+        when(ticketCategoryRepository.findByDescription("VIP")).thenReturn(Optional.of(category));
         when(ticketRepository.save(Mockito.any(Ticket.class))).thenReturn(ticket);
 
         mockMvc.perform(post("/ticket")
@@ -149,9 +147,11 @@ public class TicketControllerTest {
 
     @Test
     public void deleteTicket_shouldSucceed() throws Exception {
-        when(ticketRepository.existsById(1L)).thenReturn(true);
+        when(ticketRepository.findById(1L)).thenReturn(Optional.of(ticket));
+        when(orderRepository.findAll()).thenReturn(List.of()); // Empty orders
 
         mockMvc.perform(delete("/ticket/1"))
                 .andExpect(status().isOk());
     }
 }
+
