@@ -45,9 +45,32 @@ public class VenueSeeder {
                     "Map"
             );
 
+            Venue Vilnius1 = new Venue(
+                    "=37064793293",
+                    "Upes g. 9",
+                    "Vilnius",
+                    "Lithuania",
+                    "5000",
+                    true,
+                    "Map"
+            );
+
+            Venue Kaunas1 = new Venue(
+                    "=37064793293",
+                    "Upes g. 9",
+                    "Vilnius",
+                    "Lithuania",
+                    "5000",
+                    true,
+                    "Map"
+            );
+
             venuesRepository.save(Vilnius);
             venuesRepository.save(Kaunas);
             venuesRepository.save(Klaipeda);
+            venuesRepository.save(Vilnius1);
+            venuesRepository.save(Kaunas1);
+            
 
             System.out.println("👥 Venues seeded.");
         }

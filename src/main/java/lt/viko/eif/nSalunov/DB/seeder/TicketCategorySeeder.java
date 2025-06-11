@@ -29,7 +29,26 @@ public class TicketCategorySeeder {
                     "Vilnius"
             );
 
+            TicketCategory ticketCategory2 = new TicketCategory(
+                    "Description",
+                    BigDecimal.valueOf(59, 99),
+                    LocalDate.of(2025, 5, 5),
+                    LocalDate.of(2025, 5, 5),
+                    "Vilnius"
+            );
+
+            TicketCategory ticketCategory3 = new TicketCategory(
+                    "Description",
+                    BigDecimal.valueOf(59, 99),
+                    LocalDate.of(2025, 5, 5),
+                    LocalDate.of(2025, 5, 5),
+                    "Vilnius"
+            );
+
             ticketCategoryRepository.save(ticketCategory1);
+            ticketCategoryRepository.save(ticketCategory2);
+            ticketCategoryRepository.save(ticketCategory3);
+
 
             System.out.println("👥 Ticket category seeded.");
         }

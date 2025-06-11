@@ -60,7 +60,7 @@ public class ConcertSeeder {
                     10000,
                     "active",
                     "Description",
-                    venuesRepository.findById(3L).orElseThrow(() -> new RuntimeException("Venue with ID 1 not found"))
+                    venuesRepository.findById(4L).orElseThrow(() -> new RuntimeException("Venue with ID 1 not found"))
             );
 
             Concert concert5 = new Concert(
@@ -69,7 +69,7 @@ public class ConcertSeeder {
                     40000,
                     "active",
                     "Description",
-                    venuesRepository.findById(3L).orElseThrow(() -> new RuntimeException("Venue with ID 1 not found"))
+                    venuesRepository.findById(5L).orElseThrow(() -> new RuntimeException("Venue with ID 1 not found"))
             );
 
             concertRepository.save(concert1);
