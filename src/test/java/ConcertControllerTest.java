@@ -27,14 +27,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {ConcertController.class, ConcertControllerTest.MockConfig.class})
 public class ConcertControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ConcertRepository concertRepository;
-
-    @Autowired
-    private VenuesRepository venuesRepository;
+    @Autowired private MockMvc mockMvc;
+    @Autowired private ConcertRepository concertRepository;
+    @Autowired private VenuesRepository venuesRepository;
 
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
@@ -73,17 +68,22 @@ public class ConcertControllerTest {
     }
 
     @Test
-    public void getConcerts_shouldReturnList() throws Exception {
+    public void getConcerts_shouldReturnListWithAllFields() throws Exception {
         when(concertRepository.findAll()).thenReturn(List.of(concert));
 
         mockMvc.perform(get("/concerts"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(concert.getId()))
-                .andExpect(jsonPath("$[0]['Concert name']").value("Test Concert")); // BRACKET notation because of space
+                .andExpect(jsonPath("$[0]['Concert name']").value("Test Concert"))
+                .andExpect(jsonPath("$[0]['Concert date']").exists())
+                .andExpect(jsonPath("$[0].description").value("Test description"))
+                .andExpect(jsonPath("$[0]['Ticket limit']").value(100))
+                .andExpect(jsonPath("$[0]['Ticket Sold']").value(10))
+                .andExpect(jsonPath("$[0].status").value("Active"));
     }
 
     @Test
-    public void createConcert_shouldReturnOk() throws Exception {
+    public void createConcert_shouldReturnFullConcertObject() throws Exception {
         Map<String, Object> request = new HashMap<>();
         request.put("concertName", concert.getConcertName());
         request.put("concert_date", concert.getConcert_date().toString());
@@ -103,16 +103,30 @@ public class ConcertControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.concertName").value("Test Concert"));
+                .andExpect(jsonPath("$.concertName").value("Test Concert"))
+                .andExpect(jsonPath("$.description").value("Test description"))
+                .andExpect(jsonPath("$.ticketsLimit").value(100))
+                .andExpect(jsonPath("$.ticketsSold").value(10))
+                .andExpect(jsonPath("$.status").value("Active"));
     }
 
     @Test
-    public void updateConcert_shouldReturnOk() throws Exception {
+    public void updateConcert_shouldReturnOkAndUpdateFields() throws Exception {
         Map<String, Object> updates = new HashMap<>();
         updates.put("Concert name", "Updated Concert");
 
+        Concert updatedConcert = new Concert();
+        updatedConcert.setId(concert.getId());
+        updatedConcert.setConcertName("Updated Concert");
+        updatedConcert.setConcert_date(concert.getConcert_date());
+        updatedConcert.setTicketsLimit(100);
+        updatedConcert.setTicketsSold(10);
+        updatedConcert.setStatus("Active");
+        updatedConcert.setDescription("Test description");
+        updatedConcert.setVenue(venue);
+
         when(concertRepository.findById(1L)).thenReturn(Optional.of(concert));
-        when(concertRepository.save(Mockito.any(Concert.class))).thenReturn(concert);
+        when(concertRepository.save(Mockito.any(Concert.class))).thenReturn(updatedConcert);
 
         mockMvc.perform(put("/concerts/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -121,10 +135,27 @@ public class ConcertControllerTest {
     }
 
     @Test
-    public void deleteConcert_shouldReturnOk() throws Exception {
+    public void deleteConcert_shouldReturnOk_whenExists() throws Exception {
         when(concertRepository.existsById(1L)).thenReturn(true);
 
         mockMvc.perform(delete("/concerts/1"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void deleteConcert_shouldReturnNotFound_whenDoesNotExist() throws Exception {
+        when(concertRepository.existsById(1L)).thenReturn(false);
+
+        mockMvc.perform(delete("/concerts/1"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void searchConcertsByName_shouldReturnMatchingConcerts() throws Exception {
+        when(concertRepository.findAll()).thenReturn(List.of(concert));
+
+        mockMvc.perform(get("/concerts/search?name=Test"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0]['Concert name']").value("Test Concert"));
     }
 }

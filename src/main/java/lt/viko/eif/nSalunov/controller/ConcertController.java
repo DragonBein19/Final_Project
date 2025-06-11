@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/concerts")
@@ -37,6 +38,26 @@ public class ConcertController {
             return dto;
         }).toList();
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchConcertsByName(@RequestParam String name) {
+        List<Map<String, Object>> results = concertRepository.findAll().stream()
+                .filter(c -> c.getConcertName().toLowerCase().contains(name.toLowerCase()))
+                .map(concert -> {
+                    Map<String, Object> dto = new HashMap<>();
+                    dto.put("id", concert.getId());
+                    dto.put("Concert name", concert.getConcertName());
+                    dto.put("Concert date", concert.getConcert_date());
+                    dto.put("description", concert.getDescription());
+                    dto.put("Ticket limit", concert.getTicketsLimit());
+                    dto.put("Ticket Sold", concert.getTicketsSold());
+                    dto.put("status", concert.getStatus());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(results);
     }
 
     @PutMapping("/{id}")

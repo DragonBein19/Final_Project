@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
 <head>
     <link href='https://fonts.googleapis.com/css?family=Afacad' rel='stylesheet'>
@@ -95,6 +95,103 @@
         closeBtn.addEventListener("click", () => {
             fullWindow.style.display = "none";
         });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            fetchAllConcerts();
+        });
+
+        document.getElementById("search-button").addEventListener("click", function () {
+            const query = document.getElementById("search-input").value.trim();
+            if (query === "") {
+                fetchAllConcerts();
+            } else {
+                fetch(`http://localhost:8080/concerts/search?name=${encodeURIComponent(query)}`)
+                    .then(response => {
+                        if (!response.ok) throw new Error("Search error");
+                        return response.json();
+                    })
+                    .then(concerts => renderConcerts(concerts))
+                    .catch(error => {
+                        console.error("Search failed:", error);
+                        document.getElementById("concert-list").innerHTML = `<p style="color:red;">Search failed.</p>`;
+                    });
+            }
+        });
+
+        document.getElementById("search-input").addEventListener("input", function () {
+            if (this.value.trim() === "") {
+                fetchAllConcerts();
+            }
+        });
+
+        function fetchAllConcerts() {
+            fetch("http://localhost:8080/concerts")
+                .then(response => {
+                    if (!response.ok) throw new Error("Failed to load concerts");
+                    return response.json();
+                })
+                .then(concerts => renderConcerts(concerts))
+                .catch(error => {
+                    console.error("Loading failed:", error);
+                    document.getElementById("concert-list").innerHTML = `<p style="color:red;">Failed to load concerts.</p>`;
+                });
+        }
+
+        function getRandomSubset(arr, n) {
+            const shuffled = [...arr];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled.slice(0, n);
+        }
+
+        function renderConcerts(concerts) {
+            const list = document.getElementById("concert-list");
+            list.innerHTML = "";
+
+            concerts.forEach(concert => {
+                const artist = concert["Concert name"] || "Unknown";
+                const card = document.createElement("div");
+                card.className = "concert";
+                card.innerHTML = `
+                    <h2>${artist}</h2>
+                    <p><strong>Date:</strong> ${concert["Concert date"] ? new Date(concert["Concert date"]).toLocaleDateString() : "N/A"}</p>
+                    <p><strong>Status:</strong> ${concert.status || "N/A"}</p>
+                    <p><strong>Tickets limit:</strong> ${concert["Ticket limit"] ?? "N/A"}</p>
+                    <p><strong>Tickets sold:</strong> ${concert["Ticket Sold"] ?? "N/A"}</p>
+                    <div class="songs">
+                        <p><strong>Top Songs:</strong></p>
+                        <ul class="songs-list"><li>Loading...</li></ul>
+                    </div>`;
+                list.appendChild(card);
+
+                // Spotify dainos užkrovimas
+                fetch(`http://localhost:8080/spotify/top-tracks?artist=${encodeURIComponent(artist)}`)
+                    .then(resp => {
+                        if (!resp.ok) throw new Error("Spotify API error");
+                        return resp.json();
+                    })
+                    .then(data => {
+                        const ul = card.querySelector(".songs-list");
+                        ul.innerHTML = "";
+
+                        const songsToShow = data.length > 5 ? getRandomSubset(data, 5) : data;
+                        songsToShow.forEach(song => {
+                            const li = document.createElement("li");
+                            li.textContent = song;
+                            ul.appendChild(li);
+                        });
+                    })
+                    .catch(err => {
+                        console.error("Spotify error:", err);
+                        const ul = card.querySelector(".songs-list");
+                        ul.innerHTML = `<li style="color:red;">Could not load songs.</li>`;
+                    });
+            });
+        }
     </script>
 </body>
 </html>
