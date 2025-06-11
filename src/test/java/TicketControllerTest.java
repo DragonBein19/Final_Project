@@ -7,7 +7,6 @@ import lt.viko.eif.nSalunov.DB.repository.OrderRepository;
 import lt.viko.eif.nSalunov.DB.repository.TicketCategoryRepository;
 import lt.viko.eif.nSalunov.DB.repository.TicketRepository;
 import lt.viko.eif.nSalunov.controller.TicketController;
-import lt.viko.eif.nSalunov.request.TicketRequest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,14 +24,6 @@ import java.util.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-/**
- * Test class for {@link TicketController}.
- * <p>
- * Sets up Spring MVC test environment with mocked repositories for Tickets, Concerts, and Ticket Categories.
- * Covers basic CRUD operations: fetching all tickets, fetching by ID, creating, updating, and deleting tickets.
- * </p>
- */
 
 @WebMvcTest(TicketController.class)
 @ContextConfiguration(classes = {TicketController.class, TicketControllerTest.MockConfig.class})
@@ -126,7 +117,7 @@ public class TicketControllerTest {
 
         when(ticketRepository.findById(1L)).thenReturn(Optional.of(ticket));
         when(concertRepository.findByConcertName("Concert Test")).thenReturn(Optional.of(concert));
-        when(ticketCategoryRepository.findByDescription("VIP")).thenReturn(Optional.of(category));
+        when(ticketCategoryRepository.findAllByDescription("VIP")).thenReturn(List.of(category));
         when(ticketRepository.save(Mockito.any(Ticket.class))).thenReturn(ticket);
 
         mockMvc.perform(put("/ticket/1")
@@ -145,7 +136,7 @@ public class TicketControllerTest {
         body.put("ticket_category_description", "VIP");
 
         when(concertRepository.findByConcertName("Concert Test")).thenReturn(Optional.of(concert));
-        when(ticketCategoryRepository.findByDescription("VIP")).thenReturn(Optional.of(category));
+        when(ticketCategoryRepository.findAllByDescription("VIP")).thenReturn(List.of(category));
         when(ticketRepository.save(Mockito.any(Ticket.class))).thenReturn(ticket);
 
         mockMvc.perform(post("/ticket")
@@ -157,10 +148,9 @@ public class TicketControllerTest {
     @Test
     public void deleteTicket_shouldSucceed() throws Exception {
         when(ticketRepository.findById(1L)).thenReturn(Optional.of(ticket));
-        when(orderRepository.findAll()).thenReturn(List.of()); // Empty orders
+        when(orderRepository.findAll()).thenReturn(List.of()); // No orders
 
         mockMvc.perform(delete("/ticket/1"))
                 .andExpect(status().isOk());
     }
 }
-

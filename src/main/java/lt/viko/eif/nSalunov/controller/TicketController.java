@@ -59,6 +59,20 @@ public class TicketController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/categories")
+    public ResponseEntity<?> getAllTicketCategories() {
+        List<TicketCategory> categories = ticketCategoryRepository.findAll();
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (TicketCategory category : categories) {
+            Map<String, Object> dto = new HashMap<>();
+            dto.put("description", category.getDescription());
+            dto.put("price", category.getPrice());
+            result.add(dto);
+        }
+        return ResponseEntity.ok(result);
+    }
+
     @PostMapping
     public ResponseEntity<?> createTicket(@RequestBody Map<String, Object> body) {
         try {
@@ -69,21 +83,26 @@ public class TicketController {
             String ticketDescription = (String) body.get("ticket_category_description");
 
             Optional<Concert> concertOpt = concertRepository.findByConcertName(concertName);
-            Optional<TicketCategory> ticketCatOpt = ticketCategoryRepository.findByDescription(ticketDescription);
+            List<TicketCategory> ticketCatList = ticketCategoryRepository.findAllByDescription(ticketDescription);
 
             if (concertOpt.isEmpty()) {
                 return ResponseEntity.badRequest().body("Invalid concert name: " + concertName);
             }
-            if (ticketCatOpt.isEmpty()) {
+
+            if (ticketCatList.isEmpty()) {
                 return ResponseEntity.badRequest().body("Invalid ticket category: " + ticketDescription);
+            } else if (ticketCatList.size() > 1) {
+                return ResponseEntity.badRequest().body("Ambiguous ticket category: multiple entries found for '" + ticketDescription + "'");
             }
+
+            TicketCategory cat = ticketCatList.get(0);
 
             Ticket ticket = new Ticket();
             ticket.setCategory(category);
             ticket.setSeatNumber(seat);
             ticket.setStatus(status);
             ticket.setConcert(concertOpt.get());
-            ticket.setTicketCategory(ticketCatOpt.get());
+            ticket.setTicketCategory(cat);
 
             Ticket saved = ticketRepository.save(ticket);
             return ResponseEntity.ok(saved);
@@ -115,11 +134,18 @@ public class TicketController {
 
             // Update ticket category if provided
             String ticketDesc = (String) body.get("ticket_category_description");
-            Optional<TicketCategory> categoryOpt = ticketCategoryRepository.findByDescription(ticketDesc);
+            if (ticketDesc != null) {
+                List<TicketCategory> matches = ticketCategoryRepository.findAllByDescription(ticketDesc);
 
-            if (categoryOpt.isPresent()) {
-                TicketCategory cat = categoryOpt.get();
+                if (matches.isEmpty()) {
+                    return ResponseEntity.badRequest().body("Ticket category not found: " + ticketDesc);
+                } else if (matches.size() > 1) {
+                    return ResponseEntity.badRequest().body("Ambiguous ticket category: multiple entries with description '" + ticketDesc + "'");
+                }
 
+                TicketCategory cat = matches.get(0);
+
+                // Update price if provided
                 Object priceObj = body.get("price");
                 if (priceObj != null) {
                     try {

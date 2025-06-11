@@ -106,6 +106,16 @@
             console.error("Error fetching concerts:", error);
         }
     }
+    let categoryOptions = [];
+
+    async function fetchCategories() {
+        try {
+            const res = await fetch("http://localhost:8080/ticket/categories");
+            categoryOptions = await res.json();
+        } catch (error) {
+            console.error("Klaida gaunant kategorijas:", error);
+        }
+    }
 
     async function loadTickets() {
         try {
@@ -139,60 +149,69 @@ tickets.forEach(ticket => {
         }
     }
 
-    function editRow(button) {
-        const row = button.closest("tr");
-        const ticket = JSON.parse(row.dataset.ticket);
+function editRow(button) {
+    const row = button.closest("tr");
+    const ticket = JSON.parse(row.dataset.ticket);
 
-        const concertDropdown = concertOptions.map(opt =>
-            `<option value="${opt.name}" ${opt.name === ticket.concert_name ? 'selected' : ''}>${opt.name}</option>`
-        ).join('');
+    const concertDropdown = concertOptions.map(opt =>
+        `<option value="${opt.name}" ${opt.name === ticket.concert_name ? 'selected' : ''}>${opt.name}</option>`
+    ).join('');
 
-        row.innerHTML = `
-            <td><input type="text" value="${ticket.category || ''}"></td>
-            <td><select>${concertDropdown}</select></td>
-            <td><input type="text" value="${ticket.seat_number || ''}"></td>
-            <td><input type="text" value="${ticket.status || ''}"></td>
-            <td><input type="text" value="${ticket.ticket_category_description || ''}"></td>
-            <td><input type="number" step="0.01" value="${ticket.price || ''}"></td>
-            <td><button class="action-button save-button" onclick="saveRow(this)">Save</button></td>
-        `;
-        row.dataset.ticket = JSON.stringify(ticket); // store for save
-    }
+    const categoryDropdown = categoryOptions.map(opt =>
+        `<option value="${opt.description}" ${opt.description === ticket.ticket_category_description ? 'selected' : ''}>${opt.description}</option>`
+    ).join('');
 
-    async function saveRow(button) {
-        const row = button.closest("tr");
-        const ticket = JSON.parse(row.dataset.ticket);
-        const inputs = row.querySelectorAll("input");
-        const select = row.querySelector("select");
+    row.innerHTML = `
+        <td><input type="text" value="${ticket.category || ''}"></td>
+        <td><select>${concertDropdown}</select></td>
+        <td><input type="text" value="${ticket.seat_number || ''}"></td>
+        <td><input type="text" value="${ticket.status || ''}"></td>
+        <td><select>${categoryDropdown}</select></td>
+        <td><input type="number" step="0.01" value="${ticket.price || ''}"></td>
+        <td><button class="action-button save-button" onclick="saveRow(this)">Save</button></td>
+    `;
 
-        const updatedTicket = {
-            id: ticket.id,
-            category: inputs[0].value,
-            concert_name: select.value,
-            seat_number: inputs[1].value,
-            status: inputs[2].value,
-            ticket_category_description: inputs[3].value,
-            price: parseFloat(inputs[4].value) || 0
-        };
+    row.dataset.ticket = JSON.stringify(ticket);
+}
 
-        try {
-            const res = await fetch(`http://localhost:8080/ticket/${ticket.id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(updatedTicket)
-            });
+async function saveRow(button) {
+    const row = button.closest("tr");
+    const ticket = JSON.parse(row.dataset.ticket);
+    const inputs = row.querySelectorAll("input");
+    const selects = row.querySelectorAll("select");
 
-            if (!res.ok) throw new Error("Update failed");
+    const updatedTicket = {
+        id: ticket.id,
+        category: inputs[0].value,
+        concert_name: selects[0].value,
+        seat_number: inputs[1].value,
+        status: inputs[2].value,
+        ticket_category_description: selects[1].value,
+        price: parseFloat(inputs[3].value) || 0
+    };
 
-            alert("Ticket updated");
-            await loadTickets();
-        } catch (error) {
-            console.error("Update error:", error);
-            alert("Failed to update ticket");
+    try {
+        const res = await fetch(`http://localhost:8080/ticket/${ticket.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(updatedTicket)
+        });
+
+        if (!res.ok) {
+            const msg = await res.text();
+            throw new Error("Klaida: " + msg);
         }
+
+        alert("Ticket updated");
+        await loadTickets();
+    } catch (error) {
+        console.error("Update error:", error);
+        alert("Failed to update ticket: " + error.message);
     }
+}
+
 
 async function deleteRow(button, id) {
     if (!confirm("Are you sure you want to delete this ticket?")) return;
@@ -256,6 +275,8 @@ async function deleteRow(button, id) {
     window.onload = async function () {
         await fetchConcerts();
         await loadTickets();
+        await fetchCategories();
+
     };
 </script>
 
