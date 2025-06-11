@@ -5,47 +5,36 @@ import lt.viko.eif.nSalunov.DB.model.Concert;
 import lt.viko.eif.nSalunov.DB.model.OrderEntity;
 import lt.viko.eif.nSalunov.DB.model.Ticket;
 import lt.viko.eif.nSalunov.DB.model.TicketCategory;
-<<<<<<< HEAD
-=======
-import lt.viko.eif.nSalunov.DB.repository.TicketRepository;
-import lt.viko.eif.nSalunov.request.TicketRequest;
->>>>>>> 0b8723e088b4a63fa5376083abf18d36e90a03c7
 import lt.viko.eif.nSalunov.DB.repository.ConcertRepository;
 import lt.viko.eif.nSalunov.DB.repository.OrderRepository;
 import lt.viko.eif.nSalunov.DB.repository.TicketCategoryRepository;
 import lt.viko.eif.nSalunov.DB.repository.TicketRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-<<<<<<< HEAD
 import java.math.BigDecimal;
 import java.util.*;
-=======
-/**
- * REST controller for managing tickets.
- * <p>
- * Provides endpoints to create, read, update, and delete tickets, as well as fetch all tickets.
- * </p>
- */
->>>>>>> 0b8723e088b4a63fa5376083abf18d36e90a03c7
 
 @RestController
 @RequestMapping("/ticket")
 @CrossOrigin
-
 public class TicketController {
 
     private final TicketRepository ticketRepository;
     private final ConcertRepository concertRepository;
     private final TicketCategoryRepository ticketCategoryRepository;
+    private final OrderRepository orderRepository;
 
-    public TicketController(TicketRepository ticketRepository,
-                            ConcertRepository concertRepository,
-                            TicketCategoryRepository ticketCategoryRepository) {
+    public TicketController(
+            TicketRepository ticketRepository,
+            ConcertRepository concertRepository,
+            TicketCategoryRepository ticketCategoryRepository,
+            OrderRepository orderRepository
+    ) {
         this.ticketRepository = ticketRepository;
         this.concertRepository = concertRepository;
         this.ticketCategoryRepository = ticketCategoryRepository;
+        this.orderRepository = orderRepository;
     }
 
     @GetMapping
@@ -136,7 +125,7 @@ public class TicketController {
                     try {
                         BigDecimal newPrice = new BigDecimal(priceObj.toString());
                         cat.setPrice(newPrice);
-                        ticketCategoryRepository.save(cat); // persist updated price
+                        ticketCategoryRepository.save(cat);
                     } catch (NumberFormatException e) {
                         return ResponseEntity.badRequest().body("Invalid price format.");
                     }
@@ -152,8 +141,6 @@ public class TicketController {
             return ResponseEntity.status(500).body("Error updating ticket: " + e.getMessage());
         }
     }
-    @Autowired
-    private OrderRepository orderRepository;
 
     @DeleteMapping("/{id}")
     @Transactional
@@ -165,17 +152,15 @@ public class TicketController {
 
         Ticket ticket = ticketOpt.get();
 
+        // Remove ticket from all orders
         List<OrderEntity> orders = orderRepository.findAll();
         for (OrderEntity order : orders) {
-            if (order.getTickets().contains(ticket)) {
-                order.getTickets().remove(ticket);
+            if (order.getTickets().remove(ticket)) {
+                orderRepository.save(order); // persist the change
             }
         }
 
         ticketRepository.delete(ticket);
         return ResponseEntity.ok("Ticket deleted.");
     }
-
-
-
 }
