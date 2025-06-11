@@ -370,9 +370,9 @@
 
 #concert-title {
     display: block;
-    text-align: center;
+    margin-right: 90px;
     font-size: 22pt;
-    color: white;
+    color: black;
     margin-bottom: 10px;
 }
 
@@ -404,7 +404,6 @@
 #concert-container::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.6);
 }
-
 #concert-list {
     display: flex;
     flex-wrap: wrap;        
@@ -413,19 +412,14 @@
 }
 
 .concert-card {
-    flex: 0 0 calc((100% - 30px) / 3);
-    background-color: rgba(255, 255, 255, 0.229);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(8px);
-    border-radius: 12px;
-    padding: 15px;
-    font-size: 20pt;
-    color: white;
-    box-sizing: border-box;
-    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* CENTRUOJA turinį horizontaliai */
+    justify-content: center; /* jei nori vertikaliai centruoti */
+    text-align: center;
 }
 .concert {
-    background: rgba(255, 255, 255, 0.175);
+    background: rgba(22, 22, 22, 0.257);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.021);
@@ -434,4 +428,5 @@
     font-size: 12pt;
     color: white;
     box-sizing: border-box;
+    width: 500px;
 }

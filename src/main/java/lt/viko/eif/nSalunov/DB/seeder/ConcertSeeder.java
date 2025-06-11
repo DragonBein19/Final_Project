@@ -32,7 +32,7 @@ public class ConcertSeeder {
                     LocalDateTime.of(LocalDate.of(2025, 5, 5), LocalTime.of(0, 0)),
                     30000,
                     "active",
-                    "Description",
+                    "100€ - 330€, Vingio parkas, Vilnius",
                     venuesRepository.findById(1L).orElseThrow(() -> new RuntimeException("Venue with ID 1 not found"))
             );
 
@@ -41,7 +41,7 @@ public class ConcertSeeder {
                     LocalDateTime.of(LocalDate.of(2025, 06, 8), LocalTime.of(0, 0)),
                     50000,
                     "active",
-                    "Description",
+                    "90€ - 130€, Dariaus ir Girėno stadionas, Kaunas",
                     venuesRepository.findById(2L).orElseThrow(() -> new RuntimeException("Venue with ID 1 not found"))
             );
 
@@ -50,7 +50,7 @@ public class ConcertSeeder {
                     LocalDateTime.of(LocalDate.of(2025, 03, 26), LocalTime.of(0, 0)),
                     100,
                     "active",
-                    "Description",
+                    "60€, Kablys, Vilnius",
                     venuesRepository.findById(3L).orElseThrow(() -> new RuntimeException("Venue with ID 1 not found"))
             );
 
@@ -59,7 +59,7 @@ public class ConcertSeeder {
                     LocalDateTime.of(LocalDate.of(2026, 8, 12), LocalTime.of(0, 0)),
                     10000,
                     "active",
-                    "Description",
+                    "80€ - 120€, Vingio parkas, Vilnius",
                     venuesRepository.findById(4L).orElseThrow(() -> new RuntimeException("Venue with ID 1 not found"))
             );
 
@@ -68,7 +68,7 @@ public class ConcertSeeder {
                     LocalDateTime.of(LocalDate.of(2026, 04, 12), LocalTime.of(0, 0)),
                     40000,
                     "active",
-                    "Description",
+                    "90€ - 120€, Žalgirio arena, Kaunas",
                     venuesRepository.findById(5L).orElseThrow(() -> new RuntimeException("Venue with ID 1 not found"))
             );
 

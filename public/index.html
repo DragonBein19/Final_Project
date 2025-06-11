@@ -109,7 +109,7 @@
             card.innerHTML = `
                 <h2>${artistName}</h2>
                 <p><strong>Date:</strong> ${concert["Concert date"] ? new Date(concert["Concert date"]).toLocaleDateString() : "N/A"}</p>
-                <p><strong>Status:</strong> ${concert.status || "N/A"}</p>
+                <p><strong>Description:</strong> ${concert.description ?? "No description available."}</p>
                 <p><strong>Tickets limit:</strong> ${concert["Ticket limit"] ?? "N/A"}</p>
                 <p><strong>Tickets sold:</strong> ${concert["Ticket Sold"] ?? "N/A"}</p>
                 <div class="songs">
