@@ -31,7 +31,34 @@ public class TicketSeeder {
                     "Active"
             );
 
+            Ticket ticket2 = new Ticket(
+                    concertRepository.findById(1L).orElseThrow(() ->  new RuntimeException("Concert with ID 1 not exist")),
+                    ticketCategoryRepository.findById(1L).orElseThrow(() -> new RuntimeException("Ticket category with ID 1 not exist")),
+                    "Category ^^",
+                    "A01",
+                    "Active"
+            );
+
+            Ticket ticket3 = new Ticket(
+                    concertRepository.findById(1L).orElseThrow(() ->  new RuntimeException("Concert with ID 1 not exist")),
+                    ticketCategoryRepository.findById(1L).orElseThrow(() -> new RuntimeException("Ticket category with ID 1 not exist")),
+                    "Category ^^",
+                    "A44",
+                    "Active"
+            );
+
+            Ticket ticket4 = new Ticket(
+                    concertRepository.findById(1L).orElseThrow(() ->  new RuntimeException("Concert with ID 1 not exist")),
+                    ticketCategoryRepository.findById(1L).orElseThrow(() -> new RuntimeException("Ticket category with ID 1 not exist")),
+                    "Category ^^",
+                    "A80",
+                    "Active"
+            );
+
             ticketRepository.save(ticket1);
+            ticketRepository.save(ticket2);
+            ticketRepository.save(ticket3);
+            ticketRepository.save(ticket4);
 
             System.out.println("👥 Tickets seeded.");
         }

@@ -28,9 +28,9 @@ public class ConcertSeeder {
         if(concertRepository.count() == 0)
         {
             Concert concert1 = new Concert(
-                    "ImagineDragon",
+                    "ImagineDragons",
                     LocalDateTime.of(LocalDate.of(2025, 5, 5), LocalTime.of(0, 0)),
-                    100,
+                    30000,
                     "active",
                     "Description",
                     venuesRepository.findById(1L).orElseThrow(() -> new RuntimeException("Venue with ID 1 not found"))
@@ -44,10 +44,29 @@ public class ConcertSeeder {
                     "Description",
                     venuesRepository.findById(2L).orElseThrow(() -> new RuntimeException("Venue with ID 1 not found"))
             );
+
             Concert concert3 = new Concert(
                     "Free Finga",
-                    LocalDateTime.of(LocalDate.of(2025, 11, 11), LocalTime.of(0, 0)),
+                    LocalDateTime.of(LocalDate.of(2025, 03, 26), LocalTime.of(0, 0)),
                     100,
+                    "active",
+                    "Description",
+                    venuesRepository.findById(3L).orElseThrow(() -> new RuntimeException("Venue with ID 1 not found"))
+            );
+
+            Concert concert4 = new Concert(
+                    "Jessica Shy",
+                    LocalDateTime.of(LocalDate.of(2026, 8, 12), LocalTime.of(0, 0)),
+                    10000,
+                    "active",
+                    "Description",
+                    venuesRepository.findById(3L).orElseThrow(() -> new RuntimeException("Venue with ID 1 not found"))
+            );
+
+            Concert concert5 = new Concert(
+                    "Kendrick Lamar",
+                    LocalDateTime.of(LocalDate.of(2026, 04, 12), LocalTime.of(0, 0)),
+                    40000,
                     "active",
                     "Description",
                     venuesRepository.findById(3L).orElseThrow(() -> new RuntimeException("Venue with ID 1 not found"))
@@ -56,6 +75,8 @@ public class ConcertSeeder {
             concertRepository.save(concert1);
             concertRepository.save(concert2);
             concertRepository.save(concert3);
+            concertRepository.save(concert4);
+            concertRepository.save(concert5);
 
             System.out.println("👥 Concerts seeded.");
         }

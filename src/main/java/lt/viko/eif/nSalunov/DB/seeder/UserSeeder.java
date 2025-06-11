@@ -26,7 +26,7 @@ public class UserSeeder {
                     "User",
                     "admin@example.com",
                     "+37060000001",
-                    "admin123", // 👉 patartina naudoti hash tikrame projekte
+                    "admin123",
                     new Date(),
                     true
             );
@@ -43,8 +43,47 @@ public class UserSeeder {
                     false
             );
 
+            Users user1 = new Users(
+                    0,
+                    "Miau",
+                    "Gabriele",
+                    "Siaudvytyte",
+                    "miau@example.com",
+                    "+37060000003",
+                    "slap",
+                    new Date(),
+                    false
+            );
+
+            Users user2 = new Users(
+                    0,
+                    "Inedaaa",
+                    "Ineda",
+                    "Gaigalaite",
+                    "ineda@example.com",
+                    "+37060000004",
+                    "password",
+                    new Date(),
+                    false
+            );
+
+            Users user3 = new Users(
+                    0,
+                    "NikitaS",
+                    "Nikita",
+                    "Sulanovas",
+                    "nikita@example.com",
+                    "+37060000006",
+                    "123",
+                    new Date(),
+                    false
+            );
+
             userRepository.save(admin);
             userRepository.save(user);
+            userRepository.save(user1);
+            userRepository.save(user2);
+            userRepository.save(user3);
 
             System.out.println("👥 Users seeded.");
         }
