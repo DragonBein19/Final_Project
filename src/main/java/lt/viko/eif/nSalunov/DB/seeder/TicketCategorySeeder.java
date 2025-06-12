@@ -30,7 +30,7 @@ public class TicketCategorySeeder {
         if(ticketCategoryRepository.count() == 0)
         {
             TicketCategory ticketCategory1 = new TicketCategory(
-                    "Description",
+                    "Des",
                     BigDecimal.valueOf(59, 99),
                     LocalDate.of(2025, 5, 5),
                     LocalDate.of(2025, 5, 5),
@@ -38,7 +38,7 @@ public class TicketCategorySeeder {
             );
 
             TicketCategory ticketCategory2 = new TicketCategory(
-                    "Description",
+                    "Descr",
                     BigDecimal.valueOf(59, 99),
                     LocalDate.of(2025, 5, 5),
                     LocalDate.of(2025, 5, 5),
@@ -46,7 +46,7 @@ public class TicketCategorySeeder {
             );
 
             TicketCategory ticketCategory3 = new TicketCategory(
-                    "Description",
+                    "Descript",
                     BigDecimal.valueOf(59, 99),
                     LocalDate.of(2025, 5, 5),
                     LocalDate.of(2025, 5, 5),
