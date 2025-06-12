@@ -34,6 +34,8 @@
                         return response.json();
                     })
                     .then(user => {
+                        const user = users[0];
+
                         userId = user.id; 
 
                         document.getElementById("name").textContent = user.name;

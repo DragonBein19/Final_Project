@@ -15,6 +15,14 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.*;
 
+/**
+ * Controller class for managing tickets in the system.
+ * <p>
+ * Provides RESTful endpoints to perform CRUD operations on {@link Ticket},
+ * and retrieve related {@link Concert} and {@link TicketCategory} data.
+ * </p>
+ */
+
 @RestController
 @RequestMapping("/ticket")
 @CrossOrigin

@@ -6,9 +6,15 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Repository interface for performing CRUD operations on {@link TicketCategory} entities.
+ * <p>
+ * Extends {@link JpaRepository} to provide standard JPA functionalities.
+ * </p>
+ */
+
 @Repository
 public interface TicketCategoryRepository extends JpaRepository<TicketCategory, Long> {
 
-    // Naujasis metodas – leidžia gauti kelis rezultatus
     List<TicketCategory> findAllByDescription(String description);
 }

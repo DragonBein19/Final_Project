@@ -1,285 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Ticket Management Debug</title>
+        <link rel="stylesheet" href="styles/button.css">
+    </head>
+    <body>
+        <div id="header-bar">TICKET LIVE TICKETS</div>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Ticket Management Debug</title>
-    <link rel="stylesheet" href="styles/button.css">
-    <style>
-        input[type="text"], input[type="number"], select {
-            padding: 6px 10px;
-            margin: 5px;
-            width: 160px;
-            font-size: 14px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
+        <div id="button-container">
+            <a href="tickets.html" class="admin-button">Tickets</a>
+            <a href="concerts.html" class="admin-button">Concerts</a>
+            <a href="users.html" class="admin-button">Users</a>
+        </div>
 
-        .action-button {
-            padding: 6px 10px;
-            margin: 4px;
-            font-size: 14px;
-            cursor: pointer;
-            border: none;
-            border-radius: 4px;
-        }
+        <h3>Add New Ticket</h3>
+        <div id="add-ticket-form">
+            <input type="text" id="new-category" placeholder="Category">
+            <select id="new-concert"></select>
+            <input type="text" id="new-seat" placeholder="Seat Number">
+            <input type="text" id="new-status" placeholder="Status">
+            <input type="text" id="new-description" placeholder="Description">
+            <button class="action-button save-button" onclick="addTicket()">Add Ticket</button>
+        </div>
 
-        .save-button {
-            background-color: #2196F3;
-            color: white;
-        }
+        <table id="tickets-table" border="1" style="width: 100%;">
+            <thead>
+            <tr>
+                <th>Category</th>
+                <th>Concert</th>
+                <th>Seat</th>
+                <th>Status</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody id="tickets-body"></tbody>
+        </table>
 
-        #add-ticket-form {
-            margin-bottom: 20px;
-        }
+        <script>
+            let concertOptions = [];
 
-        table {
-            border-collapse: collapse;
-        }
+            async function fetchConcerts() {
+                try {
+                    const res = await fetch("http://localhost:8080/concerts");
+                    const concerts = await res.json();
+                    concertOptions = concerts.map(c => ({
+                        id: c["id"],
+                        name: c["Concert name"]
+                    }));
 
-        th, td {
-            padding: 8px 12px;
-            text-align: left;
-        }
+                    const select = document.getElementById("new-concert");
+                    select.innerHTML = concertOptions.map(opt =>
+                        `<option value="${opt.name}">${opt.name}</option>`
+                    ).join('');
+                } catch (error) {
+                    console.error("Error fetching concerts:", error);
+                }
+            }
+            let categoryOptions = [];
 
-        thead {
-            background-color: #e0f0ff;
-        }
+            async function fetchCategories() {
+                try {
+                    const res = await fetch("http://localhost:8080/ticket/categories");
+                    categoryOptions = await res.json();
+                } catch (error) {
+                    console.error("Klaida gaunant kategorijas:", error);
+                }
+            }
 
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-    </style>
-</head>
+            async function loadTickets() {
+                try {
+                    const res = await fetch("http://localhost:8080/ticket");
+                    const tickets = await res.json();
 
-<body>
-<div id="header-bar">TICKET LIVE TICKETS</div>
+                    const tbody = document.getElementById("tickets-body");
+                    tbody.innerHTML = "";
 
-<div id="button-container">
-    <a href="tickets.html" class="admin-button">Tickets</a>
-    <a href="concerts.html" class="admin-button">Concerts</a>
-    <a href="users.html" class="admin-button">Users</a>
-</div>
+        tickets.forEach(ticket => {
+            const row = document.createElement("tr");
 
-<h3>Add New Ticket</h3>
-<div id="add-ticket-form">
-    <input type="text" id="new-category" placeholder="Category">
-    <select id="new-concert"></select>
-    <input type="text" id="new-seat" placeholder="Seat Number">
-    <input type="text" id="new-status" placeholder="Status">
-    <input type="text" id="new-description" placeholder="Description">
-    <button class="action-button save-button" onclick="addTicket()">Add Ticket</button>
-</div>
+            row.innerHTML = `
+                <td>${ticket.category || '-'}</td>
+                <td>${ticket.concert_name || '-'}</td>
+                <td>${ticket.seat_number || '-'}</td>
+                <td>${ticket.status || '-'}</td>
+                <td>${ticket.ticket_category_description || '-'}</td>
+                <td>${ticket.price ?? '-'}</td>
+                <td>
+                    <button class="action-button edit-button" onclick="editRow(this)">Edit</button>
+                    <button class="action-button delete-button" onclick="deleteRow(this, ${ticket.id})">Delete</button>
+                </td>
+            `;
+            row.dataset.ticket = JSON.stringify(ticket);
+            tbody.appendChild(row);
+        });
 
-<table id="tickets-table" border="1" style="width: 100%;">
-    <thead>
-    <tr>
-        <th>Category</th>
-        <th>Concert</th>
-        <th>Seat</th>
-        <th>Status</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th>Edit</th>
-    </tr>
-    </thead>
-    <tbody id="tickets-body"></tbody>
-</table>
+                } catch (error) {
+                    console.error("Error loading tickets:", error);
+                }
+            }
 
-<script>
-    let concertOptions = [];
+        function editRow(button) {
+            const row = button.closest("tr");
+            const ticket = JSON.parse(row.dataset.ticket);
 
-    async function fetchConcerts() {
-        try {
-            const res = await fetch("http://localhost:8080/concerts");
-            const concerts = await res.json();
-            concertOptions = concerts.map(c => ({
-                id: c["id"],
-                name: c["Concert name"]
-            }));
-
-            const select = document.getElementById("new-concert");
-            select.innerHTML = concertOptions.map(opt =>
-                `<option value="${opt.name}">${opt.name}</option>`
+            const concertDropdown = concertOptions.map(opt =>
+                `<option value="${opt.name}" ${opt.name === ticket.concert_name ? 'selected' : ''}>${opt.name}</option>`
             ).join('');
-        } catch (error) {
-            console.error("Error fetching concerts:", error);
-        }
-    }
-    let categoryOptions = [];
 
-    async function fetchCategories() {
-        try {
-            const res = await fetch("http://localhost:8080/ticket/categories");
-            categoryOptions = await res.json();
-        } catch (error) {
-            console.error("Klaida gaunant kategorijas:", error);
-        }
-    }
+            const categoryDropdown = categoryOptions.map(opt =>
+                `<option value="${opt.description}" ${opt.description === ticket.ticket_category_description ? 'selected' : ''}>${opt.description}</option>`
+            ).join('');
 
-    async function loadTickets() {
-        try {
-            const res = await fetch("http://localhost:8080/ticket");
-            const tickets = await res.json();
+            row.innerHTML = `
+                <td><input type="text" value="${ticket.category || ''}"></td>
+                <td><select>${concertDropdown}</select></td>
+                <td><input type="text" value="${ticket.seat_number || ''}"></td>
+                <td><input type="text" value="${ticket.status || ''}"></td>
+                <td><select>${categoryDropdown}</select></td>
+                <td><input type="number" step="0.01" value="${ticket.price || ''}"></td>
+                <td><button class="action-button save-button" onclick="saveRow(this)">Save</button></td>
+            `;
 
-            const tbody = document.getElementById("tickets-body");
-            tbody.innerHTML = "";
-
-tickets.forEach(ticket => {
-    const row = document.createElement("tr");
-
-    row.innerHTML = `
-        <td>${ticket.category || '-'}</td>
-        <td>${ticket.concert_name || '-'}</td>
-        <td>${ticket.seat_number || '-'}</td>
-        <td>${ticket.status || '-'}</td>
-        <td>${ticket.ticket_category_description || '-'}</td>
-        <td>${ticket.price ?? '-'}</td>
-        <td>
-            <button class="action-button edit-button" onclick="editRow(this)">Edit</button>
-            <button class="action-button delete-button" onclick="deleteRow(this, ${ticket.id})">Delete</button>
-        </td>
-    `;
-    row.dataset.ticket = JSON.stringify(ticket);
-    tbody.appendChild(row);
-});
-
-        } catch (error) {
-            console.error("Error loading tickets:", error);
-        }
-    }
-
-function editRow(button) {
-    const row = button.closest("tr");
-    const ticket = JSON.parse(row.dataset.ticket);
-
-    const concertDropdown = concertOptions.map(opt =>
-        `<option value="${opt.name}" ${opt.name === ticket.concert_name ? 'selected' : ''}>${opt.name}</option>`
-    ).join('');
-
-    const categoryDropdown = categoryOptions.map(opt =>
-        `<option value="${opt.description}" ${opt.description === ticket.ticket_category_description ? 'selected' : ''}>${opt.description}</option>`
-    ).join('');
-
-    row.innerHTML = `
-        <td><input type="text" value="${ticket.category || ''}"></td>
-        <td><select>${concertDropdown}</select></td>
-        <td><input type="text" value="${ticket.seat_number || ''}"></td>
-        <td><input type="text" value="${ticket.status || ''}"></td>
-        <td><select>${categoryDropdown}</select></td>
-        <td><input type="number" step="0.01" value="${ticket.price || ''}"></td>
-        <td><button class="action-button save-button" onclick="saveRow(this)">Save</button></td>
-    `;
-
-    row.dataset.ticket = JSON.stringify(ticket);
-}
-
-async function saveRow(button) {
-    const row = button.closest("tr");
-    const ticket = JSON.parse(row.dataset.ticket);
-    const inputs = row.querySelectorAll("input");
-    const selects = row.querySelectorAll("select");
-
-    const updatedTicket = {
-        id: ticket.id,
-        category: inputs[0].value,
-        concert_name: selects[0].value,
-        seat_number: inputs[1].value,
-        status: inputs[2].value,
-        ticket_category_description: selects[1].value,
-        price: parseFloat(inputs[3].value) || 0
-    };
-
-    try {
-        const res = await fetch(`http://localhost:8080/ticket/${ticket.id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(updatedTicket)
-        });
-
-        if (!res.ok) {
-            const msg = await res.text();
-            throw new Error("Klaida: " + msg);
+            row.dataset.ticket = JSON.stringify(ticket);
         }
 
-        alert("Ticket updated");
-        await loadTickets();
-    } catch (error) {
-        console.error("Update error:", error);
-        alert("Failed to update ticket: " + error.message);
-    }
-}
+        async function saveRow(button) {
+            const row = button.closest("tr");
+            const ticket = JSON.parse(row.dataset.ticket);
+            const inputs = row.querySelectorAll("input");
+            const selects = row.querySelectorAll("select");
 
+            const updatedTicket = {
+                id: ticket.id,
+                category: inputs[0].value,
+                concert_name: selects[0].value,
+                seat_number: inputs[1].value,
+                status: inputs[2].value,
+                ticket_category_description: selects[1].value,
+                price: parseFloat(inputs[3].value) || 0
+            };
 
-async function deleteRow(button, id) {
-    if (!confirm("Are you sure you want to delete this ticket?")) return;
+            try {
+                const res = await fetch(`http://localhost:8080/ticket/${ticket.id}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(updatedTicket)
+                });
 
-    try {
-        const res = await fetch(`http://localhost:8080/ticket/${id}`, {
-            method: "DELETE"
-        });
+                if (!res.ok) {
+                    const msg = await res.text();
+                    throw new Error("Klaida: " + msg);
+                }
 
-        if (!res.ok) throw new Error("Failed to delete ticket");
-
-        const row = button.closest("tr");
-        row.remove();
-        alert("Ticket deleted");
-    } catch (error) {
-        console.error("Delete error:", error);
-        alert("Could not delete ticket");
-    }
-}
-
-
-
-    async function addTicket() {
-        const category = document.getElementById("new-category").value;
-        const concert = document.getElementById("new-concert").value;
-        const seat = document.getElementById("new-seat").value;
-        const status = document.getElementById("new-status").value;
-        const description = document.getElementById("new-description").value;
-
-        const newTicket = {
-            category,
-            concert_name: concert,
-            seat_number: seat,
-            status,
-            ticket_category_description: description
-        };
-
-        try {
-            const res = await fetch("http://localhost:8080/ticket", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(newTicket)
-            });
-
-            if (!res.ok) throw new Error("Failed to add ticket");
-
-            alert("Ticket added successfully");
-            document.getElementById("new-category").value = '';
-            document.getElementById("new-seat").value = '';
-            document.getElementById("new-status").value = '';
-            document.getElementById("new-description").value = '';
-            await loadTickets();
-        } catch (error) {
-            console.error("Add ticket error:", error);
-            alert("Failed to add ticket");
+                alert("Ticket updated");
+                await loadTickets();
+            } catch (error) {
+                console.error("Update error:", error);
+                alert("Failed to update ticket: " + error.message);
+            }
         }
-    }
 
-    window.onload = async function () {
-        await fetchConcerts();
-        await loadTickets();
-        await fetchCategories();
 
-    };
-</script>
+        async function deleteRow(button, id) {
+            if (!confirm("Are you sure you want to delete this ticket?")) return;
 
-<a class="logout-button" href="index.html">Log out</a>
-</body>
+            try {
+                const res = await fetch(`http://localhost:8080/ticket/${id}`, {
+                    method: "DELETE"
+                });
+
+                if (!res.ok) throw new Error("Failed to delete ticket");
+
+                const row = button.closest("tr");
+                row.remove();
+                alert("Ticket deleted");
+            } catch (error) {
+                console.error("Delete error:", error);
+                alert("Could not delete ticket");
+            }
+        }
+
+
+
+            async function addTicket() {
+                const category = document.getElementById("new-category").value;
+                const concert = document.getElementById("new-concert").value;
+                const seat = document.getElementById("new-seat").value;
+                const status = document.getElementById("new-status").value;
+                const description = document.getElementById("new-description").value;
+
+                const newTicket = {
+                    category,
+                    concert_name: concert,
+                    seat_number: seat,
+                    status,
+                    ticket_category_description: description
+                };
+
+                try {
+                    const res = await fetch("http://localhost:8080/ticket", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(newTicket)
+                    });
+
+                    if (!res.ok) throw new Error("Failed to add ticket");
+
+                    alert("Ticket added successfully");
+                    document.getElementById("new-category").value = '';
+                    document.getElementById("new-seat").value = '';
+                    document.getElementById("new-status").value = '';
+                    document.getElementById("new-description").value = '';
+                    await loadTickets();
+                } catch (error) {
+                    console.error("Add ticket error:", error);
+                    alert("Failed to add ticket");
+                }
+            }
+
+            window.onload = async function () {
+                await fetchConcerts();
+                await loadTickets();
+                await fetchCategories();
+
+            };
+        </script>
+
+        <a class="logout-button" href="index.html">Log out</a>
+    </body>
 </html>
