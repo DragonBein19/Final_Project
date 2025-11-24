@@ -222,4 +222,23 @@ class UserTest {
                 .andExpect(status().isBadRequest());
         }
 
+        // 16. Testuoja prisijungima su per didele JSON uzklausa, tikisi atsakymo 400 Bad Request arba 413 Payload Too Large
+        @Test
+        void login_WithExcessivelyLargeJsonBody_ReturnsBadRequestOrPayloadTooLarge() throws Exception {
+        String largeJson = "{\"userName\":\"john_doe\", \"password\":\"" + "p".repeat(10000) + "\"}";
+
+        mockMvc.perform(post("/users/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(largeJson))
+                .andExpect(status().is4xxClientError());
+        }
+
+        // 17. Testuoja prisijungima naudojant GET metoda vietoj POST, tikisi atsakymo 405 Method Not Allowed
+        @Test
+        void login_WithGetMethod_ReturnsMethodNotAllowed() throws Exception {
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/users/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"userName\":\"john_doe\", \"password\":\"password123\"}"))
+                .andExpect(status().isMethodNotAllowed());
+        }
 }
